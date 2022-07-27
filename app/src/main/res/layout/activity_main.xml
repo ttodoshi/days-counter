@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/mainText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:fontFamily="monospace"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/daysText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/mainText"
+        android:layout_marginStart="50sp"
+        android:layout_marginTop="50sp"
+        android:layout_marginEnd="50sp"
+        android:layout_marginBottom="50sp"
+        android:text="дней в одиночестве"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="25sp" />
+
+    <ImageButton
+        android:id="@+id/settings"
+        android:layout_width="40sp"
+        android:layout_height="40sp"
+        android:background="@drawable/settings"
+        android:backgroundTint="@color/white_grey"
+        app:srcCompat="@android:drawable/ic_menu_manage" />
+
+
+    <CalendarView
+        android:id="@+id/calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="400sp"
+        android:layout_centerInParent="true"
+        android:background="@color/white_grey">
+
+        <Button
+            android:id="@+id/submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:layout_margin="10sp"
+            android:backgroundTint="@color/grey"
+            android:text="Сохранить" />
+
+    </CalendarView>
+
+</RelativeLayout>
