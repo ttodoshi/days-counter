@@ -9,23 +9,30 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:id="@+id/roundOnBackround"
+        android:id="@+id/roundOnBackground"
         android:layout_width="400sp"
         android:layout_height="400sp"
         android:layout_centerInParent="true"
         app:srcCompat="?android:attr/listChoiceIndicatorSingle" />
 
+    <ImageView
+        android:id="@+id/rectangleOnBackground"
+        android:layout_width="400sp"
+        android:layout_height="400sp"
+        android:layout_centerInParent="true"
+        app:srcCompat="?android:attr/listChoiceIndicatorMultiple" />
+
     <TextView
         android:id="@+id/mainText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/roundOnBackground"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="215sp"
         android:fontFamily="monospace"
         android:text="0"
-        android:layout_alignBottom="@id/roundOnBackround"
-        android:layout_marginBottom="215sp"
         android:textColor="@color/white"
-        android:textSize="30sp" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/daysText"

@@ -4,25 +4,15 @@ import static android.view.View.INVISIBLE;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.provider.SyncStateContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static android.view.View.VISIBLE;
@@ -62,9 +52,9 @@ public class Settings extends BaseActivity {
                                 EditText editText = customLayout.findViewById(R.id.editText);
                                 String newPhrase = editText.getText().toString();
                                 if (newPhrase.trim().length() > 0 && newPhrase.length() < 100){
-                                    SharedPreferences.Editor ed = sPref.edit();
-                                    ed.putString("DAYS_TEXT", newPhrase);
-                                    ed.commit();
+                                    SharedPreferences.Editor editor = sPref.edit();
+                                    editor.putString("DAYS_TEXT", newPhrase);
+                                    editor.commit();
                                 }
                                 else{
                                     Toast.makeText(Settings.this, "Хуйню написал", Toast.LENGTH_LONG).show();
@@ -98,7 +88,7 @@ public class Settings extends BaseActivity {
                     @Override
                     public void onClick(View view) {
                         Date selectedDate = new Date(year-1900, month, dayOfMonth);
-                        saveStartDate(sdf, selectedDate, today);
+                        saveStartDate(selectedDate, today);
                         calendar.setVisibility(INVISIBLE);
                     }
                 });
@@ -123,15 +113,15 @@ public class Settings extends BaseActivity {
     }
 
     // сохраняем дату начала
-    private void saveStartDate(SimpleDateFormat pattern, Date selectedDate, Date currentDate){
+    private void saveStartDate(Date selectedDate, Date currentDate){
         long difference = currentDate.getTime() - selectedDate.getTime();
         if (difference < 0){
             Toast.makeText(Settings.this, "Ты че из будущего блять?", Toast.LENGTH_LONG).show();
         }
         else{
-            SharedPreferences.Editor ed = sPref.edit();
-            ed.putString("START_DAY", pattern.format(selectedDate));
-            ed.commit();
+            SharedPreferences.Editor editor = sPref.edit();
+            editor.putString("START_DAY", sdf.format(selectedDate));
+            editor.commit();
         }
     }
 }

@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">Days Counter</string>
+
     <string name="day">День</string>
     <string name="day_different_ending">Дня</string>
     <string name="days">Дней</string>
+
+    <string name="year">Год</string>
+    <string name="year_different_ending">Года</string>
+    <string name="years">Лет</string>
+
+    <string name="week">Неделя</string>
+    <string name="week_different_ending">Недели</string>
+    <string name="weeks">Недель</string>
 </resources>
