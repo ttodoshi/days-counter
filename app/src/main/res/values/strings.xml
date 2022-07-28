@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Days counter</string>
+    <string name="app_name">Days Counter</string>
     <string name="day">День</string>
     <string name="day_different_ending">Дня</string>
     <string name="days">Дней</string>
