@@ -3,6 +3,7 @@ package com.example.myapplication;
 import java.text.ParseException;
 import java.util.Date;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ public class MainActivity extends BaseActivity {
     private RelativeLayout mainActivity;
     private ImageView round, rectangle;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +32,7 @@ public class MainActivity extends BaseActivity {
         rectangle = findViewById(R.id.rectangleOnBackground);
         mainActivity = findViewById(R.id.background);
 
-        // жест
+        // жесты
         mainActivity.setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
             @Override
             public void onSwipeLeft(){
@@ -47,31 +49,49 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // подгружаем данные о днях
         try {
-            uploadMainScreen(sdf.parse(sPref.getString("START_DAY", sdf.format(today))), today, sPref.getString("DAYS_TEXT", " в одиночестве"));
+            uploadMainScreen(sdf.parse(getStartDay()), getDaysText());
         } catch (ParseException e) {
             e.printStackTrace();
         }
     }
 
+    // переход на activity настроек
     private void goToSettings(){
         Intent intent = new Intent(MainActivity.this, Settings.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
-    private void uploadMainScreen(Date selectedDate, Date currentDate, String phrase){
-        long difference = currentDate.getTime() - selectedDate.getTime();
-        int days =  (int)(difference / (24 * 60 * 60 * 1000));
+    // отображение дней и надписи на главном экране
+    private void uploadMainScreen(Date selectedDate, String phrase){
+        int days = getDaysFromMillis(getDifference(selectedDate));
         picsShowMode();
         aloneDays.setText(daysShowMode(days));
         daysText.setText(daysTextShow(days, phrase));
     }
+
+    private String getStartDay(){
+        return sPref.getString("START_DAY", sdf.format(today));
+    }
+    private String getDaysShowMode(){
+        return sPref.getString("DAYS_SHOW_MODE", "true");
+    }
+    private String getDaysText(){
+        return sPref.getString("DAYS_TEXT", "");
+    }
+
+    // перевести из миллисекунд в прошедшие дни
+    private int getDaysFromMillis(long millis){
+        return (int)(millis / (24 * 60 * 60 * 1000));
+    }
+
     private String daysTextShow(int days, String phrase){
         StringBuilder text = new StringBuilder("");
-        text.append(checkEnding(days, getString(R.string.day), getString(R.string.day_different_ending), getString(R.string.days)));
-        text.append(" ");
+        if(getDaysShowMode().equals("true")){
+            text.append(checkEnding(days, getString(R.string.day), getString(R.string.day_different_ending), getString(R.string.days)));
+            text.append(" ");
+        }
         text.append(phrase);
         return text.toString();
     }
@@ -93,20 +113,18 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private String getDaysShowMode(){
-        return sPref.getString("DAYS_SHOW_MODE", "true");
-    }
-
+//    true - по умолчанию, только количество дней
+//    false - количество лет, недель и дней
     private void saveDaysShowMode(){
-        SharedPreferences.Editor editor = sPref.edit();
         if(getDaysShowMode().equals("true")){
             editor.putString("DAYS_SHOW_MODE", "false");
         }
         else if(getDaysShowMode().equals("false")){
             editor.putString("DAYS_SHOW_MODE", "true");
         }
-        editor.commit();
+        editor.apply();
     }
+
     private String daysShowMode(int days){
         StringBuilder daysString = new StringBuilder("");
         if (getDaysShowMode().equals("true")){
