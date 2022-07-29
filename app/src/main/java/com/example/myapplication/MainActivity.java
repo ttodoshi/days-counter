@@ -93,23 +93,26 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    private String getDaysShowMode(){
+        return sPref.getString("DAYS_SHOW_MODE", "true");
+    }
+
     private void saveDaysShowMode(){
         SharedPreferences.Editor editor = sPref.edit();
-        if(getDaysShowMode() == "true"){
+        if(getDaysShowMode().equals("true")){
             editor.putString("DAYS_SHOW_MODE", "false");
         }
-        else {
+        else if(getDaysShowMode().equals("false")){
             editor.putString("DAYS_SHOW_MODE", "true");
         }
         editor.commit();
     }
     private String daysShowMode(int days){
-        if (getDaysShowMode() == "true"){
-            String daysString = String.valueOf(days);
-            return daysString;
+        StringBuilder daysString = new StringBuilder("");
+        if (getDaysShowMode().equals("true")){
+            daysString.append(days);
         }
         else{
-            StringBuilder daysString = new StringBuilder("");
             int years = days / 365;
             int weeks = (days % 365) / 7;
             int remainingDays = (days % 365) % 7;
@@ -125,17 +128,12 @@ public class MainActivity extends BaseActivity {
             daysString.append(remainingDays);
             daysString.append(" ");
             daysString.append(checkEnding(remainingDays, getString(R.string.day), getString(R.string.day_different_ending), getString(R.string.days)));
-
-            return daysString.toString();
-
         }
-    }
-    private String getDaysShowMode(){
-        return sPref.getString("DAYS_SHOW_MODE", "true");
+        return daysString.toString();
     }
 
     private void picsShowMode(){
-        if (getDaysShowMode() == "true"){
+        if (getDaysShowMode().equals("true")){
             rectangle.setVisibility(INVISIBLE);
             round.setVisibility(VISIBLE);
         }
