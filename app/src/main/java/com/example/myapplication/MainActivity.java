@@ -5,7 +5,6 @@ import java.util.Date;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -97,24 +96,20 @@ public class MainActivity extends BaseActivity {
     }
 
     private String checkEnding(int value, String firstWord, String secondWord, String thirdWord){
-        switch (value){
-            case 11: case 12: case 13: case 14:
-                return thirdWord;
-            default:
-                if (value % 10 == 1){
-                    return firstWord;
-                }
-                else if (value % 10 == 2 || value % 10 == 3 || value % 10 == 4){
-                    return secondWord;
-                }
-                else{
-                    return thirdWord;
-                }
+        boolean exceptions = !(value % 100 == 11 || value % 100 == 12 || value % 100 == 13 || value % 100 == 14);
+        if (value % 10 == 1 && exceptions){
+            return firstWord;
+        }
+        else if (value % 10 == 2 || value % 10 == 3 || value % 10 == 4 && exceptions){
+            return secondWord;
+        }
+        else{
+            return thirdWord;
         }
     }
 
-//    true - по умолчанию, только количество дней
-//    false - количество лет, недель и дней
+    // true - по умолчанию, только количество дней
+    // false - количество лет, недель и дней
     private void saveDaysShowMode(){
         if(getDaysShowMode().equals("true")){
             editor.putString("DAYS_SHOW_MODE", "false");
