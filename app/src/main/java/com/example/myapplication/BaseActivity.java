@@ -12,12 +12,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class BaseActivity extends AppCompatActivity {
-    private SharedPreferences sPref;
-    private SharedPreferences.Editor editor;
+    protected SharedPreferences sPref;
+    protected SharedPreferences.Editor editor;
     protected Date today = new Date();
     @SuppressLint("SimpleDateFormat")
     protected SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
+    protected int currentCounter;
     protected Counter counter;
 
     @Override
@@ -30,7 +31,9 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        counter = new Counter(sPref.getString(storedData.START_DAY.name(), sdf.format(today)), sPref.getString(storedData.DAYS_SHOW_MODE.name(), "true"), sPref.getString(storedData.PHRASE.name(), ""));
+        currentCounter = sPref.getInt(storedData.CURRENT_COUNTER.name(), 1);
+        // counter с данными из бд
+        counter = new Counter(sPref.getString(new StringBuilder(storedData.START_DAY.name()).append(currentCounter).toString(), sdf.format(today)), sPref.getString(new StringBuilder(storedData.DAYS_SHOW_MODE.name()).append(currentCounter).toString(), "true"), sPref.getString(new StringBuilder(storedData.PHRASE.name()).append(currentCounter).toString(), ""));
     }
 
     protected long getDifference(Date selectedDate){
@@ -57,7 +60,7 @@ public class BaseActivity extends AppCompatActivity {
             }
         }
         public void setStartDate(String newStartDate) {
-            editor.putString(storedData.START_DAY.name(), newStartDate);
+            editor.putString(new StringBuilder(storedData.START_DAY.name()).append(currentCounter).toString(), newStartDate);
             editor.apply();
             this.startDate = newStartDate;
         }
@@ -69,7 +72,7 @@ public class BaseActivity extends AppCompatActivity {
         }
         public void setDaysShowMode() {
             String newDaysShowMode = daysShowMode.equals("true") ? "false" : "true";
-            editor.putString(storedData.DAYS_SHOW_MODE.name(), newDaysShowMode);
+            editor.putString(new StringBuilder(storedData.DAYS_SHOW_MODE.name()).append(currentCounter).toString(), newDaysShowMode);
             editor.apply();
             this.daysShowMode = newDaysShowMode;
         }
@@ -78,7 +81,7 @@ public class BaseActivity extends AppCompatActivity {
             return phrase;
         }
         public void setPhrase(String newPhrase) {
-            editor.putString(storedData.PHRASE.name(), newPhrase);
+            editor.putString(new StringBuilder(storedData.PHRASE.name()).append(currentCounter).toString(), newPhrase);
             editor.apply();
             this.phrase = newPhrase;
         }

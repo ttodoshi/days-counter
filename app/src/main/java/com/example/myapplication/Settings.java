@@ -20,7 +20,7 @@ import static android.view.View.INVISIBLE;
 public class Settings extends BaseActivity {
 
     private CalendarView calendar;
-    private Button dateButton, changePhraseButton, submitDate, closeCalendar, dateFromText;
+    private Button dateButton, changePhraseButton, submitDate, closeCalendar, dateFromText, addCounter, delLastCounter;
     private RelativeLayout settings;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -37,6 +37,8 @@ public class Settings extends BaseActivity {
         dateFromText = findViewById(R.id.dateFromText);
         closeCalendar = findViewById(R.id.close);
         submitDate = findViewById(R.id.submit);
+        addCounter = findViewById(R.id.addCounter);
+        delLastCounter = findViewById(R.id.delLastCounter);
 
         // вызов алерта с изменением фразы
         changePhraseButton.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +87,7 @@ public class Settings extends BaseActivity {
                         try {
                             saveStartDate(sdf.parse(startDate));
                         } catch (ParseException e) {
-                            Toast.makeText(Settings.this, "Неверный формат", Toast.LENGTH_LONG).show();
+                            Toast.makeText(Settings.this, "Неверный формат", Toast.LENGTH_SHORT).show();
                         }
                         dialogInterface.cancel();
                     }
@@ -110,10 +112,23 @@ public class Settings extends BaseActivity {
                 submitDate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Date selectedDate = new Date(year-1900, month, dayOfMonth);
-                        saveStartDate(selectedDate);
+                        saveStartDate(new Date(year-1900, month, dayOfMonth));
                     }
                 });
+            }
+        });
+
+        addCounter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addCounter();
+            }
+        });
+
+        delLastCounter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                delLastCounter();
             }
         });
 
@@ -144,5 +159,26 @@ public class Settings extends BaseActivity {
             counter.setStartDate(sdf.format(selectedDate));
         }
         calendar.setVisibility(INVISIBLE);
+    }
+
+    private void addCounter(){
+        int numOfCounters = sPref.getInt(storedData.NUMBER_OF_COUNTERS.name(), 1);
+        editor.putInt(storedData.NUMBER_OF_COUNTERS.name(), numOfCounters + 1);
+        editor.apply();
+        Toast.makeText(Settings.this, "Новый счётчик создан", Toast.LENGTH_SHORT).show();
+    }
+    private void delLastCounter(){
+        int numOfCounters = sPref.getInt(storedData.NUMBER_OF_COUNTERS.name(), 1);
+        if (numOfCounters > 1){
+            editor.putInt(storedData.NUMBER_OF_COUNTERS.name(), numOfCounters - 1);
+            if (currentCounter == numOfCounters){
+                editor.putInt(storedData.CURRENT_COUNTER.name(), numOfCounters - 1);
+            }
+            editor.apply();
+            Toast.makeText(Settings.this, "Последний счётчик удалён", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(Settings.this, "У вас только 1 счётчик", Toast.LENGTH_SHORT).show();
+        }
     }
 }

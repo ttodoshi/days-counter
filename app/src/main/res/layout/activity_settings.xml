@@ -17,10 +17,19 @@
         android:orientation="vertical">
 
         <Button
+            android:id="@+id/addCounter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="35sp"
+            android:backgroundTint="@color/white_grey"
+            android:text="Создать новый счётчик" />
+
+        <Button
             android:id="@+id/changeStartDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50sp"
+            android:layout_marginTop="35sp"
+            android:layout_marginBottom="35sp"
             android:backgroundTint="@color/white_grey"
             android:text="Выбрать дату начала" />
 
@@ -28,9 +37,18 @@
             android:id="@+id/changePhrase"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50sp"
+            android:layout_marginTop="35sp"
+            android:layout_marginBottom="35sp"
             android:backgroundTint="@color/white_grey"
             android:text="Изменить надпись" />
+
+        <Button
+            android:id="@+id/delLastCounter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35sp"
+            android:backgroundTint="@color/white_grey"
+            android:text="Удалить последний счётчик" />
 
     </LinearLayout>
 

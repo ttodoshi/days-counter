@@ -39,6 +39,14 @@ public class MainActivity extends BaseActivity {
                 counter.setDaysShowMode();
                 recreate();
             }
+            @Override
+            public void onSwipeUp() {
+                goToNextCounter();
+            }
+            @Override
+            public void onSwipeDown() {
+                goToPreviousCounter();
+            }
         });
     }
 
@@ -124,6 +132,21 @@ public class MainActivity extends BaseActivity {
         else{
             rectangle.setVisibility(VISIBLE);
             round.setVisibility(INVISIBLE);
+        }
+    }
+
+    private void goToPreviousCounter(){
+        if (currentCounter > 1){
+            editor.putInt(storedData.CURRENT_COUNTER.name(), currentCounter - 1);
+            editor.apply();
+            recreate();
+        }
+    }
+    private void goToNextCounter(){
+        if (currentCounter < sPref.getInt(storedData.NUMBER_OF_COUNTERS.name(), 1)){
+            editor.putInt(storedData.CURRENT_COUNTER.name(), currentCounter + 1);
+            editor.apply();
+            recreate();
         }
     }
 }

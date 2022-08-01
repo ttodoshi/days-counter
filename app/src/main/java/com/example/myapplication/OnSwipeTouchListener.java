@@ -13,11 +13,10 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
         gestureDetector = new GestureDetector(context, new GestureListener());
     }
 
-    public void onSwipeLeft() {
-    }
-
-    public void onSwipeRight() {
-    }
+    public void onSwipeLeft() {}
+    public void onSwipeRight() {}
+    public void onSwipeUp(){}
+    public void onSwipeDown(){}
 
     public boolean onTouch(View v, MotionEvent event) {
         return gestureDetector.onTouchEvent(event);
@@ -40,9 +39,18 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
             if (Math.abs(distanceX) > Math.abs(distanceY) && Math.abs(distanceX) > SWIPE_DISTANCE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
                 if (distanceX > 0)
                     onSwipeRight();
-                else
+                else {
                     onSwipeLeft();
+                }
                 return true;
+            }
+            if (Math.abs(distanceX) < Math.abs(distanceY) && Math.abs(distanceY) > SWIPE_DISTANCE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD){
+                if (distanceY < 0){
+                    onSwipeUp();
+                }
+                else {
+                    onSwipeDown();
+                }
             }
             return false;
         }
