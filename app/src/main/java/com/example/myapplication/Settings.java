@@ -20,8 +20,7 @@ import static android.view.View.INVISIBLE;
 public class Settings extends BaseActivity {
 
     private CalendarView calendar;
-    private Button dateButton, changePhraseButton, submitDate, closeCalendar, dateFromText, addCounter, delLastCounter;
-    private RelativeLayout settings;
+    private Button submitDate;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -29,16 +28,16 @@ public class Settings extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        settings = findViewById(R.id.settings);
-        changePhraseButton = findViewById(R.id.changePhrase);
-        dateButton = findViewById(R.id.changeStartDate);
+        RelativeLayout settings = findViewById(R.id.settings);
+        Button changePhraseButton = findViewById(R.id.changePhrase);
+        Button dateButton = findViewById(R.id.changeStartDate);
         calendar = findViewById(R.id.calendar);
         calendar.setVisibility(INVISIBLE);
-        dateFromText = findViewById(R.id.dateFromText);
-        closeCalendar = findViewById(R.id.close);
+        Button dateFromText = findViewById(R.id.dateFromText);
+        Button closeCalendar = findViewById(R.id.close);
         submitDate = findViewById(R.id.submit);
-        addCounter = findViewById(R.id.addCounter);
-        delLastCounter = findViewById(R.id.delLastCounter);
+        Button addCounter = findViewById(R.id.addCounter);
+        Button delLastCounter = findViewById(R.id.delLastCounter);
 
         // вызов алерта с изменением фразы
         changePhraseButton.setOnClickListener(new View.OnClickListener() {

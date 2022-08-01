@@ -13,7 +13,6 @@ import static android.view.View.INVISIBLE;
 public class MainActivity extends BaseActivity {
 
     private TextView days, daysPhrase;
-    private RelativeLayout mainActivity;
     private ImageView round, rectangle;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -26,7 +25,7 @@ public class MainActivity extends BaseActivity {
         daysPhrase = findViewById(R.id.phrase);
         round = findViewById(R.id.roundOnBackground);
         rectangle = findViewById(R.id.rectangleOnBackground);
-        mainActivity = findViewById(R.id.background);
+        RelativeLayout mainActivity = findViewById(R.id.background);
 
         // жесты
         mainActivity.setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
