@@ -100,7 +100,7 @@ public class MainActivity extends BaseActivity {
         if (value % 10 == 1 && exceptions){
             return firstWord;
         }
-        else if (value % 10 == 2 || value % 10 == 3 || value % 10 == 4 && exceptions){
+        else if ((value % 10 == 2 || value % 10 == 3 || value % 10 == 4) && exceptions){
             return secondWord;
         }
         else{
