@@ -1,8 +1,5 @@
 package com.example.myapplication;
 
-import java.text.ParseException;
-import java.util.Date;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +12,7 @@ import static android.view.View.INVISIBLE;
 
 public class MainActivity extends BaseActivity {
 
-    private TextView aloneDays, daysText;
+    private TextView days, daysPhrase;
     private RelativeLayout mainActivity;
     private ImageView round, rectangle;
 
@@ -25,8 +22,8 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        aloneDays = findViewById(R.id.mainText);
-        daysText = findViewById(R.id.daysText);
+        days = findViewById(R.id.days);
+        daysPhrase = findViewById(R.id.phrase);
         round = findViewById(R.id.roundOnBackground);
         rectangle = findViewById(R.id.rectangleOnBackground);
         mainActivity = findViewById(R.id.background);
@@ -39,7 +36,7 @@ public class MainActivity extends BaseActivity {
             }
             @Override
             public void onSwipeRight() {
-                saveDaysShowMode();
+                counter.setDaysShowMode();
                 recreate();
             }
         });
@@ -48,11 +45,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        try {
-            uploadMainScreen(sdf.parse(getStartDay()), getDaysText());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        int days = getDaysFromMillis(getDifference(counter.getStartDate()));
+        uploadMainScreen(days, counter.getPhrase());
     }
 
     // переход на activity настроек
@@ -63,21 +57,10 @@ public class MainActivity extends BaseActivity {
     }
 
     // отображение дней и надписи на главном экране
-    private void uploadMainScreen(Date selectedDate, String phrase){
-        int days = getDaysFromMillis(getDifference(selectedDate));
+    private void uploadMainScreen(int allDays, String phrase){
         picsShowMode();
-        aloneDays.setText(daysShowMode(days));
-        daysText.setText(daysTextShow(days, phrase));
-    }
-
-    private String getStartDay(){
-        return sPref.getString("START_DAY", sdf.format(today));
-    }
-    private String getDaysShowMode(){
-        return sPref.getString("DAYS_SHOW_MODE", "true");
-    }
-    private String getDaysText(){
-        return sPref.getString("DAYS_TEXT", "");
+        days.setText(daysShowMode(allDays));
+        daysPhrase.setText(phraseShow(allDays, phrase));
     }
 
     // перевести из миллисекунд в прошедшие дни
@@ -85,9 +68,9 @@ public class MainActivity extends BaseActivity {
         return (int)(millis / (24 * 60 * 60 * 1000));
     }
 
-    private String daysTextShow(int days, String phrase){
+    private String phraseShow(int days, String phrase){
         StringBuilder text = new StringBuilder("");
-        if(getDaysShowMode().equals("true")){
+        if(counter.getDaysShowMode().equals("true")){
             text.append(checkEnding(days, getString(R.string.day), getString(R.string.day_different_ending), getString(R.string.days)));
             text.append(" ");
         }
@@ -108,21 +91,9 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    // true - по умолчанию, только количество дней
-    // false - количество лет, недель и дней
-    private void saveDaysShowMode(){
-        if(getDaysShowMode().equals("true")){
-            editor.putString("DAYS_SHOW_MODE", "false");
-        }
-        else if(getDaysShowMode().equals("false")){
-            editor.putString("DAYS_SHOW_MODE", "true");
-        }
-        editor.apply();
-    }
-
     private String daysShowMode(int days){
         StringBuilder daysString = new StringBuilder("");
-        if (getDaysShowMode().equals("true")){
+        if (counter.getDaysShowMode().equals("true")){
             daysString.append(days);
         }
         else{
@@ -146,7 +117,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void picsShowMode(){
-        if (getDaysShowMode().equals("true")){
+        if (counter.getDaysShowMode().equals("true")){
             rectangle.setVisibility(INVISIBLE);
             round.setVisibility(VISIBLE);
         }

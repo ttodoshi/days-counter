@@ -1,11 +1,8 @@
 package com.example.myapplication;
 
-import static android.view.View.INVISIBLE;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +20,7 @@ import static android.view.View.INVISIBLE;
 public class Settings extends BaseActivity {
 
     private CalendarView calendar;
-    private Button dateButton, changeDaysTextButton, submitDate, closeCalendar, dateFromText;
+    private Button dateButton, changePhraseButton, submitDate, closeCalendar, dateFromText;
     private RelativeLayout settings;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -33,7 +30,7 @@ public class Settings extends BaseActivity {
         setContentView(R.layout.activity_settings);
 
         settings = findViewById(R.id.settings);
-        changeDaysTextButton = findViewById(R.id.changeDaysText);
+        changePhraseButton = findViewById(R.id.changePhrase);
         dateButton = findViewById(R.id.changeStartDate);
         calendar = findViewById(R.id.calendar);
         calendar.setVisibility(INVISIBLE);
@@ -42,7 +39,7 @@ public class Settings extends BaseActivity {
         submitDate = findViewById(R.id.submit);
 
         // вызов алерта с изменением фразы
-        changeDaysTextButton.setOnClickListener(new View.OnClickListener() {
+        changePhraseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final View customLayout = getLayoutInflater().inflate(R.layout.custom_layout, null);
@@ -53,8 +50,7 @@ public class Settings extends BaseActivity {
                                 EditText editText = customLayout.findViewById(R.id.editText);
                                 String newPhrase = editText.getText().toString();
                                 if (newPhrase.trim().length() > 0 && newPhrase.length() < 100){
-                                    editor.putString("DAYS_TEXT", newPhrase);
-                                    editor.apply();
+                                    counter.setPhrase(newPhrase);
                                 }
                                 else{
                                     Toast.makeText(Settings.this, "Неверный формат или слишком длинная надпись", Toast.LENGTH_LONG).show();
@@ -87,14 +83,11 @@ public class Settings extends BaseActivity {
                         EditText editText = customLayout.findViewById(R.id.editText);
                         String startDate = editText.getText().toString();
                         try {
-                            sdf.parse(startDate);
-                            editor.putString("START_DAY", startDate);
-                            editor.apply();
+                            saveStartDate(sdf.parse(startDate));
                         } catch (ParseException e) {
                             Toast.makeText(Settings.this, "Неверный формат", Toast.LENGTH_LONG).show();
                         }
                         dialogInterface.cancel();
-                        calendar.setVisibility(INVISIBLE);
                     }
                 });
                 AlertDialog alert = builder.create();
@@ -119,7 +112,6 @@ public class Settings extends BaseActivity {
                     public void onClick(View view) {
                         Date selectedDate = new Date(year-1900, month, dayOfMonth);
                         saveStartDate(selectedDate);
-                        calendar.setVisibility(INVISIBLE);
                     }
                 });
             }
@@ -149,8 +141,8 @@ public class Settings extends BaseActivity {
             Toast.makeText(Settings.this, "Из будущего?", Toast.LENGTH_LONG).show();
         }
         else{
-            editor.putString("START_DAY", sdf.format(selectedDate));
-            editor.apply();
+            counter.setStartDate(sdf.format(selectedDate));
         }
+        calendar.setVisibility(INVISIBLE);
     }
 }

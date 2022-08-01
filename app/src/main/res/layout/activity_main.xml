@@ -23,7 +23,7 @@
         app:srcCompat="?android:attr/listChoiceIndicatorMultiple" />
 
     <TextView
-        android:id="@+id/mainText"
+        android:id="@+id/days"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/roundOnBackground"
@@ -35,10 +35,10 @@
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/daysText"
+        android:id="@+id/phrase"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/mainText"
+        android:layout_alignTop="@id/days"
         android:layout_marginTop="55sp"
         android:text="дней в одиночестве"
         android:textAlignment="center"
