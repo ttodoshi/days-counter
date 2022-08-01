@@ -44,24 +44,7 @@ public class Settings extends BaseActivity {
         changePhraseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
-                AlertDialog.Builder builder = createAlertDialogWithEditText("Выберите новую надпись", customLayout);
-                builder.setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                EditText editText = customLayout.findViewById(R.id.editText);
-                                String newPhrase = editText.getText().toString();
-                                if (newPhrase.trim().length() > 0 && newPhrase.length() < 100){
-                                    counter.setPhrase(newPhrase);
-                                }
-                                else{
-                                    Toast.makeText(Settings.this, "Неверный формат или слишком длинная надпись", Toast.LENGTH_LONG).show();
-                                }
-                                dialogInterface.cancel();
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
+                showPhraseAlert();
             }
         });
 
@@ -77,23 +60,7 @@ public class Settings extends BaseActivity {
         dateFromText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
-                AlertDialog.Builder builder = createAlertDialogWithEditText("Введите дату в формате дд.мм.гггг", customLayout);
-                builder.setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        EditText editText = customLayout.findViewById(R.id.editText);
-                        String startDate = editText.getText().toString();
-                        try {
-                            saveStartDate(sdf.parse(startDate));
-                        } catch (ParseException e) {
-                            Toast.makeText(Settings.this, "Неверный формат", Toast.LENGTH_SHORT).show();
-                        }
-                        dialogInterface.cancel();
-                    }
-                });
-                AlertDialog alert = builder.create();
-                alert.show();
+                showDateAlert();
             }
         });
 
@@ -150,7 +117,49 @@ public class Settings extends BaseActivity {
         return builder;
     }
 
-    // сохраняем дату начала
+    // alert для изменения фразы
+    private void showPhraseAlert(){
+        final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
+        AlertDialog.Builder builder = createAlertDialogWithEditText("Выберите новую надпись", customLayout);
+        builder.setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                EditText editText = customLayout.findViewById(R.id.editText);
+                String newPhrase = editText.getText().toString();
+                if (newPhrase.trim().length() > 0 && newPhrase.length() < 100){
+                    counter.setPhrase(newPhrase);
+                }
+                else{
+                    Toast.makeText(Settings.this, "Неверный формат или слишком длинная надпись", Toast.LENGTH_LONG).show();
+                }
+                dialogInterface.cancel();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    // alert для изменения даты начала отсчёта текстом
+    private void showDateAlert(){
+        final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
+        AlertDialog.Builder builder = createAlertDialogWithEditText("Введите дату в формате дд.мм.гггг", customLayout);
+        builder.setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                EditText editText = customLayout.findViewById(R.id.editText);
+                String startDate = editText.getText().toString();
+                try {
+                    saveStartDate(sdf.parse(startDate));
+                } catch (ParseException e) {
+                    Toast.makeText(Settings.this, "Неверный формат", Toast.LENGTH_SHORT).show();
+                }
+                dialogInterface.cancel();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
     private void saveStartDate(Date selectedDate){
         if (getDifference(selectedDate) < 0){
             Toast.makeText(Settings.this, "Из будущего?", Toast.LENGTH_LONG).show();

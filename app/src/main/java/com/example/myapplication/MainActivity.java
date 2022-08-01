@@ -53,8 +53,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        int days = getDaysFromMillis(getDifference(counter.getStartDate()));
-        uploadMainScreen(days, counter.getPhrase());
+        uploadMainScreen(getDaysFromMillis(getDifference(counter.getStartDate())), counter.getPhrase());
     }
 
     // переход на activity настроек
