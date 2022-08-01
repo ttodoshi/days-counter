@@ -30,7 +30,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="215sp"
         android:fontFamily="monospace"
-        android:text="0"
+        android:text=""
         android:textColor="@color/white"
         android:textSize="20sp" />
 
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/days"
         android:layout_marginTop="55sp"
-        android:text="дней в одиночестве"
+        android:text=""
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="25sp" />
