@@ -18,7 +18,7 @@ public class BaseActivity extends AppCompatActivity {
     @SuppressLint("SimpleDateFormat")
     protected SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
-    Counter counter;
+    protected Counter counter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
