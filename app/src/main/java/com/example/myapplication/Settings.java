@@ -42,7 +42,7 @@ public class Settings extends BaseActivity {
         changePhraseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final View customLayout = getLayoutInflater().inflate(R.layout.custom_layout, null);
+                final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
                 AlertDialog.Builder builder = createAlertDialogWithEditText("Выберите новую надпись", customLayout);
                 builder.setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
                             @Override
@@ -75,7 +75,7 @@ public class Settings extends BaseActivity {
         dateFromText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final View customLayout = getLayoutInflater().inflate(R.layout.custom_layout, null);
+                final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
                 AlertDialog.Builder builder = createAlertDialogWithEditText("Введите дату в формате дд.мм.гггг", customLayout);
                 builder.setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
                     @Override
