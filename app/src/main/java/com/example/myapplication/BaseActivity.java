@@ -30,7 +30,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        counter = new Counter(sPref.getString("START_DAY", sdf.format(today)), sPref.getString("DAYS_SHOW_MODE", "true"), sPref.getString("PHRASE", ""));
+        counter = new Counter(sPref.getString(storedData.START_DAY.name(), sdf.format(today)), sPref.getString(storedData.DAYS_SHOW_MODE.name(), "true"), sPref.getString(storedData.PHRASE.name(), ""));
     }
 
     protected long getDifference(Date selectedDate){
@@ -57,20 +57,19 @@ public class BaseActivity extends AppCompatActivity {
             }
         }
         public void setStartDate(String newStartDate) {
-            editor.putString("START_DAY", newStartDate);
+            editor.putString(storedData.START_DAY.name(), newStartDate);
             editor.apply();
             this.startDate = newStartDate;
         }
 
+        // true - по умолчанию, только количество дней
+        // false - количество лет, недель и дней
         public String getDaysShowMode() {
             return daysShowMode;
         }
-
-        // true - по умолчанию, только количество дней
-        // false - количество лет, недель и дней
         public void setDaysShowMode() {
             String newDaysShowMode = daysShowMode.equals("true") ? "false" : "true";
-            editor.putString("DAYS_SHOW_MODE", newDaysShowMode);
+            editor.putString(storedData.DAYS_SHOW_MODE.name(), newDaysShowMode);
             editor.apply();
             this.daysShowMode = newDaysShowMode;
         }
@@ -79,7 +78,7 @@ public class BaseActivity extends AppCompatActivity {
             return phrase;
         }
         public void setPhrase(String newPhrase) {
-            editor.putString("PHRASE", newPhrase);
+            editor.putString(storedData.PHRASE.name(), newPhrase);
             editor.apply();
             this.phrase = newPhrase;
         }
