@@ -76,7 +76,7 @@ public class MainActivity extends BaseActivity {
 
     private String phraseShow(int days, String phrase){
         StringBuilder text = new StringBuilder("");
-        if(counter.getDaysShowMode().equals("true")){
+        if(counter.getDaysShowMode()){
             text.append(checkEnding(days, getString(R.string.day), getString(R.string.day_different_ending), getString(R.string.days)));
             text.append(" ");
         }
@@ -99,7 +99,7 @@ public class MainActivity extends BaseActivity {
 
     private String daysShowMode(int days){
         StringBuilder daysString = new StringBuilder("");
-        if (counter.getDaysShowMode().equals("true")){
+        if (counter.getDaysShowMode()){
             daysString.append(days);
         }
         else{
@@ -123,7 +123,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void picsShowMode(){
-        if (counter.getDaysShowMode().equals("true")){
+        if (counter.getDaysShowMode()){
             rectangle.setVisibility(INVISIBLE);
             round.setVisibility(VISIBLE);
         }

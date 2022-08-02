@@ -27,14 +27,14 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         sPref = PreferenceManager.getDefaultSharedPreferences(this);
         editor = sPref.edit();
-        currentCounter = sPref.getInt(storedData.CURRENT_COUNTER.name(), 1);
-        // counter с данными из бд
-        counter = new Counter(sPref.getString(new StringBuilder(storedData.START_DAY.name()).append(currentCounter).toString(), sdf.format(today)), sPref.getString(new StringBuilder(storedData.DAYS_SHOW_MODE.name()).append(currentCounter).toString(), "true"), sPref.getString(new StringBuilder(storedData.PHRASE.name()).append(currentCounter).toString(), ""));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        currentCounter = sPref.getInt(storedData.CURRENT_COUNTER.name(), 1);
+        // counter с данными из бд
+        counter = new Counter(sPref.getString(new StringBuilder(storedData.START_DAY.name()).append(currentCounter).toString(), sdf.format(today)), sPref.getBoolean(new StringBuilder(storedData.DAYS_SHOW_MODE.name()).append(currentCounter).toString(), true), sPref.getString(new StringBuilder(storedData.PHRASE.name()).append(currentCounter).toString(), ""));
     }
 
     protected long getDifference(Date selectedDate){
@@ -47,10 +47,10 @@ public class BaseActivity extends AppCompatActivity {
 
     public class Counter {
         private String startDate;
-        private String daysShowMode;
+        private boolean daysShowMode;
         private String phrase;
 
-        public Counter(String startDate, String daysShowMode, String phrase) {
+        public Counter(String startDate, boolean daysShowMode, String phrase) {
             this.startDate = startDate;
             this.daysShowMode = daysShowMode;
             this.phrase = phrase;
@@ -72,12 +72,12 @@ public class BaseActivity extends AppCompatActivity {
 
         // true - по умолчанию, только количество дней
         // false - количество лет, недель и дней
-        public String getDaysShowMode() {
+        public boolean getDaysShowMode() {
             return daysShowMode;
         }
         public void setDaysShowMode() {
-            String newDaysShowMode = daysShowMode.equals("true") ? "false" : "true";
-            editor.putString(new StringBuilder(storedData.DAYS_SHOW_MODE.name()).append(currentCounter).toString(), newDaysShowMode);
+            boolean newDaysShowMode = daysShowMode ? false : true;
+            editor.putBoolean(new StringBuilder(storedData.DAYS_SHOW_MODE.name()).append(currentCounter).toString(), newDaysShowMode);
             editor.apply();
             this.daysShowMode = newDaysShowMode;
         }
