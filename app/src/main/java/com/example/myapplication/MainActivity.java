@@ -62,7 +62,7 @@ public class MainActivity extends BaseActivity {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
-    // отображение дней и надписи на главном экране
+    // отображение дней, надписи и картинок на главном экране
     private void uploadMainScreen(int allDays, String phrase){
         picsShowMode();
         days.setText(daysShowMode(allDays));
