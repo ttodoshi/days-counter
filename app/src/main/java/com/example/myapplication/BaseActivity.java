@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,18 +27,22 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         sPref = PreferenceManager.getDefaultSharedPreferences(this);
         editor = sPref.edit();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         currentCounter = sPref.getInt(storedData.CURRENT_COUNTER.name(), 1);
         // counter с данными из бд
         counter = new Counter(sPref.getString(new StringBuilder(storedData.START_DAY.name()).append(currentCounter).toString(), sdf.format(today)), sPref.getString(new StringBuilder(storedData.DAYS_SHOW_MODE.name()).append(currentCounter).toString(), "true"), sPref.getString(new StringBuilder(storedData.PHRASE.name()).append(currentCounter).toString(), ""));
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     protected long getDifference(Date selectedDate){
         return today.getTime() - selectedDate.getTime();
+    }
+
+    protected void showMessage(String text){
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
     public class Counter {
@@ -81,9 +86,17 @@ public class BaseActivity extends AppCompatActivity {
             return phrase;
         }
         public void setPhrase(String newPhrase) {
-            editor.putString(new StringBuilder(storedData.PHRASE.name()).append(currentCounter).toString(), newPhrase);
-            editor.apply();
-            this.phrase = newPhrase;
+            if (newPhrase.trim().length() == 0){
+                showMessage("Неверный формат");
+            }
+            else if (newPhrase.length() > 100){
+                showMessage("Слишком длинная надпись");
+            }
+            else {
+                editor.putString(new StringBuilder(storedData.PHRASE.name()).append(currentCounter).toString(), newPhrase);
+                editor.apply();
+                this.phrase = newPhrase;
+            }
         }
     }
 }

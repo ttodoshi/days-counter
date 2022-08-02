@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -125,12 +124,7 @@ public class Settings extends BaseActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 EditText editText = customLayout.findViewById(R.id.editText);
                 String newPhrase = editText.getText().toString();
-                if (newPhrase.trim().length() > 0 && newPhrase.length() < 100){
-                    counter.setPhrase(newPhrase);
-                }
-                else{
-                    Toast.makeText(Settings.this, "Неверный формат или слишком длинная надпись", Toast.LENGTH_LONG).show();
-                }
+                counter.setPhrase(newPhrase);
                 dialogInterface.cancel();
             }
         });
@@ -150,7 +144,7 @@ public class Settings extends BaseActivity {
                 try {
                     saveStartDate(sdf.parse(startDate));
                 } catch (ParseException e) {
-                    Toast.makeText(Settings.this, "Неверный формат", Toast.LENGTH_SHORT).show();
+                    showMessage("Неверный формат");
                 }
                 dialogInterface.cancel();
             }
@@ -161,7 +155,7 @@ public class Settings extends BaseActivity {
 
     private void saveStartDate(Date selectedDate){
         if (getDifference(selectedDate) < 0){
-            Toast.makeText(Settings.this, "Из будущего?", Toast.LENGTH_LONG).show();
+            showMessage("Из будущего?");
         }
         else{
             counter.setStartDate(sdf.format(selectedDate));
@@ -173,7 +167,7 @@ public class Settings extends BaseActivity {
         int numOfCounters = sPref.getInt(storedData.NUMBER_OF_COUNTERS.name(), 1);
         editor.putInt(storedData.NUMBER_OF_COUNTERS.name(), numOfCounters + 1);
         editor.apply();
-        Toast.makeText(Settings.this, "Новый счётчик создан", Toast.LENGTH_SHORT).show();
+        showMessage("Новый счётчик создан");
     }
     private void delLastCounter(){
         int numOfCounters = sPref.getInt(storedData.NUMBER_OF_COUNTERS.name(), 1);
@@ -182,11 +176,14 @@ public class Settings extends BaseActivity {
             if (currentCounter == numOfCounters){
                 editor.putInt(storedData.CURRENT_COUNTER.name(), numOfCounters - 1);
             }
+            editor.remove(new StringBuilder(storedData.START_DAY.name()).append(numOfCounters).toString());
+            editor.remove(new StringBuilder(storedData.DAYS_SHOW_MODE.name()).append(numOfCounters).toString());
+            editor.remove(new StringBuilder(storedData.PHRASE.name()).append(numOfCounters).toString());
             editor.apply();
-            Toast.makeText(Settings.this, "Последний счётчик удалён", Toast.LENGTH_SHORT).show();
+            showMessage("Последний счётчик удалён");
         }
         else{
-            Toast.makeText(Settings.this, "У вас только 1 счётчик", Toast.LENGTH_SHORT).show();
+            showMessage("У вас только 1 счётчик");
         }
     }
 }
