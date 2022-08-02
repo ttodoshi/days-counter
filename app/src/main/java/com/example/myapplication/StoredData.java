@@ -1,6 +1,6 @@
 package com.example.myapplication;
 
-public enum storedData {
+public enum StoredData {
     CURRENT_COUNTER,
     NUMBER_OF_COUNTERS,
     START_DAY,

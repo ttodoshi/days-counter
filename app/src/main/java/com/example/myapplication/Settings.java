@@ -164,21 +164,21 @@ public class Settings extends BaseActivity {
     }
 
     private void addCounter(){
-        int numOfCounters = sPref.getInt(storedData.NUMBER_OF_COUNTERS.name(), 1);
-        editor.putInt(storedData.NUMBER_OF_COUNTERS.name(), numOfCounters + 1);
+        int numOfCounters = sPref.getInt(StoredData.NUMBER_OF_COUNTERS.name(), 1);
+        editor.putInt(StoredData.NUMBER_OF_COUNTERS.name(), numOfCounters + 1);
         editor.apply();
         showMessage("Новый счётчик создан");
     }
     private void delLastCounter(){
-        int numOfCounters = sPref.getInt(storedData.NUMBER_OF_COUNTERS.name(), 1);
+        int numOfCounters = sPref.getInt(StoredData.NUMBER_OF_COUNTERS.name(), 1);
         if (numOfCounters > 1){
-            editor.putInt(storedData.NUMBER_OF_COUNTERS.name(), numOfCounters - 1);
+            editor.putInt(StoredData.NUMBER_OF_COUNTERS.name(), numOfCounters - 1);
             if (currentCounter == numOfCounters){
-                editor.putInt(storedData.CURRENT_COUNTER.name(), numOfCounters - 1);
+                editor.putInt(StoredData.CURRENT_COUNTER.name(), numOfCounters - 1);
             }
-            editor.remove(new StringBuilder(storedData.START_DAY.name()).append(numOfCounters).toString());
-            editor.remove(new StringBuilder(storedData.DAYS_SHOW_MODE.name()).append(numOfCounters).toString());
-            editor.remove(new StringBuilder(storedData.PHRASE.name()).append(numOfCounters).toString());
+            editor.remove(new StringBuilder(StoredData.START_DAY.name()).append(numOfCounters).toString());
+            editor.remove(new StringBuilder(StoredData.DAYS_SHOW_MODE.name()).append(numOfCounters).toString());
+            editor.remove(new StringBuilder(StoredData.PHRASE.name()).append(numOfCounters).toString());
             editor.apply();
             showMessage("Последний счётчик удалён");
         }

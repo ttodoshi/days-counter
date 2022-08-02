@@ -32,9 +32,9 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        currentCounter = sPref.getInt(storedData.CURRENT_COUNTER.name(), 1);
+        currentCounter = sPref.getInt(StoredData.CURRENT_COUNTER.name(), 1);
         // counter с данными из бд
-        counter = new Counter(sPref.getString(new StringBuilder(storedData.START_DAY.name()).append(currentCounter).toString(), sdf.format(today)), sPref.getBoolean(new StringBuilder(storedData.DAYS_SHOW_MODE.name()).append(currentCounter).toString(), true), sPref.getString(new StringBuilder(storedData.PHRASE.name()).append(currentCounter).toString(), ""));
+        counter = new Counter(sPref.getString(new StringBuilder(StoredData.START_DAY.name()).append(currentCounter).toString(), sdf.format(today)), sPref.getBoolean(new StringBuilder(StoredData.DAYS_SHOW_MODE.name()).append(currentCounter).toString(), true), sPref.getString(new StringBuilder(StoredData.PHRASE.name()).append(currentCounter).toString(), ""));
     }
 
     protected long getDifference(Date selectedDate){
@@ -65,7 +65,7 @@ public class BaseActivity extends AppCompatActivity {
             }
         }
         public void setStartDate(String newStartDate) {
-            editor.putString(new StringBuilder(storedData.START_DAY.name()).append(currentCounter).toString(), newStartDate);
+            editor.putString(new StringBuilder(StoredData.START_DAY.name()).append(currentCounter).toString(), newStartDate);
             editor.apply();
             this.startDate = newStartDate;
         }
@@ -77,7 +77,7 @@ public class BaseActivity extends AppCompatActivity {
         }
         public void setDaysShowMode() {
             boolean newDaysShowMode = daysShowMode ? false : true;
-            editor.putBoolean(new StringBuilder(storedData.DAYS_SHOW_MODE.name()).append(currentCounter).toString(), newDaysShowMode);
+            editor.putBoolean(new StringBuilder(StoredData.DAYS_SHOW_MODE.name()).append(currentCounter).toString(), newDaysShowMode);
             editor.apply();
             this.daysShowMode = newDaysShowMode;
         }
@@ -93,7 +93,7 @@ public class BaseActivity extends AppCompatActivity {
                 showMessage("Слишком длинная надпись");
             }
             else {
-                editor.putString(new StringBuilder(storedData.PHRASE.name()).append(currentCounter).toString(), newPhrase);
+                editor.putString(new StringBuilder(StoredData.PHRASE.name()).append(currentCounter).toString(), newPhrase);
                 editor.apply();
                 this.phrase = newPhrase;
             }

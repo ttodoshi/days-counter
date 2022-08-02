@@ -135,14 +135,14 @@ public class MainActivity extends BaseActivity {
 
     private void goToPreviousCounter(){
         if (currentCounter > 1){
-            editor.putInt(storedData.CURRENT_COUNTER.name(), currentCounter - 1);
+            editor.putInt(StoredData.CURRENT_COUNTER.name(), currentCounter - 1);
             editor.apply();
             recreate();
         }
     }
     private void goToNextCounter(){
-        if (currentCounter < sPref.getInt(storedData.NUMBER_OF_COUNTERS.name(), 1)){
-            editor.putInt(storedData.CURRENT_COUNTER.name(), currentCounter + 1);
+        if (currentCounter < sPref.getInt(StoredData.NUMBER_OF_COUNTERS.name(), 1)){
+            editor.putInt(StoredData.CURRENT_COUNTER.name(), currentCounter + 1);
             editor.apply();
             recreate();
         }
