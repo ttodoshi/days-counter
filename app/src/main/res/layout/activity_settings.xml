@@ -10,7 +10,7 @@
     tools:context="org.todoshis.dayscounter.Settings">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="300sp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
@@ -21,8 +21,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="35sp"
-            android:backgroundTint="@color/white_grey"
-            android:text="Создать новый счётчик" />
+            android:background="@drawable/button_layout"
+            android:textColor="@color/white"
+            android:text="@string/create_counter" />
 
         <Button
             android:id="@+id/changeStartDate"
@@ -30,8 +31,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="35sp"
             android:layout_marginBottom="35sp"
-            android:backgroundTint="@color/white_grey"
-            android:text="Выбрать дату начала" />
+            android:background="@drawable/button_layout"
+            android:textColor="@color/white"
+            android:text="@string/change_date" />
 
         <Button
             android:id="@+id/changePhrase"
@@ -39,16 +41,18 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="35sp"
             android:layout_marginBottom="35sp"
-            android:backgroundTint="@color/white_grey"
-            android:text="Изменить надпись" />
+            android:background="@drawable/button_layout"
+            android:textColor="@color/white"
+            android:text="@string/change_phrase" />
 
         <Button
             android:id="@+id/delLastCounter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="35sp"
-            android:backgroundTint="@color/white_grey"
-            android:text="Удалить последний счётчик" />
+            android:background="@drawable/button_layout"
+            android:textColor="@color/white"
+            android:text="@string/del_last_counter" />
 
     </LinearLayout>
 
@@ -57,34 +61,37 @@
         android:layout_width="wrap_content"
         android:layout_height="450sp"
         android:layout_centerInParent="true"
-        android:background="@color/white_grey">
+        android:background="@drawable/calendar_layout">
 
         <Button
             android:id="@+id/close"
-            android:layout_width="wrap_content"
+            android:layout_width="140sp"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|bottom"
+            android:layout_gravity="start|bottom"
             android:layout_margin="10sp"
-            android:backgroundTint="@color/grey"
-            android:text=" Закрыть " />
+            android:background="@drawable/button_layout"
+            android:text="@string/close"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/dateFromText"
-            android:layout_width="wrap_content"
+            android:layout_width="160sp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|bottom"
             android:layout_margin="75sp"
-            android:backgroundTint="@color/grey"
-            android:text="Ввести дату" />
+            android:background="@drawable/button_layout"
+            android:text="@string/new_date"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/submit"
-            android:layout_width="wrap_content"
+            android:layout_width="140sp"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|bottom"
+            android:layout_gravity="end|bottom"
             android:layout_margin="10sp"
-            android:backgroundTint="@color/grey"
-            android:text="Сохранить" />
+            android:background="@drawable/button_layout"
+            android:text="@string/save"
+            android:textColor="@color/white" />
 
     </CalendarView>
 

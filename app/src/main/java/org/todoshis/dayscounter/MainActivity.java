@@ -62,7 +62,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // counter с данными из бд
         if(cursor.getCount() != 0){
             uploadMainScreen(getDaysFromMillis(getDifference(counter.getStartDate())), counter.getPhrase());
         }
@@ -117,28 +116,23 @@ public class MainActivity extends BaseActivity {
     }
 
     private String daysShowMode(int days){
-        StringBuilder daysString = new StringBuilder("");
+        String daysString;;
         if (counter.getDaysShowMode() == 1){
-            daysString.append(days);
+            daysString = String.valueOf(days);
         }
         else{
             int years = days / 365;
             int weeks = (days % 365) / 7;
             int remainingDays = (days % 365) % 7;
 
-            daysString.append(years);
-            daysString.append(" ");
-            daysString.append(checkEnding(years, getString(R.string.year), getString(R.string.year_different_ending), getString(R.string.years)));
-            daysString.append(" ");
-            daysString.append(weeks);
-            daysString.append(" ");
-            daysString.append(checkEnding(weeks, getString(R.string.week), getString(R.string.week_different_ending), getString(R.string.weeks)));
-            daysString.append(" ");
-            daysString.append(remainingDays);
-            daysString.append(" ");
-            daysString.append(checkEnding(remainingDays, getString(R.string.day), getString(R.string.day_different_ending), getString(R.string.days)));
+            daysString = years + " " + checkEnding(years, getString(R.string.year),
+                    getString(R.string.year_different_ending), getString(R.string.years)) +  " " +
+                    weeks + " " + checkEnding(weeks, getString(R.string.week),
+                    getString(R.string.week_different_ending), getString(R.string.weeks)) + " " +
+                    remainingDays + " " + checkEnding(remainingDays, getString(R.string.day),
+                    getString(R.string.day_different_ending), getString(R.string.days));
         }
-        return daysString.toString();
+        return daysString;
     }
 
     private void picsShowMode(){

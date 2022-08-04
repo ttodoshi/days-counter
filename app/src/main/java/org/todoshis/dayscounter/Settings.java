@@ -146,7 +146,7 @@ public class Settings extends BaseActivity {
     // alert для изменения даты начала отсчёта текстом
     private void showDateAlert(){
         final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
-        AlertDialog.Builder builder = createAlertDialogWithEditText(getString(R.string.enter_date), customLayout);
+        AlertDialog.Builder builder = createAlertDialogWithEditText(getString(R.string.new_date_text), customLayout);
         builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
