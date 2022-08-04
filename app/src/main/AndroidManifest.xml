@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.myapplication">
+    package="org.todoshis.dayscounter">
 
     <application
         android:allowBackup="true"
@@ -14,10 +14,10 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
-            android:name="com.example.myapplication.Settings"
+            android:name="org.todoshis.dayscounter.Settings"
             android:exported="false" />
         <activity
-            android:name="com.example.myapplication.MainActivity"
+            android:name="org.todoshis.dayscounter.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package org.todoshis.dayscounter;
 
 import android.content.Context;
 import android.view.GestureDetector;

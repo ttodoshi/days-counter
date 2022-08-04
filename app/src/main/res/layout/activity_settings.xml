@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/grey"
     android:orientation="vertical"
-    tools:context=".Settings">
+    tools:context="org.todoshis.dayscounter.Settings">
 
     <LinearLayout
         android:layout_width="wrap_content"

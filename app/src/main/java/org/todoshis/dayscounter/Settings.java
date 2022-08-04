@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package org.todoshis.dayscounter;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -50,7 +50,12 @@ public class Settings extends BaseActivity {
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                calendar.setVisibility(VISIBLE);
+                if (cursor.getCount() != 0) {
+                    calendar.setVisibility(VISIBLE);
+                }
+                else {
+                    ShowMessage.showMessage(Settings.this, getString(R.string.no_counters));
+                }
             }
         });
 
@@ -118,19 +123,24 @@ public class Settings extends BaseActivity {
 
     // alert для изменения фразы
     private void showPhraseAlert(){
-        final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
-        AlertDialog.Builder builder = createAlertDialogWithEditText(getString(R.string.new_phrase), customLayout);
-        builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                EditText editText = customLayout.findViewById(R.id.editText);
-                String newPhrase = editText.getText().toString();
-                counter.setPhrase(newPhrase);
-                dialogInterface.cancel();
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
+        if (cursor.getCount() != 0) {
+            final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
+            AlertDialog.Builder builder = createAlertDialogWithEditText(getString(R.string.new_phrase), customLayout);
+            builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    EditText editText = customLayout.findViewById(R.id.editText);
+                    String newPhrase = editText.getText().toString();
+                    counter.setPhrase(newPhrase);
+                    dialogInterface.cancel();
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+        else {
+            ShowMessage.showMessage(Settings.this, getString(R.string.no_counters));
+        }
     }
 
     // alert для изменения даты начала отсчёта текстом

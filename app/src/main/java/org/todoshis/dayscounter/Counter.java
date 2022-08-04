@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package org.todoshis.dayscounter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -68,10 +68,8 @@ public class Counter {
         } else if (newPhrase.length() > 100) {
             ShowMessage.showMessage(context, context.getString(R.string.too_long));
         } else {
-            if (cursor.getCount() != 0) {
-                this.phrase = newPhrase;
-                db.editCounter(this.startDate, this.daysShowMode, this.phrase);
-            }
+            this.phrase = newPhrase;
+            db.editCounter(this.startDate, this.daysShowMode, this.phrase);
         }
     }
 }

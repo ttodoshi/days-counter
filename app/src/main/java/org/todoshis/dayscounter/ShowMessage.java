@@ -1,5 +1,6 @@
-package com.example.myapplication;
+package org.todoshis.dayscounter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -12,6 +13,7 @@ class ShowMessage {
     }
 
     private static class AsyncShow extends AsyncTask {
+        @SuppressLint("StaticFieldLeak")
         Context context;
         String text;
         AsyncShow (Context context, String text){
@@ -23,7 +25,7 @@ class ShowMessage {
             Handler handler =  new Handler(context.getMainLooper());
             handler.post( new Runnable(){
                 public void run(){
-                    Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
                 }
             });
             return null;

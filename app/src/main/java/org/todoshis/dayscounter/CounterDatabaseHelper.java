@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package org.todoshis.dayscounter;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -70,6 +70,9 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
     }
     public void delLastCounter(){
         Cursor cursor = readAllData();
+        if (cursor.getCount() == 0){
+            ShowMessage.showMessage(context, context.getString(R.string.no_counters));
+        }
         if (cursor.getCount() == 1){
             ShowMessage.showMessage(context, context.getString(R.string.last_counter));
         }

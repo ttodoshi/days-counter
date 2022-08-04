@@ -16,6 +16,7 @@
     <!--  errors  -->
     <string name="invalid_format">Неверный формат</string>
     <string name="too_long">Слишком длинная надпись</string>
+    <string name="no_counters">У вас нету счетчиков</string>
     <string name="last_counter">У вас остался последний счетчик</string>
     <string name="counter_didnt_add">Счетчик не был добавлен</string>
     <string name="couldnt_change_counter">Не удалось изменить счетчик</string>
