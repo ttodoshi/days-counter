@@ -77,7 +77,8 @@ public class Settings extends BaseActivity {
                 submitDate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        saveStartDate(new Date(year-1900, month, dayOfMonth));
+                        counter.setStartDate(new Date(year-1900, month, dayOfMonth));
+                        calendar.setVisibility(INVISIBLE);
                     }
                 });
             }
@@ -142,9 +143,10 @@ public class Settings extends BaseActivity {
                 EditText editText = customLayout.findViewById(R.id.editText);
                 String startDate = editText.getText().toString();
                 try {
-                    saveStartDate(sdf.parse(startDate));
+                    counter.setStartDate(sdf.parse(startDate));
+                    calendar.setVisibility(INVISIBLE);
                 } catch (ParseException e) {
-                    showMessage("Неверный формат");
+                    ShowMessage.showMessage(Settings.this, "Неверный формат");
                 }
                 dialogInterface.cancel();
             }
@@ -153,37 +155,12 @@ public class Settings extends BaseActivity {
         alert.show();
     }
 
-    private void saveStartDate(Date selectedDate){
-        if (getDifference(selectedDate) < 0){
-            showMessage("Из будущего?");
-        }
-        else{
-            counter.setStartDate(sdf.format(selectedDate));
-        }
-        calendar.setVisibility(INVISIBLE);
-    }
-
     private void addCounter(){
-        int numOfCounters = sPref.getInt(StoredData.NUMBER_OF_COUNTERS.name(), 1);
-        editor.putInt(StoredData.NUMBER_OF_COUNTERS.name(), numOfCounters + 1);
-        editor.apply();
-        showMessage("Новый счётчик создан");
+        db.addCounter(sdf.format(today), 1, "");
     }
     private void delLastCounter(){
-        int numOfCounters = sPref.getInt(StoredData.NUMBER_OF_COUNTERS.name(), 1);
-        if (numOfCounters > 1){
-            editor.putInt(StoredData.NUMBER_OF_COUNTERS.name(), numOfCounters - 1);
-            if (currentCounter == numOfCounters){
-                editor.putInt(StoredData.CURRENT_COUNTER.name(), numOfCounters - 1);
-            }
-            editor.remove(new StringBuilder(StoredData.START_DAY.name()).append(numOfCounters).toString());
-            editor.remove(new StringBuilder(StoredData.DAYS_SHOW_MODE.name()).append(numOfCounters).toString());
-            editor.remove(new StringBuilder(StoredData.PHRASE.name()).append(numOfCounters).toString());
-            editor.apply();
-            showMessage("Последний счётчик удалён");
-        }
-        else{
-            showMessage("У вас только 1 счётчик");
-        }
+        db.delLastCounter();
+        editor.putInt("CURRENT_COUNTER", 1);
+        editor.apply();
     }
 }

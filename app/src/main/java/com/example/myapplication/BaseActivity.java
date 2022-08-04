@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
@@ -19,8 +20,11 @@ public class BaseActivity extends AppCompatActivity {
     @SuppressLint("SimpleDateFormat")
     protected SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
-    protected int currentCounter;
+    public static int currentCounter;
     protected Counter counter;
+
+    CounterDatabaseHelper db;
+    Cursor cursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,25 +36,29 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        currentCounter = sPref.getInt(StoredData.CURRENT_COUNTER.name(), 1);
-        // counter с данными из бд
-        counter = new Counter(sPref.getString(new StringBuilder(StoredData.START_DAY.name()).append(currentCounter).toString(), sdf.format(today)), sPref.getBoolean(new StringBuilder(StoredData.DAYS_SHOW_MODE.name()).append(currentCounter).toString(), true), sPref.getString(new StringBuilder(StoredData.PHRASE.name()).append(currentCounter).toString(), ""));
+        db = new CounterDatabaseHelper(this);
+        cursor = db.readAllData();
+        currentCounter = sPref.getInt("CURRENT_COUNTER", 1);
+
+        if(cursor.getCount() != 0){
+            cursor.moveToFirst();
+            do { if (cursor.getInt(0) == currentCounter){
+                break;
+            }} while (cursor.moveToNext());
+            counter = new Counter(cursor.getString(1), cursor.getInt(2), cursor.getString(3));
+        }
     }
 
     protected long getDifference(Date selectedDate){
         return today.getTime() - selectedDate.getTime();
     }
 
-    protected void showMessage(String text){
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-    }
-
     public class Counter {
         private String startDate;
-        private boolean daysShowMode;
+        private int daysShowMode;
         private String phrase;
 
-        public Counter(String startDate, boolean daysShowMode, String phrase) {
+        public Counter(String startDate, int daysShowMode, String phrase) {
             this.startDate = startDate;
             this.daysShowMode = daysShowMode;
             this.phrase = phrase;
@@ -64,22 +72,27 @@ public class BaseActivity extends AppCompatActivity {
                 return null;
             }
         }
-        public void setStartDate(String newStartDate) {
-            editor.putString(new StringBuilder(StoredData.START_DAY.name()).append(currentCounter).toString(), newStartDate);
-            editor.apply();
-            this.startDate = newStartDate;
+        public void setStartDate(Date newStartDate) {
+            if(cursor.getCount() != 0){
+                if (getDifference(newStartDate) > 0){
+                    this.startDate = sdf.format(newStartDate);
+                    db.editCounter(this.startDate, this.daysShowMode, this.phrase);
+                }
+                else{
+                    ShowMessage.showMessage(BaseActivity.this, "Не удалось сохранить дату");
+                }
+            }
         }
 
-        // true - по умолчанию, только количество дней
-        // false - количество лет, недель и дней
-        public boolean getDaysShowMode() {
+        // 1 - только количество дней
+        // 0 - количество лет, недель и дней
+        public int getDaysShowMode() {
             return daysShowMode;
         }
         public void setDaysShowMode() {
-            boolean newDaysShowMode = daysShowMode ? false : true;
-            editor.putBoolean(new StringBuilder(StoredData.DAYS_SHOW_MODE.name()).append(currentCounter).toString(), newDaysShowMode);
-            editor.apply();
-            this.daysShowMode = newDaysShowMode;
+            this.daysShowMode = (daysShowMode == 1) ? 0 : 1;
+            db.editCounter(this.startDate, this.daysShowMode, this.phrase);
+            recreate();
         }
 
         public String getPhrase() {
@@ -87,15 +100,16 @@ public class BaseActivity extends AppCompatActivity {
         }
         public void setPhrase(String newPhrase) {
             if (newPhrase.trim().length() == 0){
-                showMessage("Неверный формат");
+                ShowMessage.showMessage(BaseActivity.this, "Неверный формат");
             }
             else if (newPhrase.length() > 100){
-                showMessage("Слишком длинная надпись");
+                ShowMessage.showMessage(BaseActivity.this, "Слишком длинная надпись");
             }
             else {
-                editor.putString(new StringBuilder(StoredData.PHRASE.name()).append(currentCounter).toString(), newPhrase);
-                editor.apply();
-                this.phrase = newPhrase;
+                if(cursor.getCount() != 0){
+                    this.phrase = newPhrase;
+                    db.editCounter(this.startDate, this.daysShowMode, this.phrase);
+                }
             }
         }
     }

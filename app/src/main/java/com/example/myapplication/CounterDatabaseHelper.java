@@ -1,0 +1,101 @@
+package com.example.myapplication;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import androidx.annotation.Nullable;
+
+public class CounterDatabaseHelper extends SQLiteOpenHelper {
+
+    private Context context;
+    private static final String DATABASE_NAME = "Counters.db";
+    private static final int DATABASE_VERSION = 2;
+
+    private static final String TABLE_NAME = "counters";
+    private static final String COLUMN_ID = "_id";
+    private static final String COLUMN_START = "start_date";
+    private static final String COLUMN_SHOWMODE = "days_show_mode";
+    private static final String COLUMN_PHRASE = "phrase";
+
+
+    public CounterDatabaseHelper(@Nullable Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        String query = "CREATE TABLE " + TABLE_NAME +
+                " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_START + " TEXT, " +
+                COLUMN_SHOWMODE + " INTEGER, " +
+                COLUMN_PHRASE + " TEXT);";
+        db.execSQL(query);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        onCreate(db);
+    }
+
+    public void editCounter(String startDate, int daysShowMode, String phrase){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_START, startDate);
+        cv.put(COLUMN_SHOWMODE, daysShowMode);
+        cv.put(COLUMN_PHRASE, phrase);
+        long res = db.update(TABLE_NAME, cv, "_id=?", new String[]{String.valueOf(BaseActivity.currentCounter)});
+        if (res == -1){
+            ShowMessage.showMessage(context, "Не удалось изменить счетчик");
+        }
+    }
+
+    public void addCounter(String startDate, Integer daysShowMode, String phrase){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_START, startDate);
+        cv.put(COLUMN_SHOWMODE, daysShowMode);
+        cv.put(COLUMN_PHRASE, phrase);
+        long res = db.insert(TABLE_NAME, null, cv);
+        if (res == -1){
+            ShowMessage.showMessage(context, "Счетчик не был добавлен");
+        }
+        else{
+            ShowMessage.showMessage(context, "Создан новый счетчик");
+        }
+    }
+    public void delLastCounter(){
+        Cursor cursor = readAllData();
+        if (cursor.getCount() == 1){
+            ShowMessage.showMessage(context, "У вас остался последний счетчик");
+        }
+        else{
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.delete(TABLE_NAME, "_id=?", new String[]{String.valueOf(getLastID())});
+            ShowMessage.showMessage(context, "Последний счетчик был удален");
+        }
+    }
+
+    public int getLastID()
+    {
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT MAX("+COLUMN_ID+") FROM "+TABLE_NAME, null);
+        int maxId = (cursor.moveToFirst() ? cursor.getInt(0) : 0);
+        return maxId;
+    }
+
+    Cursor readAllData(){
+        String query = "SELECT * FROM " + TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if (db != null){
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
+}

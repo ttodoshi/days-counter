@@ -25,6 +25,10 @@ public class MainActivity extends BaseActivity {
         daysPhrase = findViewById(R.id.phrase);
         round = findViewById(R.id.roundOnBackground);
         rectangle = findViewById(R.id.rectangleOnBackground);
+
+        round.setVisibility(INVISIBLE);
+        rectangle.setVisibility(INVISIBLE);
+
         RelativeLayout mainActivity = findViewById(R.id.background);
 
         // жесты
@@ -35,16 +39,21 @@ public class MainActivity extends BaseActivity {
             }
             @Override
             public void onSwipeRight() {
-                counter.setDaysShowMode();
-                recreate();
+                if(cursor.getCount() != 0){
+                    counter.setDaysShowMode();
+                }
             }
             @Override
             public void onSwipeUp() {
-                goToNextCounter();
+                if(cursor.getCount() != 0){
+                    goToNextCounter();
+                }
             }
             @Override
             public void onSwipeDown() {
-                goToPreviousCounter();
+                if(cursor.getCount() != 0){
+                    goToPreviousCounter();
+                }
             }
         });
     }
@@ -52,7 +61,16 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        uploadMainScreen(getDaysFromMillis(getDifference(counter.getStartDate())), counter.getPhrase());
+        // counter с данными из бд
+        if(cursor.getCount() != 0){
+            uploadMainScreen(getDaysFromMillis(getDifference(counter.getStartDate())), counter.getPhrase());
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        recreate();
     }
 
     // переход на activity настроек
@@ -76,7 +94,7 @@ public class MainActivity extends BaseActivity {
 
     private String phraseShow(int days, String phrase){
         StringBuilder text = new StringBuilder("");
-        if(counter.getDaysShowMode()){
+        if(counter.getDaysShowMode() == 1){
             text.append(checkEnding(days, getString(R.string.day), getString(R.string.day_different_ending), getString(R.string.days)));
             text.append(" ");
         }
@@ -99,7 +117,7 @@ public class MainActivity extends BaseActivity {
 
     private String daysShowMode(int days){
         StringBuilder daysString = new StringBuilder("");
-        if (counter.getDaysShowMode()){
+        if (counter.getDaysShowMode() == 1){
             daysString.append(days);
         }
         else{
@@ -123,7 +141,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void picsShowMode(){
-        if (counter.getDaysShowMode()){
+        if (counter.getDaysShowMode() == 1){
             rectangle.setVisibility(INVISIBLE);
             round.setVisibility(VISIBLE);
         }
@@ -135,14 +153,24 @@ public class MainActivity extends BaseActivity {
 
     private void goToPreviousCounter(){
         if (currentCounter > 1){
-            editor.putInt(StoredData.CURRENT_COUNTER.name(), currentCounter - 1);
+            cursor.moveToFirst();
+            do { if (cursor.getInt(0) == currentCounter){
+                break;
+            }} while (cursor.moveToNext());
+            cursor.move(-1);
+            editor.putInt("CURRENT_COUNTER", cursor.getInt(0));
             editor.apply();
             recreate();
         }
     }
     private void goToNextCounter(){
-        if (currentCounter < sPref.getInt(StoredData.NUMBER_OF_COUNTERS.name(), 1)){
-            editor.putInt(StoredData.CURRENT_COUNTER.name(), currentCounter + 1);
+        cursor.moveToLast();
+        if (cursor.getInt(0) != currentCounter){
+            do { if (cursor.getInt(0) == currentCounter){
+                break;
+            }} while (cursor.move(-1));
+            cursor.move(1);
+            editor.putInt("CURRENT_COUNTER", cursor.getInt(0));
             editor.apply();
             recreate();
         }
