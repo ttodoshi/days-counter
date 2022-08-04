@@ -119,8 +119,8 @@ public class Settings extends BaseActivity {
     // alert для изменения фразы
     private void showPhraseAlert(){
         final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
-        AlertDialog.Builder builder = createAlertDialogWithEditText("Выберите новую надпись", customLayout);
-        builder.setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
+        AlertDialog.Builder builder = createAlertDialogWithEditText(getString(R.string.new_phrase), customLayout);
+        builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 EditText editText = customLayout.findViewById(R.id.editText);
@@ -136,8 +136,8 @@ public class Settings extends BaseActivity {
     // alert для изменения даты начала отсчёта текстом
     private void showDateAlert(){
         final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
-        AlertDialog.Builder builder = createAlertDialogWithEditText("Введите дату в формате дд.мм.гггг", customLayout);
-        builder.setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
+        AlertDialog.Builder builder = createAlertDialogWithEditText(getString(R.string.enter_date), customLayout);
+        builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 EditText editText = customLayout.findViewById(R.id.editText);
@@ -146,7 +146,7 @@ public class Settings extends BaseActivity {
                     counter.setStartDate(sdf.parse(startDate));
                     calendar.setVisibility(INVISIBLE);
                 } catch (ParseException e) {
-                    ShowMessage.showMessage(Settings.this, "Неверный формат");
+                    ShowMessage.showMessage(Settings.this, getString(R.string.invalid_format));
                 }
                 dialogInterface.cancel();
             }

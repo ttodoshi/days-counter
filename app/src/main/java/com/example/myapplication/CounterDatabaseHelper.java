@@ -12,7 +12,7 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
 
     private Context context;
     private static final String DATABASE_NAME = "Counters.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 1;
 
     private static final String TABLE_NAME = "counters";
     private static final String COLUMN_ID = "_id";
@@ -50,7 +50,7 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_PHRASE, phrase);
         long res = db.update(TABLE_NAME, cv, "_id=?", new String[]{String.valueOf(BaseActivity.currentCounter)});
         if (res == -1){
-            ShowMessage.showMessage(context, "Не удалось изменить счетчик");
+            ShowMessage.showMessage(context, context.getString(R.string.couldnt_change_counter));
         }
     }
 
@@ -62,21 +62,21 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_PHRASE, phrase);
         long res = db.insert(TABLE_NAME, null, cv);
         if (res == -1){
-            ShowMessage.showMessage(context, "Счетчик не был добавлен");
+            ShowMessage.showMessage(context, context.getString(R.string.counter_didnt_add));
         }
         else{
-            ShowMessage.showMessage(context, "Создан новый счетчик");
+            ShowMessage.showMessage(context, context.getString(R.string.new_counter));
         }
     }
     public void delLastCounter(){
         Cursor cursor = readAllData();
         if (cursor.getCount() == 1){
-            ShowMessage.showMessage(context, "У вас остался последний счетчик");
+            ShowMessage.showMessage(context, context.getString(R.string.last_counter));
         }
         else{
             SQLiteDatabase db = this.getWritableDatabase();
             db.delete(TABLE_NAME, "_id=?", new String[]{String.valueOf(getLastID())});
-            ShowMessage.showMessage(context, "Последний счетчик был удален");
+            ShowMessage.showMessage(context, context.getString(R.string.del_last_counter));
         }
     }
 

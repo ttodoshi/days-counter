@@ -42,7 +42,7 @@ public class Counter {
                 this.startDate = BaseActivity.sdf.format(newStartDate);
                 db.editCounter(this.startDate, this.daysShowMode, this.phrase);
             } else {
-                ShowMessage.showMessage(context, "Не удалось сохранить дату");
+                ShowMessage.showMessage(context, context.getString(R.string.couldnt_change_date));
             }
         }
     }
@@ -64,9 +64,9 @@ public class Counter {
 
     public void setPhrase(String newPhrase) {
         if (newPhrase.trim().length() == 0) {
-            ShowMessage.showMessage(context, "Неверный формат");
+            ShowMessage.showMessage(context, context.getString(R.string.invalid_format));
         } else if (newPhrase.length() > 100) {
-            ShowMessage.showMessage(context, "Слишком длинная надпись");
+            ShowMessage.showMessage(context, context.getString(R.string.too_long));
         } else {
             if (cursor.getCount() != 0) {
                 this.phrase = newPhrase;
