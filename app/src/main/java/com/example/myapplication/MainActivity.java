@@ -41,6 +41,7 @@ public class MainActivity extends BaseActivity {
             public void onSwipeRight() {
                 if(cursor.getCount() != 0){
                     counter.setDaysShowMode();
+                    recreate();
                 }
             }
             @Override
