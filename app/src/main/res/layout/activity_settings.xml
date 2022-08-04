@@ -9,52 +9,57 @@
     android:orientation="vertical"
     tools:context="org.todoshis.dayscounter.Settings">
 
-    <LinearLayout
-        android:layout_width="300sp"
+    <ScrollView
+        android:id="@+id/scrollContainer"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:orientation="vertical">
+        android:layout_centerInParent="true">
 
-        <Button
-            android:id="@+id/addCounter"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="300sp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="35sp"
-            android:background="@drawable/button_layout"
-            android:textColor="@color/white"
-            android:text="@string/create_counter" />
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/changeStartDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="35sp"
-            android:layout_marginBottom="35sp"
-            android:background="@drawable/button_layout"
-            android:textColor="@color/white"
-            android:text="@string/change_date" />
+            <Button
+                android:id="@+id/addCounter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="35sp"
+                android:background="@drawable/button_layout"
+                android:textColor="@color/white"
+                android:text="@string/create_counter" />
 
-        <Button
-            android:id="@+id/changePhrase"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="35sp"
-            android:layout_marginBottom="35sp"
-            android:background="@drawable/button_layout"
-            android:textColor="@color/white"
-            android:text="@string/change_phrase" />
+            <Button
+                android:id="@+id/changeStartDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35sp"
+                android:layout_marginBottom="35sp"
+                android:background="@drawable/button_layout"
+                android:textColor="@color/white"
+                android:text="@string/change_date" />
 
-        <Button
-            android:id="@+id/delLastCounter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="35sp"
-            android:background="@drawable/button_layout"
-            android:textColor="@color/white"
-            android:text="@string/del_last_counter" />
+            <Button
+                android:id="@+id/changePhrase"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35sp"
+                android:layout_marginBottom="35sp"
+                android:background="@drawable/button_layout"
+                android:textColor="@color/white"
+                android:text="@string/change_phrase" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/delLastCounter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35sp"
+                android:background="@drawable/button_layout"
+                android:textColor="@color/white"
+                android:text="@string/del_last_counter" />
+
+        </LinearLayout>
+    </ScrollView>
 
     <CalendarView
         android:id="@+id/calendar"

@@ -29,7 +29,7 @@ public class MainActivity extends BaseActivity {
         round.setVisibility(INVISIBLE);
         rectangle.setVisibility(INVISIBLE);
 
-        RelativeLayout mainActivity = findViewById(R.id.background);
+        RelativeLayout mainActivity = findViewById(R.id.backgroundCounter);
 
         // жесты
         mainActivity.setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
@@ -115,15 +115,15 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private String daysShowMode(int days){
+    private String daysShowMode(int daysCount){
         String daysString;;
         if (counter.getDaysShowMode() == 1){
-            daysString = String.valueOf(days);
+            daysString = String.valueOf(daysCount);
         }
         else{
-            int years = days / 365;
-            int weeks = (days % 365) / 7;
-            int remainingDays = (days % 365) % 7;
+            int years = daysCount / 365;
+            int weeks = (daysCount % 365) / 7;
+            int remainingDays = (daysCount % 365) % 7;
 
             daysString = years + " " + checkEnding(years, getString(R.string.year),
                     getString(R.string.year_different_ending), getString(R.string.years)) +  " " +
@@ -131,6 +131,7 @@ public class MainActivity extends BaseActivity {
                     getString(R.string.week_different_ending), getString(R.string.weeks)) + " " +
                     remainingDays + " " + checkEnding(remainingDays, getString(R.string.day),
                     getString(R.string.day_different_ending), getString(R.string.days));
+            days.setTextSize(20);
         }
         return daysString;
     }
