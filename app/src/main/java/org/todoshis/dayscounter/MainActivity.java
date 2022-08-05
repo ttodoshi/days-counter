@@ -39,10 +39,7 @@ public class MainActivity extends BaseActivity {
             }
             @Override
             public void onSwipeRight() {
-                if (!db.isEmpty()){
-                    counter.setDaysShowMode();
-                    recreate();
-                }
+                changeDaysShowMode();
             }
             @Override
             public void onSwipeUp() {
@@ -77,7 +74,18 @@ public class MainActivity extends BaseActivity {
     private void goToSettings(){
         Intent intent = new Intent(MainActivity.this, Settings.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+        finish();
+    }
+
+    private void changeDaysShowMode(){
+        if (!db.isEmpty()){
+            counter.setDaysShowMode();
+            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+            finish();
+        }
     }
 
     // отображение дней, надписи и картинок на главном экране
@@ -150,13 +158,19 @@ public class MainActivity extends BaseActivity {
     private void goToPreviousCounter(){
         int res = db.changeCurrent(-1);
         if (res == 1){
-            recreate();
+            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.out_to_bottom, R.anim.in_from_top);
+            finish();
         }
     }
     private void goToNextCounter(){
         int res = db.changeCurrent(1);
         if (res == 1){
-            recreate();
+            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
+            finish();
         }
     }
 }
