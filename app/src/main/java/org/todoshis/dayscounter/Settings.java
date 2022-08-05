@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -19,8 +20,7 @@ import static android.view.View.INVISIBLE;
 
 public class Settings extends BaseActivity {
 
-    private CalendarView calendar;
-    private Button submitDate;
+    AlertDialog alert;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -31,11 +31,6 @@ public class Settings extends BaseActivity {
         RelativeLayout settings = findViewById(R.id.settings);
         Button changePhraseButton = findViewById(R.id.changePhrase);
         Button dateButton = findViewById(R.id.changeStartDate);
-        calendar = findViewById(R.id.calendar);
-        calendar.setVisibility(INVISIBLE);
-        Button dateFromText = findViewById(R.id.dateFromText);
-        Button closeCalendar = findViewById(R.id.close);
-        submitDate = findViewById(R.id.submit);
         Button addCounter = findViewById(R.id.addCounter);
         Button delLastCounter = findViewById(R.id.delLastCounter);
 
@@ -55,38 +50,8 @@ public class Settings extends BaseActivity {
                     ShowMessage.showMessage(Settings.this, getString(R.string.no_counters));
                 }
                 else {
-                    calendar.setVisibility(VISIBLE);
+                    showCalendarAlert();
                 }
-            }
-        });
-
-        // ввести дату текстом
-        dateFromText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDateAlert();
-            }
-        });
-
-        // закрыть календарь
-        closeCalendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                calendar.setVisibility(INVISIBLE);
-            }
-        });
-
-        // сохранение даты, выбранной в календаре по нажатию кнопки
-        calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                submitDate.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        counter.setStartDate(new Date(year-1900, month, dayOfMonth));
-                        calendar.setVisibility(INVISIBLE);
-                    }
-                });
             }
         });
 
@@ -120,6 +85,47 @@ public class Settings extends BaseActivity {
         finish();
     }
 
+    private void showCalendarAlert(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(Settings.this);
+        View view = getLayoutInflater().inflate(R.layout.calendar_layour, null);
+        CalendarView calendar = view.findViewById(R.id.calendar);
+        Button dateFromText = view.findViewById(R.id.dateFromText);
+        Button closeCalendar = view.findViewById(R.id.close);
+        Button submitDate = view.findViewById(R.id.submit);
+
+        closeCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.cancel();
+            }
+        });
+        dateFromText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alert.cancel();
+                showDateAlert();
+            }
+        });
+        calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                submitDate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        counter.setStartDate(new Date(year-1900, month, dayOfMonth));
+                        alert.cancel();
+                    }
+                });
+            }
+        });
+
+        builder.setView(view)
+                .setCancelable(false);
+
+        alert = builder.create();
+        alert.show();
+    }
+
     // создание AlertDialog с вводом текста
     private AlertDialog.Builder createAlertDialogWithEditText(String title, View customLayout){
         AlertDialog.Builder builder = new AlertDialog.Builder(Settings.this);
@@ -146,7 +152,7 @@ public class Settings extends BaseActivity {
                     dialogInterface.cancel();
                 }
             });
-            AlertDialog alert = builder.create();
+            alert = builder.create();
             alert.show();
         }
     }
@@ -162,14 +168,13 @@ public class Settings extends BaseActivity {
                 String startDate = editText.getText().toString();
                 try {
                     counter.setStartDate(sdf.parse(startDate));
-                    calendar.setVisibility(INVISIBLE);
                 } catch (ParseException e) {
                     ShowMessage.showMessage(Settings.this, getString(R.string.invalid_format));
                 }
                 dialogInterface.cancel();
             }
         });
-        AlertDialog alert = builder.create();
+        alert = builder.create();
         alert.show();
     }
 

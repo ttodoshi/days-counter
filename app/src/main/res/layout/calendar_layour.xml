@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <CalendarView
+        android:id="@+id/calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="450sp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/calendar_layout">
+
+        <Button
+            android:id="@+id/close"
+            android:layout_width="140sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|bottom"
+            android:layout_margin="10sp"
+            android:background="@drawable/button_layout"
+            android:text="@string/close"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/dateFromText"
+            android:layout_width="160sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_margin="75sp"
+            android:background="@drawable/button_layout"
+            android:text="@string/new_date"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/submit"
+            android:layout_width="140sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="10sp"
+            android:background="@drawable/button_layout"
+            android:text="@string/save"
+            android:textColor="@color/white" />
+
+    </CalendarView>
+
+</RelativeLayout>
