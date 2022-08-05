@@ -38,7 +38,7 @@ public class BaseActivity extends AppCompatActivity {
                     break;
                 }
             } while (cursor.moveToNext());
-            counter = new Counter(BaseActivity.this, 1, cursor.getString(2), cursor.getInt(3), cursor.getString(4));
+            counter = new Counter(BaseActivity.this, cursor.getString(2), cursor.getInt(3), cursor.getString(4));
         }
     }
 
