@@ -148,26 +148,30 @@ public class MainActivity extends BaseActivity {
     }
 
     private void goToPreviousCounter(){
-        if (currentCounter > 1){
-            cursor.moveToFirst();
-            do { if (cursor.getInt(0) == currentCounter){
-                break;
-            }} while (cursor.moveToNext());
-            cursor.move(-1);
-            editor.putInt("CURRENT_COUNTER", cursor.getInt(0));
-            editor.apply();
+        cursor.moveToFirst();
+        int firstId = cursor.getInt(0);
+        do { if (cursor.getInt(1) == 1){
+            break;
+        }} while (cursor.moveToNext());
+        int currentId = cursor.getInt(0);
+        if (currentId != firstId){
+            cursor.moveToPrevious();
+            int previousId = cursor.getInt(0);
+            db.changeCurrent(currentId, previousId, -1);
             recreate();
         }
     }
     private void goToNextCounter(){
         cursor.moveToLast();
-        if (cursor.getInt(0) != currentCounter){
-            do { if (cursor.getInt(0) == currentCounter){
-                break;
-            }} while (cursor.move(-1));
-            cursor.move(1);
-            editor.putInt("CURRENT_COUNTER", cursor.getInt(0));
-            editor.apply();
+        int lastId = cursor.getInt(0);
+        do { if (cursor.getInt(1) == 1){
+            break;
+        }} while (cursor.moveToPrevious());
+        int currentId = cursor.getInt(0);
+        if (currentId != lastId){
+            cursor.moveToNext();
+            int nextId = cursor.getInt(0);
+            db.changeCurrent(currentId, nextId, 1);
             recreate();
         }
     }

@@ -170,7 +170,5 @@ public class Settings extends BaseActivity {
     }
     private void delLastCounter(){
         db.delLastCounter();
-        editor.putInt("CURRENT_COUNTER", 1);
-        editor.apply();
     }
 }

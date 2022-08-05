@@ -1,11 +1,11 @@
 package org.todoshis.dayscounter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.widget.Toast;
 
+@SuppressWarnings("ALL")
 class ShowMessage {
     public static void showMessage(Context context, String text){
         AsyncShow as = new AsyncShow(context, text);
@@ -13,7 +13,6 @@ class ShowMessage {
     }
 
     private static class AsyncShow extends AsyncTask {
-        @SuppressLint("StaticFieldLeak")
         Context context;
         String text;
         AsyncShow (Context context, String text){

@@ -9,6 +9,7 @@ import java.util.Date;
 public class Counter {
     private Context context;
 
+    private final int current;
     private String startDate;
     private int daysShowMode;
     private String phrase;
@@ -16,15 +17,20 @@ public class Counter {
     CounterDatabaseHelper db;
     Cursor cursor;
 
-    public Counter(Context context, String startDate, int daysShowMode, String phrase) {
+    public Counter(Context context, int current, String startDate, int daysShowMode, String phrase) {
         this.context = context;
 
+        this.current = current;
         this.startDate = startDate;
         this.daysShowMode = daysShowMode;
         this.phrase = phrase;
 
         db = new CounterDatabaseHelper(context);
         cursor = db.readAllData();
+    }
+
+    public int getCurrent() {
+        return current;
     }
 
     public Date getStartDate() {

@@ -11,13 +11,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class BaseActivity extends AppCompatActivity {
-    protected SharedPreferences sPref;
-    protected SharedPreferences.Editor editor;
     public static Date today = new Date();
     @SuppressLint("SimpleDateFormat")
     public static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
-    public static int currentCounter;
     protected Counter counter;
 
     CounterDatabaseHelper db;
@@ -26,8 +23,6 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sPref = PreferenceManager.getDefaultSharedPreferences(this);
-        editor = sPref.edit();
     }
 
     @Override
@@ -35,16 +30,15 @@ public class BaseActivity extends AppCompatActivity {
         super.onResume();
         db = new CounterDatabaseHelper(this);
         cursor = db.readAllData();
-        currentCounter = sPref.getInt("CURRENT_COUNTER", 1);
 
         if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             do {
-                if (cursor.getInt(0) == currentCounter) {
+                if (cursor.getInt(1) == 1) {
                     break;
                 }
             } while (cursor.moveToNext());
-            counter = new Counter(BaseActivity.this, cursor.getString(1), cursor.getInt(2), cursor.getString(3));
+            counter = new Counter(BaseActivity.this, 1, cursor.getString(2), cursor.getInt(3), cursor.getString(4));
         }
     }
 

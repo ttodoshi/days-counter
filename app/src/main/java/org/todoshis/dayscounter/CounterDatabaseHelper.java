@@ -16,6 +16,7 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TABLE_NAME = "counters";
     private static final String COLUMN_ID = "_id";
+    private static final String COLUMN_CURRENT = "current";
     private static final String COLUMN_START = "start_date";
     private static final String COLUMN_SHOWMODE = "days_show_mode";
     private static final String COLUMN_PHRASE = "phrase";
@@ -30,6 +31,7 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String query = "CREATE TABLE " + TABLE_NAME +
                 " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_CURRENT + " INTEGER, " +
                 COLUMN_START + " TEXT, " +
                 COLUMN_SHOWMODE + " INTEGER, " +
                 COLUMN_PHRASE + " TEXT);";
@@ -45,18 +47,44 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
     public void editCounter(String startDate, int daysShowMode, String phrase){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
+        cv.put(COLUMN_CURRENT, 1);
         cv.put(COLUMN_START, startDate);
         cv.put(COLUMN_SHOWMODE, daysShowMode);
         cv.put(COLUMN_PHRASE, phrase);
-        long res = db.update(TABLE_NAME, cv, "_id=?", new String[]{String.valueOf(BaseActivity.currentCounter)});
+        long res = db.update(TABLE_NAME, cv, "current=?", new String[]{String.valueOf(1)});
         if (res == -1){
             ShowMessage.showMessage(context, context.getString(R.string.couldnt_change_counter));
+        }
+    }
+    // position - toNext or toPrevious
+    public void changeCurrent(int id, int idToMove, int position){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String setCurrentTo0 = "UPDATE "+TABLE_NAME +" SET " + COLUMN_CURRENT+ " = '"+0+"' WHERE "+COLUMN_ID+ " = "+id+";";
+        if (position == -1){
+            String setPreviousCurrent = "UPDATE "+TABLE_NAME +" SET " + COLUMN_CURRENT+ " = '"+1+"' WHERE "+COLUMN_ID+ " = "+idToMove+";";
+            db.execSQL(setCurrentTo0);
+            db.execSQL(setPreviousCurrent);
+        }
+        else if (position == 1){
+            String setNextCurrent = "UPDATE "+TABLE_NAME +" SET " + COLUMN_CURRENT+ " = '"+1+"' WHERE "+COLUMN_ID+ " = "+idToMove+";";
+            db.execSQL(setCurrentTo0);
+            db.execSQL(setNextCurrent);
+        }
+        else {
+            ShowMessage.showMessage(context, "Неверный аргумент");
         }
     }
 
     public void addCounter(String startDate, Integer daysShowMode, String phrase){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
+        Cursor cursor = readAllData();
+        if (cursor.getCount() == 0){
+            cv.put(COLUMN_CURRENT, 1);
+        }
+        else {
+            cv.put(COLUMN_CURRENT, 0);
+        }
         cv.put(COLUMN_START, startDate);
         cv.put(COLUMN_SHOWMODE, daysShowMode);
         cv.put(COLUMN_PHRASE, phrase);
@@ -78,8 +106,14 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
         }
         else{
             SQLiteDatabase db = this.getWritableDatabase();
+            cursor.moveToLast();
+            if (cursor.getInt(1) == 1);{
+                int currentId = cursor.getInt(0);
+                cursor.moveToPrevious();
+                this.changeCurrent(currentId, cursor.getInt(0), -1);
+            }
             db.delete(TABLE_NAME, "_id=?", new String[]{String.valueOf(getLastID())});
-            ShowMessage.showMessage(context, context.getString(R.string.del_last_counter));
+            ShowMessage.showMessage(context, context.getString(R.string.del_last_counter_message));
         }
     }
 
