@@ -148,30 +148,14 @@ public class MainActivity extends BaseActivity {
     }
 
     private void goToPreviousCounter(){
-        cursor.moveToFirst();
-        int firstId = cursor.getInt(0);
-        do { if (cursor.getInt(1) == 1){
-            break;
-        }} while (cursor.moveToNext());
-        int currentId = cursor.getInt(0);
-        if (currentId != firstId){
-            cursor.moveToPrevious();
-            int previousId = cursor.getInt(0);
-            db.changeCurrent(currentId, previousId, -1);
+        int res = db.changeCurrent(-1);
+        if (res == 1){
             recreate();
         }
     }
     private void goToNextCounter(){
-        cursor.moveToLast();
-        int lastId = cursor.getInt(0);
-        do { if (cursor.getInt(1) == 1){
-            break;
-        }} while (cursor.moveToPrevious());
-        int currentId = cursor.getInt(0);
-        if (currentId != lastId){
-            cursor.moveToNext();
-            int nextId = cursor.getInt(0);
-            db.changeCurrent(currentId, nextId, 1);
+        int res = db.changeCurrent(1);
+        if (res == 1){
             recreate();
         }
     }

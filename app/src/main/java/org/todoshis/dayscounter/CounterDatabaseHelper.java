@@ -51,40 +51,60 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_START, startDate);
         cv.put(COLUMN_SHOWMODE, daysShowMode);
         cv.put(COLUMN_PHRASE, phrase);
-        long res = db.update(TABLE_NAME, cv, "current=?", new String[]{String.valueOf(1)});
+        long res = db.update(TABLE_NAME, cv, "current=?", new String[]{"1"});
         if (res == -1){
             ShowMessage.showMessage(context, context.getString(R.string.couldnt_change_counter));
         }
     }
     // position - toNext or toPrevious
-    public void changeCurrent(int id, int idToMove, int position){
+    public int changeCurrent(int position){
         SQLiteDatabase db = this.getWritableDatabase();
-        String setCurrentTo0 = "UPDATE "+TABLE_NAME +" SET " + COLUMN_CURRENT+ " = '"+0+"' WHERE "+COLUMN_ID+ " = "+id+";";
+        Cursor cursor = this.readAllData();
         if (position == -1){
-            String setPreviousCurrent = "UPDATE "+TABLE_NAME +" SET " + COLUMN_CURRENT+ " = '"+1+"' WHERE "+COLUMN_ID+ " = "+idToMove+";";
-            db.execSQL(setCurrentTo0);
-            db.execSQL(setPreviousCurrent);
+            cursor.moveToFirst();
+            int firstId = cursor.getInt(0);
+            do { if (cursor.getInt(1) == 1){
+                break;
+            }} while (cursor.moveToNext());
+            int currentId = cursor.getInt(0);
+            if (currentId != firstId) {
+                cursor.moveToPrevious();
+                int previousId = cursor.getInt(0);
+                String setCurrentTo0 = "UPDATE "+TABLE_NAME +" SET " + COLUMN_CURRENT+ " = '"+0+"' WHERE "+COLUMN_ID+ " = "+currentId+";";
+                String setPreviousCurrent = "UPDATE " + TABLE_NAME + " SET " + COLUMN_CURRENT + " = '" + 1 + "' WHERE " + COLUMN_ID + " = " + previousId + ";";
+                db.execSQL(setCurrentTo0);
+                db.execSQL(setPreviousCurrent);
+                return 1;
+            }
         }
         else if (position == 1){
-            String setNextCurrent = "UPDATE "+TABLE_NAME +" SET " + COLUMN_CURRENT+ " = '"+1+"' WHERE "+COLUMN_ID+ " = "+idToMove+";";
-            db.execSQL(setCurrentTo0);
-            db.execSQL(setNextCurrent);
+            cursor.moveToLast();
+            int lastId = cursor.getInt(0);
+            do { if (cursor.getInt(1) == 1){
+                break;
+            }} while (cursor.moveToPrevious());
+            int currentId = cursor.getInt(0);
+            if (currentId != lastId) {
+                cursor.moveToNext();
+                int nextId = cursor.getInt(0);
+                String setCurrentTo0 = "UPDATE "+TABLE_NAME +" SET " + COLUMN_CURRENT+ " = '"+0+"' WHERE "+COLUMN_ID+ " = "+currentId+";";
+                String setNextCurrent = "UPDATE " + TABLE_NAME + " SET " + COLUMN_CURRENT + " = '" + 1 + "' WHERE " + COLUMN_ID + " = " + nextId + ";";
+                db.execSQL(setCurrentTo0);
+                db.execSQL(setNextCurrent);
+                return 1;
+            }
         }
         else {
             ShowMessage.showMessage(context, "Неверный аргумент");
         }
+        return 0;
     }
 
     public void addCounter(String startDate, Integer daysShowMode, String phrase){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         Cursor cursor = readAllData();
-        if (cursor.getCount() == 0){
-            cv.put(COLUMN_CURRENT, 1);
-        }
-        else {
-            cv.put(COLUMN_CURRENT, 0);
-        }
+        cv.put(COLUMN_CURRENT, cursor.getCount() == 0 ? 1 : 0);
         cv.put(COLUMN_START, startDate);
         cv.put(COLUMN_SHOWMODE, daysShowMode);
         cv.put(COLUMN_PHRASE, phrase);
@@ -107,22 +127,12 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
         else{
             SQLiteDatabase db = this.getWritableDatabase();
             cursor.moveToLast();
-            if (cursor.getInt(1) == 1);{
-                int currentId = cursor.getInt(0);
-                cursor.moveToPrevious();
-                this.changeCurrent(currentId, cursor.getInt(0), -1);
+            if (cursor.getInt(1) == 1){
+                this.changeCurrent(-1);
             }
-            db.delete(TABLE_NAME, "_id=?", new String[]{String.valueOf(getLastID())});
+            db.delete(TABLE_NAME, "_id=?", new String[]{String.valueOf(cursor.getInt(0))});
             ShowMessage.showMessage(context, context.getString(R.string.del_last_counter_message));
         }
-    }
-
-    public int getLastID()
-    {
-        SQLiteDatabase db=this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT MAX("+COLUMN_ID+") FROM "+TABLE_NAME, null);
-        int maxId = (cursor.moveToFirst() ? cursor.getInt(0) : 0);
-        return maxId;
     }
 
     Cursor readAllData(){
