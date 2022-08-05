@@ -4,7 +4,9 @@ import android.content.Context;
 import android.database.Cursor;
 
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class Counter {
     private Context context;
@@ -37,7 +39,7 @@ public class Counter {
     }
 
     public void setStartDate(Date newStartDate) {
-        if (cursor.getCount() != 0) {
+        if (!db.isEmpty()) {
             if (BaseActivity.getDifference(newStartDate) > 0) {
                 this.startDate = BaseActivity.sdf.format(newStartDate);
                 db.editCounter(this.startDate, this.daysShowMode, this.phrase);
