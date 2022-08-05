@@ -18,7 +18,7 @@ public class BaseActivity extends AppCompatActivity {
     protected Counter counter;
 
     CounterDatabaseHelper db;
-    Cursor cursor;
+    private Cursor cursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

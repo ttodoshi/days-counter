@@ -9,6 +9,7 @@ import java.util.Date;
 public class Counter {
     private Context context;
 
+    //
     private final int current;
     private String startDate;
     private int daysShowMode;
@@ -27,10 +28,6 @@ public class Counter {
 
         db = new CounterDatabaseHelper(context);
         cursor = db.readAllData();
-    }
-
-    public int getCurrent() {
-        return current;
     }
 
     public Date getStartDate() {

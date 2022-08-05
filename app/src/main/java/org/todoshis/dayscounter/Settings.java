@@ -50,11 +50,11 @@ public class Settings extends BaseActivity {
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (cursor.getCount() != 0) {
-                    calendar.setVisibility(VISIBLE);
+                if (db.isEmpty()){
+                    ShowMessage.showMessage(Settings.this, getString(R.string.no_counters));
                 }
                 else {
-                    ShowMessage.showMessage(Settings.this, getString(R.string.no_counters));
+                    calendar.setVisibility(VISIBLE);
                 }
             }
         });
@@ -123,7 +123,10 @@ public class Settings extends BaseActivity {
 
     // alert для изменения фразы
     private void showPhraseAlert(){
-        if (cursor.getCount() != 0) {
+        if (db.isEmpty()){
+            ShowMessage.showMessage(Settings.this, getString(R.string.no_counters));
+        }
+        else {
             final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
             AlertDialog.Builder builder = createAlertDialogWithEditText(getString(R.string.new_phrase), customLayout);
             builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() {
@@ -137,9 +140,6 @@ public class Settings extends BaseActivity {
             });
             AlertDialog alert = builder.create();
             alert.show();
-        }
-        else {
-            ShowMessage.showMessage(Settings.this, getString(R.string.no_counters));
         }
     }
 

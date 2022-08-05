@@ -39,20 +39,20 @@ public class MainActivity extends BaseActivity {
             }
             @Override
             public void onSwipeRight() {
-                if(cursor.getCount() != 0){
+                if (!db.isEmpty()){
                     counter.setDaysShowMode();
                     recreate();
                 }
             }
             @Override
             public void onSwipeUp() {
-                if(cursor.getCount() != 0){
+                if (!db.isEmpty()){
                     goToNextCounter();
                 }
             }
             @Override
             public void onSwipeDown() {
-                if(cursor.getCount() != 0){
+                if (!db.isEmpty()){
                     goToPreviousCounter();
                 }
             }
@@ -62,7 +62,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(cursor.getCount() != 0){
+        if (!db.isEmpty()){
             uploadMainScreen(getDaysFromMillis(getDifference(counter.getStartDate())), counter.getPhrase());
         }
     }

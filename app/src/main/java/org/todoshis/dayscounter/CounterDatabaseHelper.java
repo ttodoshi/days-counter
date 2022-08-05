@@ -121,7 +121,7 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
         if (cursor.getCount() == 0){
             ShowMessage.showMessage(context, context.getString(R.string.no_counters));
         }
-        if (cursor.getCount() == 1){
+        else if (cursor.getCount() == 1){
             ShowMessage.showMessage(context, context.getString(R.string.last_counter));
         }
         else{
@@ -133,6 +133,11 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
             db.delete(TABLE_NAME, "_id=?", new String[]{String.valueOf(cursor.getInt(0))});
             ShowMessage.showMessage(context, context.getString(R.string.del_last_counter_message));
         }
+    }
+
+    public boolean isEmpty(){
+        Cursor cursor = this.readAllData();
+        return cursor.getCount() == 0;
     }
 
     Cursor readAllData(){
