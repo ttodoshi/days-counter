@@ -17,8 +17,7 @@ public class BaseActivity extends AppCompatActivity {
 
     protected Counter counter;
 
-    CounterDatabaseHelper db;
-    private Cursor cursor;
+    protected CounterDatabaseHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +28,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         db = new CounterDatabaseHelper(this);
-        cursor = db.readAllData();
+        Cursor cursor = db.readAllData();
 
         if (cursor.getCount() != 0) {
             cursor.moveToFirst();
@@ -40,6 +39,13 @@ public class BaseActivity extends AppCompatActivity {
             } while (cursor.moveToNext());
             counter = new Counter(BaseActivity.this, cursor.getString(2), cursor.getInt(3), cursor.getString(4));
         }
+        cursor.close();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        db.close();
     }
 
     public static long getDifference(Date selectedDate) {

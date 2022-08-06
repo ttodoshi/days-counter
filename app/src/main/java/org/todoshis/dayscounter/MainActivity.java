@@ -156,8 +156,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void goToPreviousCounter(){
-        int res = db.changeCurrent(-1);
-        if (res == 1){
+        boolean res = db.changeCurrent(-1);
+        if (res){
             Intent intent = new Intent(MainActivity.this, MainActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.out_to_bottom, R.anim.in_from_top);
@@ -165,8 +165,8 @@ public class MainActivity extends BaseActivity {
         }
     }
     private void goToNextCounter(){
-        int res = db.changeCurrent(1);
-        if (res == 1){
+        boolean res = db.changeCurrent(1);
+        if (res){
             Intent intent = new Intent(MainActivity.this, MainActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);

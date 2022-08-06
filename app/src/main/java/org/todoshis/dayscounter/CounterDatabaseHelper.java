@@ -55,49 +55,45 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
         if (res == -1){
             ShowMessage.showMessage(context, context.getString(R.string.couldnt_change_counter));
         }
+        db.close();
     }
-    // position - toNext or toPrevious
-    public int changeCurrent(int position){
+    // position = -1 or 1
+    public boolean changeCurrent(int position){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = this.readAllData();
+        int nextId, currentId, firstOrLastId;
         if (position == -1){
             cursor.moveToFirst();
-            int firstId = cursor.getInt(0);
+            firstOrLastId = cursor.getInt(0);
             do { if (cursor.getInt(1) == 1){
                 break;
             }} while (cursor.moveToNext());
-            int currentId = cursor.getInt(0);
-            if (currentId != firstId) {
-                cursor.moveToPrevious();
-                int previousId = cursor.getInt(0);
-                String setCurrentTo0 = "UPDATE "+TABLE_NAME +" SET " + COLUMN_CURRENT+ " = '"+0+"' WHERE "+COLUMN_ID+ " = "+currentId+";";
-                String setPreviousCurrent = "UPDATE " + TABLE_NAME + " SET " + COLUMN_CURRENT + " = '" + 1 + "' WHERE " + COLUMN_ID + " = " + previousId + ";";
-                db.execSQL(setCurrentTo0);
-                db.execSQL(setPreviousCurrent);
-                return 1;
-            }
         }
         else if (position == 1){
             cursor.moveToLast();
-            int lastId = cursor.getInt(0);
+            firstOrLastId = cursor.getInt(0);
             do { if (cursor.getInt(1) == 1){
                 break;
             }} while (cursor.moveToPrevious());
-            int currentId = cursor.getInt(0);
-            if (currentId != lastId) {
-                cursor.moveToNext();
-                int nextId = cursor.getInt(0);
-                String setCurrentTo0 = "UPDATE "+TABLE_NAME +" SET " + COLUMN_CURRENT+ " = '"+0+"' WHERE "+COLUMN_ID+ " = "+currentId+";";
-                String setNextCurrent = "UPDATE " + TABLE_NAME + " SET " + COLUMN_CURRENT + " = '" + 1 + "' WHERE " + COLUMN_ID + " = " + nextId + ";";
-                db.execSQL(setCurrentTo0);
-                db.execSQL(setNextCurrent);
-                return 1;
-            }
         }
         else {
-            ShowMessage.showMessage(context, "Неверный аргумент");
+            return false;
         }
-        return 0;
+        currentId = cursor.getInt(0);
+        if (currentId != firstOrLastId) {
+            cursor.move(position);
+            nextId = cursor.getInt(0);
+        }
+        else{
+            return false;
+        }
+        String setCurrentTo0 = "UPDATE "+TABLE_NAME +" SET " + COLUMN_CURRENT+ " = '"+0+"' WHERE "+COLUMN_ID+ " = "+currentId+";";
+        String setNextCurrent = "UPDATE " + TABLE_NAME + " SET " + COLUMN_CURRENT + " = '" + 1 + "' WHERE " + COLUMN_ID + " = " + nextId + ";";
+        db.execSQL(setCurrentTo0);
+        db.execSQL(setNextCurrent);
+        cursor.close();
+        db.close();
+        return true;
     }
 
     public void addCounter(String startDate, Integer daysShowMode, String phrase){
@@ -115,6 +111,8 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
         else{
             ShowMessage.showMessage(context, context.getString(R.string.new_counter));
         }
+        cursor.close();
+        db.close();
     }
     public void delLastCounter(){
         Cursor cursor = readAllData();
@@ -133,11 +131,14 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
             db.delete(TABLE_NAME, "_id=?", new String[]{String.valueOf(cursor.getInt(0))});
             ShowMessage.showMessage(context, context.getString(R.string.del_last_counter_message));
         }
+        cursor.close();
     }
 
     public boolean isEmpty(){
         Cursor cursor = this.readAllData();
-        return cursor.getCount() == 0;
+        boolean res = cursor.getCount() == 0;
+        cursor.close();
+        return res;
     }
 
     Cursor readAllData(){
