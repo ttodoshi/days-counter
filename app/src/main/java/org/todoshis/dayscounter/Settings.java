@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -14,9 +13,6 @@ import android.widget.RelativeLayout;
 
 import java.text.ParseException;
 import java.util.Date;
-
-import static android.view.View.VISIBLE;
-import static android.view.View.INVISIBLE;
 
 public class Settings extends BaseActivity {
 
@@ -112,7 +108,7 @@ public class Settings extends BaseActivity {
                 submitDate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        counter.setStartDate(new Date(year-1900, month, dayOfMonth));
+                        counter.setDate(new Date(year-1900, month, dayOfMonth));
                         alert.cancel();
                     }
                 });
@@ -167,7 +163,7 @@ public class Settings extends BaseActivity {
                 EditText editText = customLayout.findViewById(R.id.editText);
                 String startDate = editText.getText().toString();
                 try {
-                    counter.setStartDate(sdf.parse(startDate));
+                    counter.setDate(sdf.parse(startDate));
                 } catch (ParseException e) {
                     ShowMessage.showMessage(Settings.this, getString(R.string.invalid_format));
                 }

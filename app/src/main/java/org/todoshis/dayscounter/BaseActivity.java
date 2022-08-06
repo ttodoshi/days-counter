@@ -45,9 +45,5 @@ public class BaseActivity extends AppCompatActivity {
         super.onDestroy();
         db.close();
     }
-
-    public static long getDifference(Date selectedDate) {
-        return today.getTime() - selectedDate.getTime();
-    }
 }
 

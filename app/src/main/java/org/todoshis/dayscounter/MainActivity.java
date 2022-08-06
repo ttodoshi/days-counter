@@ -10,6 +10,8 @@ import android.widget.TextView;
 import static android.view.View.VISIBLE;
 import static android.view.View.INVISIBLE;
 
+import java.util.Date;
+
 public class MainActivity extends BaseActivity {
 
     private TextView days, daysPhrase;
@@ -60,7 +62,7 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         if (!db.isEmpty()){
-            uploadMainScreen(getDaysFromMillis(getDifference(counter.getStartDate())), counter.getPhrase());
+            uploadMainScreen(getDaysFromMillis(getDifference(counter.getDate())), counter.getPhrase());
         }
     }
 
@@ -91,7 +93,7 @@ public class MainActivity extends BaseActivity {
     // отображение дней, надписи и картинок на главном экране
     private void uploadMainScreen(int allDays, String phrase){
         picsShowMode();
-        days.setText(daysShowMode(allDays));
+        days.setText(daysShowMode(Math.abs(allDays)));
         daysPhrase.setText(phraseShow(allDays, phrase));
     }
 
@@ -103,7 +105,11 @@ public class MainActivity extends BaseActivity {
     private String phraseShow(int days, String phrase){
         StringBuilder text = new StringBuilder("");
         if(counter.getDaysShowMode() == 1){
-            text.append(checkEnding(days, getString(R.string.day), getString(R.string.day_different_ending), getString(R.string.days)));
+            text.append(checkEnding(Math.abs(days), getString(R.string.day), getString(R.string.day_different_ending), getString(R.string.days)));
+            text.append(" ");
+        }
+        if (days < 0){
+            text.append(getString(R.string.days_left));
             text.append(" ");
         }
         text.append(phrase);
@@ -172,5 +178,9 @@ public class MainActivity extends BaseActivity {
             overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
             finish();
         }
+    }
+
+    public static long getDifference(Date selectedDate) {
+        return today.getTime() - selectedDate.getTime();
     }
 }

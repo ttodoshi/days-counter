@@ -20,12 +20,12 @@
     <string name="last_counter">У вас остался последний счетчик</string>
     <string name="counter_didnt_add">Счетчик не был добавлен</string>
     <string name="couldnt_change_counter">Не удалось изменить счетчик</string>
-    <string name="couldnt_change_date">Не удалось изменить дату</string>
     <!--  errors  -->
 
     <!--  system text  -->
     <string name="close">Закрыть</string>
     <string name="save">Сохранить</string>
+    <string name="days_left">осталось</string>
     <string name="change_date">Изменить дату начала</string>
     <string name="new_date">Ввести дату</string>
     <string name="new_date_text">Введите дату в формате дд.мм.гггг</string>

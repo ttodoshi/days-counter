@@ -27,7 +27,7 @@ public class Counter {
         cursor = db.readAllData();
     }
 
-    public Date getStartDate() {
+    public Date getDate() {
         try {
             return BaseActivity.sdf.parse(startDate);
         } catch (ParseException e) {
@@ -36,14 +36,10 @@ public class Counter {
         }
     }
 
-    public void setStartDate(Date newStartDate) {
+    public void setDate(Date newStartDate) {
         if (!db.isEmpty()) {
-            if (BaseActivity.getDifference(newStartDate) > 0) {
-                this.startDate = BaseActivity.sdf.format(newStartDate);
-                db.editCounter(this.startDate, this.daysShowMode, this.phrase);
-            } else {
-                ShowMessage.showMessage(context, context.getString(R.string.couldnt_change_date));
-            }
+            this.startDate = BaseActivity.sdf.format(newStartDate);
+            db.editCounter(this.startDate, this.daysShowMode, this.phrase);
         }
     }
 
