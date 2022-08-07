@@ -7,7 +7,7 @@ import java.text.ParseException;
 import java.util.Date;
 
 public class Counter {
-    private Context context;
+    private final Context context;
 
     private String startDate;
     private int daysShowMode;

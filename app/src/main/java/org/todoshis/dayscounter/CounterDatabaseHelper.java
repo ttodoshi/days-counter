@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 
 public class CounterDatabaseHelper extends SQLiteOpenHelper {
 
-    private Context context;
+    private final Context context;
     private static final String DATABASE_NAME = "Counters.db";
     private static final int DATABASE_VERSION = 1;
 
@@ -87,12 +87,11 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
         else{
             return false;
         }
-        String setCurrentTo0 = "UPDATE "+TABLE_NAME +" SET " + COLUMN_CURRENT+ " = '"+0+"' WHERE "+COLUMN_ID+ " = "+currentId+";";
+        String setCurrentTo0 = "UPDATE " + TABLE_NAME +" SET " + COLUMN_CURRENT+ " = '" + 0 + "' WHERE " + COLUMN_ID + " = " + currentId + ";";
         String setNextCurrent = "UPDATE " + TABLE_NAME + " SET " + COLUMN_CURRENT + " = '" + 1 + "' WHERE " + COLUMN_ID + " = " + nextId + ";";
         db.execSQL(setCurrentTo0);
         db.execSQL(setNextCurrent);
         cursor.close();
-        db.close();
         return true;
     }
 
@@ -115,7 +114,7 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
     public void delLastCounter(){
-        Cursor cursor = readAllData();
+        Cursor cursor = this.readAllData();
         if (cursor.getCount() == 0){
             ShowMessage.showMessage(context, context.getString(R.string.no_counters));
         }
@@ -126,7 +125,7 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase();
             cursor.moveToLast();
             if (cursor.getInt(1) == 1){
-                this.changeCurrent(-1);
+                changeCurrent(-1);
             }
             db.delete(TABLE_NAME, "_id=?", new String[]{String.valueOf(cursor.getInt(0))});
             ShowMessage.showMessage(context, context.getString(R.string.del_last_counter_message));
