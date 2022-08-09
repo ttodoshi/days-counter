@@ -57,6 +57,14 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
         }
         db.close();
     }
+    public int getCurrentId(){
+        Cursor cursor = this.readAllData();
+        cursor.moveToFirst();
+        do { if (cursor.getInt(1) == 1){
+            break;
+        }} while (cursor.move(1));
+        return cursor.getInt(0);
+    }
     // position = -1 or 1
     public boolean changeCurrent(int position){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -113,13 +121,26 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
     }
+    public boolean counterExists(int id){
+        Cursor cursor = this.readAllData();
+        if (cursor.getCount() != 0){
+            cursor.moveToFirst();
+            do {
+                if (id == cursor.getInt(0)){
+                    return true;
+                }
+            } while (cursor.move(1));
+            return false;
+        }
+        return false;
+    }
     public void delLastCounter(){
         Cursor cursor = this.readAllData();
         if (cursor.getCount() == 0){
             ShowMessage.showMessage(context, context.getString(R.string.no_counters));
         }
         else if (cursor.getCount() == 1){
-            ShowMessage.showMessage(context, context.getString(R.string.last_counter));
+            ShowMessage.showMessage(context, context.getString(R.string.last_counter_message));
         }
         else{
             SQLiteDatabase db = this.getWritableDatabase();
@@ -128,11 +149,25 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
                 changeCurrent(-1);
             }
             db.delete(TABLE_NAME, "_id=?", new String[]{String.valueOf(cursor.getInt(0))});
-            ShowMessage.showMessage(context, context.getString(R.string.del_last_counter_message));
+            ShowMessage.showMessage(context, context.getString(R.string.last_counter_was_deleted));
         }
         cursor.close();
     }
+    public void deleteById(int id){
+        Cursor cursor = this.readAllData();
+        if (cursor.getCount() == 0){
+            ShowMessage.showMessage(context, context.getString(R.string.no_counters));
+        }
+        else {
+            SQLiteDatabase db = this.getWritableDatabase();
+            if (getCurrentId() == id){
+                changeCurrent(-1);
+            }
+            db.delete(TABLE_NAME, "_id=?", new String[]{String.valueOf(id)});
+        }
+        cursor.close();
 
+    }
     public boolean isEmpty(){
         Cursor cursor = this.readAllData();
         boolean res = cursor.getCount() == 0;

@@ -108,8 +108,10 @@ public class Settings extends BaseActivity {
                 submitDate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        counter.setDate(new Date(year-1900, month, dayOfMonth));
+                        Date selectedDate = new Date(year-1900, month, dayOfMonth);
+                        counter.setDate(selectedDate);
                         alert.cancel();
+                        reminderNotification(selectedDate);
                     }
                 });
             }
@@ -163,7 +165,9 @@ public class Settings extends BaseActivity {
                 EditText editText = customLayout.findViewById(R.id.editText);
                 String startDate = editText.getText().toString();
                 try {
-                    counter.setDate(sdf.parse(startDate));
+                    Date selectedDate = sdf.parse(startDate);
+                    counter.setDate(selectedDate);
+                    reminderNotification(selectedDate);
                 } catch (ParseException e) {
                     ShowMessage.showMessage(Settings.this, getString(R.string.invalid_format));
                 }
@@ -172,6 +176,17 @@ public class Settings extends BaseActivity {
         });
         alert = builder.create();
         alert.show();
+    }
+
+    private void reminderNotification(Date selectedDate) {
+        if (getDifference(selectedDate) < 0){
+            ShowMessage.showMessage(this, getString(R.string.note));
+            NotificationUtils notificationUtils = new NotificationUtils(this);
+            long dayInMillis = 864 * 1000 * 100;
+            int id = db.getCurrentId();
+            notificationUtils.setReminder(id, selectedDate.getTime() - dayInMillis);
+            notificationUtils.setDelete(id, selectedDate.getTime());
+        }
     }
 
     private void addCounter(){

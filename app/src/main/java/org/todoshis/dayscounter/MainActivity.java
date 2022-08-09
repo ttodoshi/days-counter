@@ -10,8 +10,6 @@ import android.widget.TextView;
 import static android.view.View.VISIBLE;
 import static android.view.View.INVISIBLE;
 
-import java.util.Date;
-
 public class MainActivity extends BaseActivity {
 
     private TextView days, daysPhrase;
@@ -102,6 +100,7 @@ public class MainActivity extends BaseActivity {
         return (int)(millis / (24 * 60 * 60 * 1000));
     }
 
+    // TODO refactor
     private String phraseShow(int days, String phrase){
         StringBuilder text = new StringBuilder("");
         if(counter.getDaysShowMode() == 1){
@@ -178,9 +177,5 @@ public class MainActivity extends BaseActivity {
             overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
             finish();
         }
-    }
-
-    public static long getDifference(Date selectedDate) {
-        return today.getTime() - selectedDate.getTime();
     }
 }
