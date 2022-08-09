@@ -107,11 +107,13 @@ public class MainActivity extends BaseActivity {
             text.append(checkEnding(Math.abs(days), getString(R.string.day), getString(R.string.day_different_ending), getString(R.string.days)));
             text.append(" ");
         }
-        if (days < 0){
-            text.append(getString(R.string.days_left));
-            text.append(" ");
-        }
         text.append(phrase);
+        if (days < 0){
+            if (!phrase.isEmpty()){
+                text.append(" ");
+            }
+            text.append(getString(R.string.days_left));
+        }
         return text.toString();
     }
 
