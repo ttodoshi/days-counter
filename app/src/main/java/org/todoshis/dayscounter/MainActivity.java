@@ -100,7 +100,6 @@ public class MainActivity extends BaseActivity {
         return (int)(millis / (24 * 60 * 60 * 1000));
     }
 
-    // TODO refactor
     private String phraseShow(int days, String phrase){
         StringBuilder text = new StringBuilder("");
         if(counter.getDaysShowMode() == 1){

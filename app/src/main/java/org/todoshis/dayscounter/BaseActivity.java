@@ -10,7 +10,6 @@ import java.util.Date;
 
 public class BaseActivity extends AppCompatActivity {
     public static Date today = new Date();
-    // TODO refactor
     @SuppressLint("SimpleDateFormat")
     public static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
