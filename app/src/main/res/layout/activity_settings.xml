@@ -16,10 +16,11 @@
         android:layout_centerInParent="true">
 
         <LinearLayout
+            android:id="@+id/linearLayoutForButtons"
             android:layout_width="300sp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/addCounter"
@@ -27,8 +28,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="35sp"
                 android:background="@drawable/button_layout"
-                android:textColor="@color/white"
-                android:text="@string/create_counter" />
+                android:text="@string/create_counter"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/changeStartDate"
@@ -37,8 +38,8 @@
                 android:layout_marginTop="35sp"
                 android:layout_marginBottom="35sp"
                 android:background="@drawable/button_layout"
-                android:textColor="@color/white"
-                android:text="@string/change_date" />
+                android:text="@string/change_date"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/changePhrase"
@@ -47,8 +48,8 @@
                 android:layout_marginTop="35sp"
                 android:layout_marginBottom="35sp"
                 android:background="@drawable/button_layout"
-                android:textColor="@color/white"
-                android:text="@string/change_phrase" />
+                android:text="@string/change_phrase"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/delLastCounter"
@@ -56,8 +57,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35sp"
                 android:background="@drawable/button_layout"
-                android:textColor="@color/white"
-                android:text="@string/del_last_counter" />
+                android:text="@string/del_last_counter"
+                android:textColor="@color/white" />
 
         </LinearLayout>
     </ScrollView>

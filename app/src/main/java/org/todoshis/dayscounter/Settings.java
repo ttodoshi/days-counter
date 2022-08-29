@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import java.text.ParseException;
@@ -67,6 +68,13 @@ public class Settings extends BaseActivity {
 
         // жест
         settings.setOnTouchListener(new OnSwipeTouchListener(Settings.this) {
+            @Override
+            public void onSwipeRight() {
+                goBackToMainScreen();
+            }
+        });
+        LinearLayout voidBetweenButtons = findViewById(R.id.linearLayoutForButtons);
+        voidBetweenButtons.setOnTouchListener(new OnSwipeTouchListener(Settings.this) {
             @Override
             public void onSwipeRight() {
                 goBackToMainScreen();
