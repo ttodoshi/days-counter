@@ -3,6 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/programming/JavaProjects/Days Counter/app/src/main/res/drawable/button_layout.xml" value="0.216" />
+        <entry key="..\:/programming/JavaProjects/Days Counter/app/src/main/res/layout/activity_main.xml" value="0.371875" />
+        <entry key="..\:/programming/JavaProjects/Days Counter/app/src/main/res/layout/activity_settings.xml" value="0.371875" />
+        <entry key="..\:/programming/JavaProjects/Days Counter/app/src/main/res/layout/alert_layout.xml" value="0.371875" />
+        <entry key="..\:/programming/JavaProjects/Days Counter/app/src/main/res/layout/calendar_layour.xml" value="0.37083333333333335" />
+        <entry key="..\:/programming/JavaProjects/My Application/app/src/main/res/drawable/button_layout.xml" value="0.326" />
+        <entry key="..\:/programming/JavaProjects/My Application/app/src/main/res/drawable/calendar_layout.xml" value="0.326" />
         <entry key="..\:/programming/JavaProjects/My Application/app/src/main/res/drawable/custom_layout.xml" value="0.1995" />
         <entry key="..\:/programming/JavaProjects/My Application/app/src/main/res/drawable/ic_launcher_background.xml" value="0.332" />
         <entry key="..\:/programming/JavaProjects/My Application/app/src/main/res/drawable/settings.xml" value="0.332" />
@@ -10,6 +17,7 @@
         <entry key="..\:/programming/JavaProjects/My Application/app/src/main/res/drawable/slide_in_right.xml" value="0.1995" />
         <entry key="..\:/programming/JavaProjects/My Application/app/src/main/res/layout/activity_main.xml" value="0.371875" />
         <entry key="..\:/programming/JavaProjects/My Application/app/src/main/res/layout/activity_settings.xml" value="0.371875" />
+        <entry key="..\:/programming/JavaProjects/My Application/app/src/main/res/layout/alert_layout.xml" value="0.371875" />
         <entry key="..\:/programming/JavaProjects/My Application/app/src/main/res/layout/calendar.xml" value="0.371875" />
         <entry key="..\:/programming/JavaProjects/My Application/app/src/main/res/layout/custom_layout.xml" value="0.19166666666666668" />
         <entry key="..\:/programming/JavaProjects/My Application/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.332" />

@@ -7,85 +7,60 @@
     android:layout_height="match_parent"
     android:background="@color/grey"
     android:orientation="vertical"
-    tools:context=".Settings">
+    tools:context="org.todoshis.dayscounter.Settings">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:id="@+id/scrollContainer"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:orientation="vertical">
+        android:layout_centerInParent="true">
 
-        <Button
-            android:id="@+id/addCounter"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/linearLayoutForButtons"
+            android:layout_width="300sp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="35sp"
-            android:backgroundTint="@color/white_grey"
-            android:text="Создать новый счётчик" />
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/changeStartDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="35sp"
-            android:layout_marginBottom="35sp"
-            android:backgroundTint="@color/white_grey"
-            android:text="Выбрать дату начала" />
+            <Button
+                android:id="@+id/addCounter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="35sp"
+                android:background="@drawable/button_layout"
+                android:text="@string/create_counter"
+                android:textColor="@color/white" />
 
-        <Button
-            android:id="@+id/changePhrase"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="35sp"
-            android:layout_marginBottom="35sp"
-            android:backgroundTint="@color/white_grey"
-            android:text="Изменить надпись" />
+            <Button
+                android:id="@+id/changeStartDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35sp"
+                android:layout_marginBottom="35sp"
+                android:background="@drawable/button_layout"
+                android:text="@string/change_date"
+                android:textColor="@color/white" />
 
-        <Button
-            android:id="@+id/delLastCounter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="35sp"
-            android:backgroundTint="@color/white_grey"
-            android:text="Удалить последний счётчик" />
+            <Button
+                android:id="@+id/changePhrase"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35sp"
+                android:layout_marginBottom="35sp"
+                android:background="@drawable/button_layout"
+                android:text="@string/change_phrase"
+                android:textColor="@color/white" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/delLastCounter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35sp"
+                android:background="@drawable/button_layout"
+                android:text="@string/del_last_counter"
+                android:textColor="@color/white" />
 
-    <CalendarView
-        android:id="@+id/calendar"
-        android:layout_width="wrap_content"
-        android:layout_height="450sp"
-        android:layout_centerInParent="true"
-        android:background="@color/white_grey">
-
-        <Button
-            android:id="@+id/close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|bottom"
-            android:layout_margin="10sp"
-            android:backgroundTint="@color/grey"
-            android:text=" Закрыть " />
-
-        <Button
-            android:id="@+id/dateFromText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_margin="75sp"
-            android:backgroundTint="@color/grey"
-            android:text="Ввести дату" />
-
-        <Button
-            android:id="@+id/submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|bottom"
-            android:layout_margin="10sp"
-            android:backgroundTint="@color/grey"
-            android:text="Сохранить" />
-
-    </CalendarView>
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

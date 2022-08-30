@@ -2,11 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/background"
+    android:id="@+id/backgroundCounter"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey"
-    tools:context=".MainActivity">
+    tools:context="org.todoshis.dayscounter.MainActivity">
 
     <ImageView
         android:id="@+id/roundOnBackground"
@@ -22,27 +22,29 @@
         android:layout_centerInParent="true"
         app:srcCompat="?android:attr/listChoiceIndicatorMultiple" />
 
-    <TextView
-        android:id="@+id/days"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/roundOnBackground"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="215sp"
-        android:fontFamily="monospace"
-        android:text=""
-        android:textColor="@color/white"
-        android:textSize="20sp" />
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
 
-    <TextView
-        android:id="@+id/phrase"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/days"
-        android:layout_marginTop="55sp"
-        android:text=""
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="25sp" />
+        <TextView
+            android:id="@+id/days"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:textSize="40sp" />
 
+        <TextView
+            android:id="@+id/phrase"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </LinearLayout>
 </RelativeLayout>

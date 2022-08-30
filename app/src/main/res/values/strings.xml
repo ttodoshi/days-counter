@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Days Counter</string>
-
+    <!--  system text  -->
     <string name="day">день</string>
     <string name="day_different_ending">дня</string>
     <string name="days">дней</string>
@@ -12,4 +12,33 @@
     <string name="week">неделя</string>
     <string name="week_different_ending">недели</string>
     <string name="weeks">недель</string>
+
+    <string name="days_left">осталось</string>
+    <string name="close">Закрыть</string>
+    <string name="save">Сохранить</string>
+    <string name="reminder">Напоминание</string>
+    <string name="note">Примечание: уведомления могут не работать если приложение находится в режиме энергосбережения</string>
+    <string name="change_date">Изменить дату начала</string>
+    <string name="new_date">Ввести дату</string>
+    <string name="new_date_text">Введите дату в формате дд.мм.гггг</string>
+    <string name="new_phrase">Введите новую надпись</string>
+    <string name="change_phrase">Изменить надпись</string>
+    <string name="create_counter">Создать новый счётчик</string>
+    <string name="del_last_counter">Удалить последний счётчик</string>
+
+    <string name="was_deleted">Счётчик был удалён</string>
+    <string name="notification_tomorrow">Завтра наступит дата одного из ваших счётчиков</string>
+    <string name="notification_today">Наступила дата одного из ваших счётчиков</string>
+    <string name="new_counter">Создан новый счетчик</string>
+    <string name="last_counter_was_deleted">Последний счетчик был удалён</string>
+    <!--  system text  -->
+
+    <!--  errors  -->
+    <string name="invalid_format">Неверный формат</string>
+    <string name="too_long">Слишком длинная надпись</string>
+    <string name="no_counters">У вас нет счетчиков</string>
+    <string name="last_counter_message">У вас остался последний счетчик</string>
+    <string name="counter_didnt_add">Счетчик не был добавлен</string>
+    <string name="couldnt_change_counter">Не удалось изменить счетчик</string>
+    <!--  errors  -->
 </resources>
