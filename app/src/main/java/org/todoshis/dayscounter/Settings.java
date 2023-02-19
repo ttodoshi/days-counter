@@ -11,6 +11,7 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -44,7 +45,7 @@ public class Settings extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if (db.isEmpty()){
-                    ShowMessage.showMessage(Settings.this, getString(R.string.no_counters));
+                    Toast.makeText(Settings.this, getString(R.string.no_counters), Toast.LENGTH_SHORT).show();
                 }
                 else {
                     showCalendarAlert();
@@ -144,7 +145,7 @@ public class Settings extends BaseActivity {
     // alert для изменения фразы
     private void showPhraseAlert(){
         if (db.isEmpty()){
-            ShowMessage.showMessage(Settings.this, getString(R.string.no_counters));
+            Toast.makeText(Settings.this, getString(R.string.no_counters), Toast.LENGTH_SHORT).show();
         }
         else {
             final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
@@ -177,7 +178,7 @@ public class Settings extends BaseActivity {
                     counter.setDate(selectedDate);
                     reminderNotification(selectedDate);
                 } catch (ParseException e) {
-                    ShowMessage.showMessage(Settings.this, getString(R.string.invalid_format));
+                    Toast.makeText(Settings.this, getString(R.string.invalid_format), Toast.LENGTH_SHORT).show();
                 }
                 dialogInterface.cancel();
             }
@@ -188,7 +189,7 @@ public class Settings extends BaseActivity {
 
     private void reminderNotification(Date selectedDate) {
         if (getDifference(selectedDate) < 0){
-            ShowMessage.showMessage(this, getString(R.string.note));
+            Toast.makeText(Settings.this, getString(R.string.note), Toast.LENGTH_SHORT).show();
             NotificationUtils notificationUtils = new NotificationUtils(this);
             long dayInMillis = 864 * 1000 * 100;
             int id = db.getCurrentId();

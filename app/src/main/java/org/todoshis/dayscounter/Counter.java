@@ -2,6 +2,7 @@ package org.todoshis.dayscounter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -60,9 +61,9 @@ public class Counter {
 
     public void setPhrase(String newPhrase) {
         if (newPhrase.trim().length() == 0) {
-            ShowMessage.showMessage(context, context.getString(R.string.invalid_format));
+            Toast.makeText(context, context.getString(R.string.invalid_format), Toast.LENGTH_SHORT).show();
         } else if (newPhrase.length() > 100) {
-            ShowMessage.showMessage(context, context.getString(R.string.too_long));
+            Toast.makeText(context, context.getString(R.string.too_long), Toast.LENGTH_SHORT).show();
         } else {
             this.phrase = newPhrase;
             db.editCounter(this.startDate, this.daysShowMode, this.phrase);
