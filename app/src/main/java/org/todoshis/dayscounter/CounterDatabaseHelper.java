@@ -1,5 +1,6 @@
 package org.todoshis.dayscounter;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -9,8 +10,12 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import java.util.Date;
+
 public class CounterDatabaseHelper extends SQLiteOpenHelper {
 
+    @SuppressLint("StaticFieldLeak")
+    private static CounterDatabaseHelper counterDatabaseHelper;
     private final Context context;
     private static final String DATABASE_NAME = "Counters.db";
     private static final int DATABASE_VERSION = 1;
@@ -22,8 +27,15 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_SHOW_MODE = "days_show_mode";
     private static final String COLUMN_PHRASE = "phrase";
 
+    public static CounterDatabaseHelper getInstance(Context context) {
+        if (counterDatabaseHelper == null) {
+            counterDatabaseHelper = new CounterDatabaseHelper(context.getApplicationContext());
+        }
+        return counterDatabaseHelper;
+    }
 
-    public CounterDatabaseHelper(@Nullable Context context) {
+
+    private CounterDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
     }
@@ -46,33 +58,22 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void editCounter(String startDate, int daysShowMode, String phrase) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase readableDB = counterDatabaseHelper.getReadableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_CURRENT, 1);
         cv.put(COLUMN_START, startDate);
         cv.put(COLUMN_SHOW_MODE, daysShowMode);
         cv.put(COLUMN_PHRASE, phrase);
-        long res = db.update(TABLE_NAME, cv, "current=?", new String[]{"1"});
+        long res = readableDB.update(TABLE_NAME, cv, "current=?", new String[]{"1"});
         if (res == -1) {
             Toast.makeText(context, context.getString(R.string.couldnt_change_counter), Toast.LENGTH_SHORT).show();
         }
-        db.close();
-    }
-
-    public int getCurrentId() {
-        Cursor cursor = this.readAllData();
-        cursor.moveToFirst();
-        do {
-            if (cursor.getInt(1) == 1) {
-                break;
-            }
-        } while (cursor.move(1));
-        return cursor.getInt(0);
+        readableDB.close();
     }
 
     // position = -1 or 1
     public boolean changeCurrent(int position) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase writeableDB = counterDatabaseHelper.getWritableDatabase();
         Cursor cursor = this.readAllData();
         int nextId, currentId, firstOrLastId;
         if (position == -1) {
@@ -102,76 +103,51 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
             return false;
         }
         String setCurrentTo0 = "UPDATE " + TABLE_NAME + " SET " + COLUMN_CURRENT + " = '" + 0 + "' WHERE " + COLUMN_ID + " = " + currentId + ";";
-        String setNextCurrent = "UPDATE " + TABLE_NAME + " SET " + COLUMN_CURRENT + " = '" + 1 + "' WHERE " + COLUMN_ID + " = " + nextId + ";";
-        db.execSQL(setCurrentTo0);
-        db.execSQL(setNextCurrent);
+        String setNextAsCurrent = "UPDATE " + TABLE_NAME + " SET " + COLUMN_CURRENT + " = '" + 1 + "' WHERE " + COLUMN_ID + " = " + nextId + ";";
+        writeableDB.execSQL(setCurrentTo0);
+        writeableDB.execSQL(setNextAsCurrent);
         cursor.close();
+        writeableDB.close();
         return true;
     }
 
-    public void addCounter(String startDate, Integer daysShowMode, String phrase) {
-        SQLiteDatabase db = this.getWritableDatabase();
+    public boolean addCounter(String startDate, Integer daysShowMode, String phrase) {
+        SQLiteDatabase writeableDB = counterDatabaseHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         Cursor cursor = readAllData();
         cv.put(COLUMN_CURRENT, cursor.getCount() == 0 ? 1 : 0);
         cv.put(COLUMN_START, startDate);
         cv.put(COLUMN_SHOW_MODE, daysShowMode);
         cv.put(COLUMN_PHRASE, phrase);
-        long res = db.insert(TABLE_NAME, null, cv);
+        long res = writeableDB.insert(TABLE_NAME, null, cv);
         if (res == -1) {
-            Toast.makeText(context, context.getString(R.string.counter_didnt_add), Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, context.getString(R.string.new_counter), Toast.LENGTH_SHORT).show();
-        }
-        cursor.close();
-        db.close();
-    }
-
-    public boolean counterExists(int id) {
-        Cursor cursor = this.readAllData();
-        if (cursor.getCount() != 0) {
-            cursor.moveToFirst();
-            do {
-                if (id == cursor.getInt(0)) {
-                    return true;
-                }
-            } while (cursor.move(1));
             return false;
         }
-        return false;
+        cursor.close();
+        writeableDB.close();
+        return true;
     }
 
-    public void delLastCounter() {
+    public int deleteLastCounter() {
+        SQLiteDatabase writeableDB = counterDatabaseHelper.getWritableDatabase();
         Cursor cursor = this.readAllData();
+        // 0 - zero counters, 1 - only one counter, -1 - last counter was deleted
+        int status;
         if (cursor.getCount() == 0) {
-            Toast.makeText(context, context.getString(R.string.no_counters), Toast.LENGTH_SHORT).show();
+            status = 0;
         } else if (cursor.getCount() == 1) {
-            Toast.makeText(context, context.getString(R.string.last_counter_message), Toast.LENGTH_SHORT).show();
+            status = 1;
         } else {
-            SQLiteDatabase db = this.getWritableDatabase();
             cursor.moveToLast();
             if (cursor.getInt(1) == 1) {
                 changeCurrent(-1);
             }
-            db.delete(TABLE_NAME, "_id=?", new String[]{String.valueOf(cursor.getInt(0))});
-            Toast.makeText(context, context.getString(R.string.last_counter_was_deleted), Toast.LENGTH_SHORT).show();
+            writeableDB.delete(TABLE_NAME, "_id=?", new String[]{String.valueOf(cursor.getInt(0))});
+            status = -1;
         }
         cursor.close();
-    }
-
-    public void deleteById(int id) {
-        Cursor cursor = this.readAllData();
-        if (cursor.getCount() == 0) {
-            Toast.makeText(context, context.getString(R.string.no_counters), Toast.LENGTH_SHORT).show();
-        } else {
-            SQLiteDatabase db = this.getWritableDatabase();
-            if (getCurrentId() == id) {
-                changeCurrent(-1);
-            }
-            db.delete(TABLE_NAME, "_id=?", new String[]{String.valueOf(id)});
-        }
-        cursor.close();
-
+        writeableDB.close();
+        return status;
     }
 
     public boolean isEmpty() {
@@ -182,12 +158,13 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
     }
 
     Cursor readAllData() {
+        SQLiteDatabase readableDB = counterDatabaseHelper.getReadableDatabase();
         String query = "SELECT * FROM " + TABLE_NAME;
-        SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = null;
-        if (db != null) {
-            cursor = db.rawQuery(query, null);
+        if (readableDB != null) {
+            cursor = readableDB.rawQuery(query, null);
+            readableDB.close();
         }
         return cursor;
     }

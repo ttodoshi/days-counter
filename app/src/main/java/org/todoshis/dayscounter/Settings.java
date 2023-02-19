@@ -13,17 +13,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Settings extends BaseActivity {
+public class Settings extends AppCompatActivity {
 
     AlertDialog alert;
-
-    @SuppressLint("SimpleDateFormat")
-    public static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -49,10 +47,10 @@ public class Settings extends BaseActivity {
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (db.isEmpty()) {
-                    Toast.makeText(Settings.this, getString(R.string.no_counters), Toast.LENGTH_SHORT).show();
-                } else {
+                if (CounterController.haveCounters()) {
                     showCalendarAlert();
+                } else {
+                    Toast.makeText(Settings.this, getString(R.string.no_counters), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -122,7 +120,7 @@ public class Settings extends BaseActivity {
                     @Override
                     public void onClick(View view) {
                         Date selectedDate = new Date(year - 1900, month, dayOfMonth);
-                        counter.setDate(selectedDate);
+                        CounterController.setDate(selectedDate);
                         alert.cancel();
                     }
                 });
@@ -147,9 +145,7 @@ public class Settings extends BaseActivity {
 
     // alert для изменения фразы
     private void showPhraseAlert() {
-        if (db.isEmpty()) {
-            Toast.makeText(Settings.this, getString(R.string.no_counters), Toast.LENGTH_SHORT).show();
-        } else {
+        if (CounterController.haveCounters()) {
             final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
             AlertDialog.Builder builder = createAlertDialogWithEditText(getString(R.string.new_phrase), customLayout);
             builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() {
@@ -157,12 +153,14 @@ public class Settings extends BaseActivity {
                 public void onClick(DialogInterface dialogInterface, int i) {
                     EditText editText = customLayout.findViewById(R.id.editText);
                     String newPhrase = editText.getText().toString();
-                    counter.setPhrase(newPhrase);
+                    CounterController.setPhrase(newPhrase);
                     dialogInterface.cancel();
                 }
             });
             alert = builder.create();
             alert.show();
+        } else {
+            Toast.makeText(Settings.this, getString(R.string.no_counters), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -175,12 +173,7 @@ public class Settings extends BaseActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 EditText editText = customLayout.findViewById(R.id.editText);
                 String startDate = editText.getText().toString();
-                try {
-                    Date selectedDate = sdf.parse(startDate);
-                    counter.setDate(selectedDate);
-                } catch (ParseException e) {
-                    Toast.makeText(Settings.this, getString(R.string.invalid_format), Toast.LENGTH_SHORT).show();
-                }
+                CounterController.setDate(startDate);
                 dialogInterface.cancel();
             }
         });
@@ -189,10 +182,10 @@ public class Settings extends BaseActivity {
     }
 
     private void addCounter() {
-        db.addCounter(sdf.format(new Date()), 1, "");
+        CounterController.addCounter();
     }
 
     private void delLastCounter() {
-        db.delLastCounter();
+        CounterController.deleteLastCounter();
     }
 }
