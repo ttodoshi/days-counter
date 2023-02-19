@@ -10,6 +10,8 @@ import android.widget.TextView;
 import static android.view.View.VISIBLE;
 import static android.view.View.INVISIBLE;
 
+import java.util.Date;
+
 public class MainActivity extends BaseActivity {
 
     private TextView days, daysPhrase;
@@ -62,6 +64,10 @@ public class MainActivity extends BaseActivity {
         if (!db.isEmpty()){
             uploadMainScreen(getDaysFromMillis(getDifference(counter.getDate())), counter.getPhrase());
         }
+    }
+
+    protected long getDifference(Date selectedDate) {
+        return new Date().getTime() - selectedDate.getTime();
     }
 
     @Override

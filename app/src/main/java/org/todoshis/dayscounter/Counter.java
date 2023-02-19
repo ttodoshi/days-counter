@@ -30,7 +30,7 @@ public class Counter {
 
     public Date getDate() {
         try {
-            return BaseActivity.sdf.parse(startDate);
+            return Settings.sdf.parse(startDate);
         } catch (ParseException e) {
             e.printStackTrace();
             return null;
@@ -39,7 +39,7 @@ public class Counter {
 
     public void setDate(Date newStartDate) {
         if (!db.isEmpty()) {
-            this.startDate = BaseActivity.sdf.format(newStartDate);
+            this.startDate = Settings.sdf.format(newStartDate);
             db.editCounter(this.startDate, this.daysShowMode, this.phrase);
         }
     }
