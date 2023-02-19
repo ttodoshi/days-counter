@@ -34,25 +34,28 @@ public class MainActivity extends AppCompatActivity {
 
         RelativeLayout mainActivity = findViewById(R.id.backgroundCounter);
 
-        // жесты
+        //
         mainActivity.setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
             @Override
-            public void onSwipeLeft(){
+            public void onSwipeLeft() {
                 goToSettings();
             }
+
             @Override
             public void onSwipeRight() {
                 changeDaysShowMode();
             }
+
             @Override
             public void onSwipeUp() {
-                if (CounterController.haveCounters()){
+                if (CounterController.haveCounters()) {
                     goToNextCounter();
                 }
             }
+
             @Override
             public void onSwipeDown() {
-                if (CounterController.haveCounters()){
+                if (CounterController.haveCounters()) {
                     goToPreviousCounter();
                 }
             }
@@ -62,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(CounterController.haveCounters()) {
+        if (CounterController.haveCounters()) {
             uploadMainScreen(getDaysFromMillis(getDifference(CounterController.getDate())), CounterController.getPhrase());
         }
     }
@@ -77,16 +80,16 @@ public class MainActivity extends AppCompatActivity {
         recreate();
     }
 
-    // переход на activity настроек
-    private void goToSettings(){
+    // go to settings activity
+    private void goToSettings() {
         Intent intent = new Intent(MainActivity.this, Settings.class);
         startActivity(intent);
         overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
         finish();
     }
 
-    private void changeDaysShowMode(){
-        if(CounterController.haveCounters()) {
+    private void changeDaysShowMode() {
+        if (CounterController.haveCounters()) {
             CounterController.setDaysShowMode();
             Intent intent = new Intent(MainActivity.this, MainActivity.class);
             startActivity(intent);
@@ -95,27 +98,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // отображение дней, надписи и картинок на главном экране
-    private void uploadMainScreen(int allDays, String phrase){
+    // show elements on main screen
+    private void uploadMainScreen(int allDays, String phrase) {
         picsShowMode();
         days.setText(daysShowMode(Math.abs(allDays)));
         daysPhrase.setText(phraseShow(allDays, phrase));
     }
 
-    // перевести из миллисекунд в прошедшие дни
-    private int getDaysFromMillis(long millis){
-        return (int)(millis / (24 * 60 * 60 * 1000));
+    private int getDaysFromMillis(long millis) {
+        return (int) (millis / (24 * 60 * 60 * 1000));
     }
 
-    private String phraseShow(int days, String phrase){
+    private String phraseShow(int days, String phrase) {
         StringBuilder text = new StringBuilder("");
-        if(CounterController.getDaysShowMode() == 1){
+        if (CounterController.getDaysShowMode() == 1) {
             text.append(checkEnding(Math.abs(days), getString(R.string.day), getString(R.string.day_different_ending), getString(R.string.days)));
             text.append(" ");
         }
         text.append(phrase);
-        if (days < 0){
-            if (!phrase.isEmpty()){
+        if (days < 0) {
+            if (!phrase.isEmpty()) {
                 text.append(" ");
             }
             text.append(getString(R.string.days_left));
@@ -123,31 +125,29 @@ public class MainActivity extends AppCompatActivity {
         return text.toString();
     }
 
-    private String checkEnding(int value, String firstWord, String secondWord, String thirdWord){
+    private String checkEnding(int value, String firstWord, String secondWord, String thirdWord) {
         boolean exceptions = !(value % 100 == 11 || value % 100 == 12 || value % 100 == 13 || value % 100 == 14);
-        if (value % 10 == 1 && exceptions){
+        if (value % 10 == 1 && exceptions) {
             return firstWord;
-        }
-        else if ((value % 10 == 2 || value % 10 == 3 || value % 10 == 4) && exceptions){
+        } else if ((value % 10 == 2 || value % 10 == 3 || value % 10 == 4) && exceptions) {
             return secondWord;
-        }
-        else{
+        } else {
             return thirdWord;
         }
     }
 
-    private String daysShowMode(int daysCount){
-        String daysString;;
-        if (CounterController.getDaysShowMode() == 1){
+    private String daysShowMode(int daysCount) {
+        String daysString;
+        ;
+        if (CounterController.getDaysShowMode() == 1) {
             daysString = String.valueOf(daysCount);
-        }
-        else{
+        } else {
             int years = daysCount / 365;
             int weeks = (daysCount % 365) / 7;
             int remainingDays = (daysCount % 365) % 7;
 
             daysString = years + " " + checkEnding(years, getString(R.string.year),
-                    getString(R.string.year_different_ending), getString(R.string.years)) +  " " +
+                    getString(R.string.year_different_ending), getString(R.string.years)) + " " +
                     weeks + " " + checkEnding(weeks, getString(R.string.week),
                     getString(R.string.week_different_ending), getString(R.string.weeks)) + " " +
                     remainingDays + " " + checkEnding(remainingDays, getString(R.string.day),
@@ -157,20 +157,19 @@ public class MainActivity extends AppCompatActivity {
         return daysString;
     }
 
-    private void picsShowMode(){
-        if (CounterController.getDaysShowMode() == 1){
+    private void picsShowMode() {
+        if (CounterController.getDaysShowMode() == 1) {
             rectangle.setVisibility(INVISIBLE);
             round.setVisibility(VISIBLE);
-        }
-        else{
+        } else {
             rectangle.setVisibility(VISIBLE);
             round.setVisibility(INVISIBLE);
         }
     }
 
-    private void goToPreviousCounter(){
+    private void goToPreviousCounter() {
         boolean res = CounterController.previous();
-        if (res){
+        if (res) {
             Intent intent = new Intent(MainActivity.this, MainActivity.class);
             startActivity(intent);
             // goToCounter();
@@ -178,9 +177,10 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
     }
-    private void goToNextCounter(){
+
+    private void goToNextCounter() {
         boolean res = CounterController.next();
-        if (res){
+        if (res) {
             Intent intent = new Intent(MainActivity.this, MainActivity.class);
             startActivity(intent);
             // goToCounter();
