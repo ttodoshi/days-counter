@@ -9,9 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class BaseActivity extends AppCompatActivity {
-    public static Date today = new Date();
-    @SuppressLint("SimpleDateFormat")
-    public static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
     protected Counter counter;
 
@@ -44,10 +41,6 @@ public class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         db.close();
-    }
-
-    protected long getDifference(Date selectedDate) {
-        return today.getTime() - selectedDate.getTime();
     }
 }
 

@@ -14,11 +14,16 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Settings extends BaseActivity {
 
     AlertDialog alert;
+
+    @SuppressLint("SimpleDateFormat")
+    public static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -44,10 +49,9 @@ public class Settings extends BaseActivity {
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (db.isEmpty()){
+                if (db.isEmpty()) {
                     Toast.makeText(Settings.this, getString(R.string.no_counters), Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     showCalendarAlert();
                 }
             }
@@ -83,14 +87,14 @@ public class Settings extends BaseActivity {
         });
     }
 
-    private void goBackToMainScreen(){
+    private void goBackToMainScreen() {
         Intent intent = new Intent(Settings.this, MainActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
         finish();
     }
 
-    private void showCalendarAlert(){
+    private void showCalendarAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(Settings.this);
         View view = getLayoutInflater().inflate(R.layout.calendar_layour, null);
         CalendarView calendar = view.findViewById(R.id.calendar);
@@ -117,10 +121,9 @@ public class Settings extends BaseActivity {
                 submitDate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Date selectedDate = new Date(year-1900, month, dayOfMonth);
+                        Date selectedDate = new Date(year - 1900, month, dayOfMonth);
                         counter.setDate(selectedDate);
                         alert.cancel();
-                        reminderNotification(selectedDate);
                     }
                 });
             }
@@ -134,7 +137,7 @@ public class Settings extends BaseActivity {
     }
 
     // создание AlertDialog с вводом текста
-    private AlertDialog.Builder createAlertDialogWithEditText(String title, View customLayout){
+    private AlertDialog.Builder createAlertDialogWithEditText(String title, View customLayout) {
         AlertDialog.Builder builder = new AlertDialog.Builder(Settings.this);
         builder.setView(customLayout)
                 .setTitle(title)
@@ -143,11 +146,10 @@ public class Settings extends BaseActivity {
     }
 
     // alert для изменения фразы
-    private void showPhraseAlert(){
-        if (db.isEmpty()){
+    private void showPhraseAlert() {
+        if (db.isEmpty()) {
             Toast.makeText(Settings.this, getString(R.string.no_counters), Toast.LENGTH_SHORT).show();
-        }
-        else {
+        } else {
             final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
             AlertDialog.Builder builder = createAlertDialogWithEditText(getString(R.string.new_phrase), customLayout);
             builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() {
@@ -165,7 +167,7 @@ public class Settings extends BaseActivity {
     }
 
     // alert для изменения даты начала отсчёта текстом
-    private void showDateAlert(){
+    private void showDateAlert() {
         final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
         AlertDialog.Builder builder = createAlertDialogWithEditText(getString(R.string.new_date_text), customLayout);
         builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() {
@@ -176,7 +178,6 @@ public class Settings extends BaseActivity {
                 try {
                     Date selectedDate = sdf.parse(startDate);
                     counter.setDate(selectedDate);
-                    reminderNotification(selectedDate);
                 } catch (ParseException e) {
                     Toast.makeText(Settings.this, getString(R.string.invalid_format), Toast.LENGTH_SHORT).show();
                 }
@@ -187,21 +188,11 @@ public class Settings extends BaseActivity {
         alert.show();
     }
 
-    private void reminderNotification(Date selectedDate) {
-        if (getDifference(selectedDate) < 0){
-            Toast.makeText(Settings.this, getString(R.string.note), Toast.LENGTH_SHORT).show();
-            NotificationUtils notificationUtils = new NotificationUtils(this);
-            long dayInMillis = 864 * 1000 * 100;
-            int id = db.getCurrentId();
-            notificationUtils.setReminder(id, selectedDate.getTime() - dayInMillis);
-            notificationUtils.setDelete(id, selectedDate.getTime());
-        }
+    private void addCounter() {
+        db.addCounter(sdf.format(new Date()), 1, "");
     }
 
-    private void addCounter(){
-        db.addCounter(sdf.format(today), 1, "");
-    }
-    private void delLastCounter(){
+    private void delLastCounter() {
         db.delLastCounter();
     }
 }
