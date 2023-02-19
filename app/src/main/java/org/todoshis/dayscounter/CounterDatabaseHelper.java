@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -53,7 +54,7 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_PHRASE, phrase);
         long res = db.update(TABLE_NAME, cv, "current=?", new String[]{"1"});
         if (res == -1){
-            ShowMessage.showMessage(context, context.getString(R.string.couldnt_change_counter));
+            Toast.makeText(context, context.getString(R.string.couldnt_change_counter), Toast.LENGTH_SHORT).show();
         }
         db.close();
     }
@@ -113,10 +114,10 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_PHRASE, phrase);
         long res = db.insert(TABLE_NAME, null, cv);
         if (res == -1){
-            ShowMessage.showMessage(context, context.getString(R.string.counter_didnt_add));
+            Toast.makeText(context, context.getString(R.string.counter_didnt_add), Toast.LENGTH_SHORT).show();
         }
         else{
-            ShowMessage.showMessage(context, context.getString(R.string.new_counter));
+            Toast.makeText(context, context.getString(R.string.new_counter), Toast.LENGTH_SHORT).show();
         }
         cursor.close();
         db.close();
@@ -137,10 +138,10 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
     public void delLastCounter(){
         Cursor cursor = this.readAllData();
         if (cursor.getCount() == 0){
-            ShowMessage.showMessage(context, context.getString(R.string.no_counters));
+            Toast.makeText(context, context.getString(R.string.no_counters), Toast.LENGTH_SHORT).show();
         }
         else if (cursor.getCount() == 1){
-            ShowMessage.showMessage(context, context.getString(R.string.last_counter_message));
+            Toast.makeText(context, context.getString(R.string.last_counter_message), Toast.LENGTH_SHORT).show();
         }
         else{
             SQLiteDatabase db = this.getWritableDatabase();
@@ -149,14 +150,14 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
                 changeCurrent(-1);
             }
             db.delete(TABLE_NAME, "_id=?", new String[]{String.valueOf(cursor.getInt(0))});
-            ShowMessage.showMessage(context, context.getString(R.string.last_counter_was_deleted));
+            Toast.makeText(context, context.getString(R.string.last_counter_was_deleted), Toast.LENGTH_SHORT).show();
         }
         cursor.close();
     }
     public void deleteById(int id){
         Cursor cursor = this.readAllData();
         if (cursor.getCount() == 0){
-            ShowMessage.showMessage(context, context.getString(R.string.no_counters));
+            Toast.makeText(context, context.getString(R.string.no_counters), Toast.LENGTH_SHORT).show();
         }
         else {
             SQLiteDatabase db = this.getWritableDatabase();
