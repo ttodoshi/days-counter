@@ -76,7 +76,7 @@ public class CounterController {
     }
 
     public static String getPhrase() {
-        return counter.getDate();
+        return counter.getPhrase();
     }
 
     public static void setPhrase(String newPhrase) {
