@@ -10,10 +10,11 @@ import android.widget.TextView;
 import static android.view.View.VISIBLE;
 import static android.view.View.INVISIBLE;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.Date;
 
-public class MainActivity extends BaseActivity {
-
+public class MainActivity extends AppCompatActivity {
     private TextView days, daysPhrase;
     private ImageView round, rectangle;
 
@@ -45,13 +46,13 @@ public class MainActivity extends BaseActivity {
             }
             @Override
             public void onSwipeUp() {
-                if (!db.isEmpty()){
+                if (CounterController.haveCounters()){
                     goToNextCounter();
                 }
             }
             @Override
             public void onSwipeDown() {
-                if (!db.isEmpty()){
+                if (CounterController.haveCounters()){
                     goToPreviousCounter();
                 }
             }
@@ -61,8 +62,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!db.isEmpty()){
-            uploadMainScreen(getDaysFromMillis(getDifference(counter.getDate())), counter.getPhrase());
+        if(CounterController.haveCounters()) {
+            uploadMainScreen(getDaysFromMillis(getDifference(CounterController.getDate())), CounterController.getPhrase());
         }
     }
 
@@ -85,8 +86,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void changeDaysShowMode(){
-        if (!db.isEmpty()){
-            counter.setDaysShowMode();
+        if(CounterController.haveCounters()) {
+            CounterController.setDaysShowMode();
             Intent intent = new Intent(MainActivity.this, MainActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
@@ -108,7 +109,7 @@ public class MainActivity extends BaseActivity {
 
     private String phraseShow(int days, String phrase){
         StringBuilder text = new StringBuilder("");
-        if(counter.getDaysShowMode() == 1){
+        if(CounterController.getDaysShowMode() == 1){
             text.append(checkEnding(Math.abs(days), getString(R.string.day), getString(R.string.day_different_ending), getString(R.string.days)));
             text.append(" ");
         }
@@ -137,7 +138,7 @@ public class MainActivity extends BaseActivity {
 
     private String daysShowMode(int daysCount){
         String daysString;;
-        if (counter.getDaysShowMode() == 1){
+        if (CounterController.getDaysShowMode() == 1){
             daysString = String.valueOf(daysCount);
         }
         else{
@@ -157,7 +158,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void picsShowMode(){
-        if (counter.getDaysShowMode() == 1){
+        if (CounterController.getDaysShowMode() == 1){
             rectangle.setVisibility(INVISIBLE);
             round.setVisibility(VISIBLE);
         }
@@ -168,21 +169,24 @@ public class MainActivity extends BaseActivity {
     }
 
     private void goToPreviousCounter(){
-        boolean res = db.changeCurrent(-1);
+        boolean res = CounterController.previous();
         if (res){
             Intent intent = new Intent(MainActivity.this, MainActivity.class);
             startActivity(intent);
+            // goToCounter();
             overridePendingTransition(R.anim.out_to_bottom, R.anim.in_from_top);
             finish();
         }
     }
     private void goToNextCounter(){
-        boolean res = db.changeCurrent(1);
+        boolean res = CounterController.next();
         if (res){
             Intent intent = new Intent(MainActivity.this, MainActivity.class);
             startActivity(intent);
+            // goToCounter();
             overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
             finish();
         }
     }
+
 }
