@@ -35,7 +35,7 @@ public class Settings extends AppCompatActivity {
         Button addCounter = findViewById(R.id.addCounter);
         Button delLastCounter = findViewById(R.id.delLastCounter);
 
-        // вызов алерта с изменением фразы
+        // dialog for phrase change
         changePhraseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,7 +43,7 @@ public class Settings extends AppCompatActivity {
             }
         });
 
-        // отображение календаря
+        // show calendar
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,7 +69,7 @@ public class Settings extends AppCompatActivity {
             }
         });
 
-        // жест
+        // right swipe
         settings.setOnTouchListener(new OnSwipeTouchListener(Settings.this) {
             @Override
             public void onSwipeRight() {
@@ -134,7 +134,7 @@ public class Settings extends AppCompatActivity {
         alert.show();
     }
 
-    // создание AlertDialog с вводом текста
+    // AlertDialog with text input
     private AlertDialog.Builder createAlertDialogWithEditText(String title, View customLayout) {
         AlertDialog.Builder builder = new AlertDialog.Builder(Settings.this);
         builder.setView(customLayout)
@@ -143,7 +143,7 @@ public class Settings extends AppCompatActivity {
         return builder;
     }
 
-    // alert для изменения фразы
+    // creation of dialog for phrase change
     private void showPhraseAlert() {
         if (CounterController.haveCounters()) {
             final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
@@ -164,7 +164,7 @@ public class Settings extends AppCompatActivity {
         }
     }
 
-    // alert для изменения даты начала отсчёта текстом
+    // alert for change date
     private void showDateAlert() {
         final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
         AlertDialog.Builder builder = createAlertDialogWithEditText(getString(R.string.new_date_text), customLayout);

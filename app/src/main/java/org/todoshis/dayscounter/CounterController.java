@@ -9,26 +9,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CounterController {
-    private static CounterController counterController = null;
+    @SuppressLint("StaticFieldLeak")
     private static Counter counter;
+    @SuppressLint("StaticFieldLeak")
     private static Context context;
     @SuppressLint("SimpleDateFormat")
     private static final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-
-    private CounterController(Context applicationContext) {
-        context = applicationContext;
-        counter = returnCurrentCounter(context);
-    }
-    public static CounterController getInstance(Context context) {
-        if (counterController == null) {
-            counterController = new CounterController(context);
-        }
-        return counterController;
-    }
-
-    public static Counter returnCurrentCounter(Context context) {
-        return Counter.returnCurrentCounter(context);
-    }
 
     public static boolean haveCounters() {
         return Counter.haveCounters();
@@ -56,12 +42,15 @@ public class CounterController {
                 break;
         }
     }
+
     public static boolean next() {
         return Counter.next();
     }
+
     public static boolean previous() {
         return Counter.previous();
     }
+
     public static Date getDate() {
         try {
             return sdf.parse(counter.getDate());
@@ -73,18 +62,23 @@ public class CounterController {
     public static void setDate(String date) {
         counter.setDate(date);
     }
+
     public static void setDate(Date date) {
         counter.setDate(sdf.format(date));
     }
+
     public static int getDaysShowMode() {
         return counter.getDaysShowMode();
     }
+
     public static void setDaysShowMode() {
         counter.setDaysShowMode();
     }
+
     public static String getPhrase() {
         return counter.getDate();
     }
+
     public static void setPhrase(String newPhrase) {
         counter.setPhrase(newPhrase);
     }
