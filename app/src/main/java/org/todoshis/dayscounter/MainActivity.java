@@ -50,16 +50,12 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSwipeUp() {
-                if (counterController.haveCounters()) {
-                    goToNextCounter();
-                }
+                goToNextCounter();
             }
 
             @Override
             public void onSwipeDown() {
-                if (counterController.haveCounters()) {
-                    goToPreviousCounter();
-                }
+                goToPreviousCounter();
             }
         });
     }
@@ -83,14 +79,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goToPreviousCounter() {
-        if (counterController.previous()) {
+        if (counterController.previous() && counterController.haveCounters()) {
             reloadMainPage();
             overridePendingTransition(R.anim.out_to_bottom, R.anim.in_from_top);
         }
     }
 
     private void goToNextCounter() {
-        if (counterController.next()) {
+        if (counterController.next() && counterController.haveCounters()) {
             reloadMainPage();
             overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
         }

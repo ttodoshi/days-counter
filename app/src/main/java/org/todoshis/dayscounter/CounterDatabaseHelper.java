@@ -160,7 +160,7 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
         return res;
     }
 
-    Cursor readAllData() {
+    private Cursor readAllData() {
         SQLiteDatabase readableDB = counterDatabaseHelper.getReadableDatabase();
         String query = "SELECT * FROM " + TABLE_NAME;
 
