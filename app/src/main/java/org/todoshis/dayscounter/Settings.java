@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Settings extends AppCompatActivity {
+    CounterController counterController;
 
     AlertDialog alert;
 
@@ -27,6 +28,8 @@ public class Settings extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        counterController = CounterController.getInstance(this);
+
         setContentView(R.layout.activity_settings);
 
         RelativeLayout settings = findViewById(R.id.settings);
@@ -47,7 +50,7 @@ public class Settings extends AppCompatActivity {
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (CounterController.haveCounters()) {
+                if (counterController.haveCounters()) {
                     showCalendarAlert();
                 } else {
                     Toast.makeText(Settings.this, getString(R.string.no_counters), Toast.LENGTH_SHORT).show();
@@ -65,7 +68,7 @@ public class Settings extends AppCompatActivity {
         delLastCounter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                delLastCounter();
+                deleteLastCounter();
             }
         });
 
@@ -120,7 +123,7 @@ public class Settings extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Date selectedDate = new Date(year - 1900, month, dayOfMonth);
-                        CounterController.setDate(selectedDate);
+                        counterController.setDate(selectedDate);
                         alert.cancel();
                     }
                 });
@@ -145,7 +148,7 @@ public class Settings extends AppCompatActivity {
 
     // creation of dialog for phrase change
     private void showPhraseAlert() {
-        if (CounterController.haveCounters()) {
+        if (counterController.haveCounters()) {
             final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
             AlertDialog.Builder builder = createAlertDialogWithEditText(getString(R.string.new_phrase), customLayout);
             builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() {
@@ -153,7 +156,7 @@ public class Settings extends AppCompatActivity {
                 public void onClick(DialogInterface dialogInterface, int i) {
                     EditText editText = customLayout.findViewById(R.id.editText);
                     String newPhrase = editText.getText().toString();
-                    CounterController.setPhrase(newPhrase);
+                    counterController.setPhrase(newPhrase);
                     dialogInterface.cancel();
                 }
             });
@@ -173,7 +176,7 @@ public class Settings extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 EditText editText = customLayout.findViewById(R.id.editText);
                 String startDate = editText.getText().toString();
-                CounterController.setDate(startDate);
+                counterController.setDate(startDate);
                 dialogInterface.cancel();
             }
         });
@@ -182,10 +185,10 @@ public class Settings extends AppCompatActivity {
     }
 
     private void addCounter() {
-        CounterController.addCounter();
+        counterController.addCounter();
     }
 
-    private void delLastCounter() {
-        CounterController.deleteLastCounter();
+    private void deleteLastCounter() {
+        counterController.deleteLastCounter();
     }
 }
