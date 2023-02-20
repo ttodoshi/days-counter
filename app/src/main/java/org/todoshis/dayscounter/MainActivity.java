@@ -68,13 +68,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (counterController.haveCounters()) {
-            uploadMainScreen(getDaysFromMillis(getDifference(counterController.getDate())), counterController.getPhrase());
+            // show elements on main screen
+            picsShowMode();
+            int pastDays = getDaysFromMillis(getDifference(counterController.getDate()));
+            days.setText(daysShowMode(Math.abs(pastDays)));
+            daysPhrase.setText(phraseShow(pastDays, counterController.getPhrase()));
         }
     }
 
     protected long getDifference(Date selectedDate) {
         return new Date().getTime() - selectedDate.getTime();
     }
+
+    private int getDaysFromMillis(long millis) {
+        return (int) (millis / (24 * 60 * 60 * 1000));
+    }
+
 
     @Override
     protected void onRestart() {
@@ -98,17 +107,6 @@ public class MainActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
             finish();
         }
-    }
-
-    // show elements on main screen
-    private void uploadMainScreen(int allDays, String phrase) {
-        picsShowMode();
-        days.setText(daysShowMode(Math.abs(allDays)));
-        daysPhrase.setText(phraseShow(allDays, phrase));
-    }
-
-    private int getDaysFromMillis(long millis) {
-        return (int) (millis / (24 * 60 * 60 * 1000));
     }
 
     private String phraseShow(int days, String phrase) {

@@ -1,5 +1,6 @@
 package org.todoshis.dayscounter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -18,6 +19,7 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
     public void onSwipeUp(){}
     public void onSwipeDown(){}
 
+    @SuppressLint("ClickableViewAccessibility")
     public boolean onTouch(View v, MotionEvent event) {
         return gestureDetector.onTouchEvent(event);
     }
