@@ -34,14 +34,12 @@ public class Counter {
         return phrase;
     }
 
-    public int setPhrase(String newPhrase) {
-        if (newPhrase.trim().length() == 0) {
-            return 0;
-        } else if (newPhrase.length() > 100) {
-            return 100;
+    public boolean setPhrase(String newPhrase) {
+        if (newPhrase.trim().length() == 0 || newPhrase.length() > 100) {
+            return false;
         } else {
             this.phrase = newPhrase;
-            return 1;
+            return true;
         }
     }
 }

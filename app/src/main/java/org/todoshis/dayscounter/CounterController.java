@@ -108,15 +108,9 @@ public class CounterController {
     }
 
     public void setPhrase(String newPhrase) {
-        switch (currentCounter.setPhrase(newPhrase)) {
-            case 0:
-                Toast.makeText(context, context.getString(R.string.invalid_format), Toast.LENGTH_SHORT).show();
-                break;
-            case 100:
-                Toast.makeText(context, context.getString(R.string.too_long), Toast.LENGTH_SHORT).show();
-                break;
-            default:
-                db.editCounter(currentCounter.getDate(), currentCounter.getDaysShowMode(), newPhrase);
-        }
+        if (currentCounter.setPhrase(newPhrase))
+            db.editCounter(currentCounter.getDate(), currentCounter.getDaysShowMode(), newPhrase);
+        else
+            Toast.makeText(context, context.getString(R.string.invalid_phrase), Toast.LENGTH_SHORT).show();
     }
 }
