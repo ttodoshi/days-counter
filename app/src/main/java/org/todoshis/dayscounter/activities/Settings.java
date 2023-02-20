@@ -1,4 +1,4 @@
-package org.todoshis.dayscounter;
+package org.todoshis.dayscounter.activities;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -15,8 +15,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import org.todoshis.dayscounter.controllers.CounterController;
+import org.todoshis.dayscounter.activities.gestures.OnSwipeTouchListener;
+import org.todoshis.dayscounter.R;
+
 import java.util.Date;
 
 public class Settings extends AppCompatActivity {

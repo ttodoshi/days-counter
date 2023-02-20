@@ -1,4 +1,4 @@
-package org.todoshis.dayscounter;
+package org.todoshis.dayscounter.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -11,6 +11,10 @@ import static android.view.View.VISIBLE;
 import static android.view.View.INVISIBLE;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.todoshis.dayscounter.controllers.CounterController;
+import org.todoshis.dayscounter.activities.gestures.OnSwipeTouchListener;
+import org.todoshis.dayscounter.R;
 
 import java.util.Date;
 
