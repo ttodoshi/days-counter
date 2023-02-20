@@ -1,4 +1,4 @@
-package org.todoshis.dayscounter;
+package org.todoshis.dayscounter.models;
 public class Counter {
 
     private String startDate;

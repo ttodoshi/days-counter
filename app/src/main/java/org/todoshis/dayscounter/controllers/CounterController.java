@@ -1,8 +1,12 @@
-package org.todoshis.dayscounter;
+package org.todoshis.dayscounter.controllers;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.Toast;
+
+import org.todoshis.dayscounter.models.Counter;
+import org.todoshis.dayscounter.models.CounterDatabaseHelper;
+import org.todoshis.dayscounter.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

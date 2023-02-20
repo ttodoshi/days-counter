@@ -14,10 +14,10 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
-            android:name="org.todoshis.dayscounter.Settings"
+            android:name="org.todoshis.dayscounter.activities.Settings"
             android:exported="false" />
         <activity
-            android:name="org.todoshis.dayscounter.MainActivity"
+            android:name="org.todoshis.dayscounter.activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

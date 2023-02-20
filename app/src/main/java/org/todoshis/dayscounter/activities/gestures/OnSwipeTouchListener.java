@@ -1,4 +1,4 @@
-package org.todoshis.dayscounter;
+package org.todoshis.dayscounter.activities.gestures;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
