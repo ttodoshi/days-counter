@@ -95,6 +95,14 @@ public class Settings extends AppCompatActivity {
         finish();
     }
 
+    private void addCounter() {
+        counterController.addCounter();
+    }
+
+    private void deleteLastCounter() {
+        counterController.deleteLastCounter();
+    }
+
     private void showCalendarAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(Settings.this);
         View view = getLayoutInflater().inflate(R.layout.calendar_layour, null);
@@ -182,13 +190,5 @@ public class Settings extends AppCompatActivity {
         });
         alert = builder.create();
         alert.show();
-    }
-
-    private void addCounter() {
-        counterController.addCounter();
-    }
-
-    private void deleteLastCounter() {
-        counterController.deleteLastCounter();
     }
 }

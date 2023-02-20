@@ -15,7 +15,6 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
 
     @SuppressLint("StaticFieldLeak")
     private static CounterDatabaseHelper counterDatabaseHelper;
-    private final Context context;
     private static final String DATABASE_NAME = "Counters.db";
     private static final int DATABASE_VERSION = 1;
     private static final String TABLE_NAME = "counters";
@@ -33,9 +32,8 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    private CounterDatabaseHelper(@Nullable Context context) {
+    private CounterDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context = context;
     }
 
     public Counter returnCurrentCounter() {
@@ -78,10 +76,7 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_START, startDate);
         cv.put(COLUMN_SHOW_MODE, daysShowMode);
         cv.put(COLUMN_PHRASE, phrase);
-        long res = readableDB.update(TABLE_NAME, cv, "current=?", new String[]{"1"});
-        if (res == -1) {
-            Toast.makeText(context, context.getString(R.string.couldnt_change_counter), Toast.LENGTH_SHORT).show();
-        }
+        readableDB.update(TABLE_NAME, cv, "current=?", new String[]{"1"});
         readableDB.close();
     }
 
@@ -94,17 +89,15 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
             firstOrLastId = cursor.getInt(0);
             do {
-                if (cursor.getInt(1) == 1) {
+                if (cursor.getInt(1) == 1)
                     break;
-                }
             } while (cursor.moveToNext());
         } else if (position == 1) {
             cursor.moveToLast();
             firstOrLastId = cursor.getInt(0);
             do {
-                if (cursor.getInt(1) == 1) {
+                if (cursor.getInt(1) == 1)
                     break;
-                }
             } while (cursor.moveToPrevious());
         } else {
             return false;
@@ -116,10 +109,10 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
         } else {
             return false;
         }
-        String setCurrentTo0 = "UPDATE " + TABLE_NAME + " SET " + COLUMN_CURRENT + " = '" + 0 + "' WHERE " + COLUMN_ID + " = " + currentId + ";";
-        String setNextAsCurrent = "UPDATE " + TABLE_NAME + " SET " + COLUMN_CURRENT + " = '" + 1 + "' WHERE " + COLUMN_ID + " = " + nextId + ";";
+        String setCurrentTo0 = "UPDATE " + TABLE_NAME +" SET " + COLUMN_CURRENT+ " = '" + 0 + "' WHERE " + COLUMN_ID + " = " + currentId + ";";
+        String setNextCurrent = "UPDATE " + TABLE_NAME + " SET " + COLUMN_CURRENT + " = '" + 1 + "' WHERE " + COLUMN_ID + " = " + nextId + ";";
         writeableDB.execSQL(setCurrentTo0);
-        writeableDB.execSQL(setNextAsCurrent);
+        writeableDB.execSQL(setNextCurrent);
         return true;
     }
 
