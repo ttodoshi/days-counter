@@ -122,8 +122,8 @@ public class Settings extends AppCompatActivity {
                 submitDate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Date selectedDate = new Date(year - 1900, month, dayOfMonth);
-                        counterController.setDate(selectedDate);
+                        // TODO use Calendar
+                        counterController.setDate(new Date(year - 1900, month, dayOfMonth));
                         alert.cancel();
                     }
                 });
