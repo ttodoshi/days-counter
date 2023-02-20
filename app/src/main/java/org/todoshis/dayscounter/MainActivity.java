@@ -168,25 +168,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goToPreviousCounter() {
-        boolean res = counterController.previous();
-        if (res) {
-            Intent intent = new Intent(MainActivity.this, MainActivity.class);
-            startActivity(intent);
-            // goToCounter();
+        if (counterController.previous()) {
+            goToCounter();
             overridePendingTransition(R.anim.out_to_bottom, R.anim.in_from_top);
-            finish();
         }
     }
 
     private void goToNextCounter() {
-        boolean res = counterController.next();
-        if (res) {
-            Intent intent = new Intent(MainActivity.this, MainActivity.class);
-            startActivity(intent);
-            // goToCounter();
+        if (counterController.next()) {
+            goToCounter();
             overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
-            finish();
         }
+    }
+    private void goToCounter() {
+        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }
