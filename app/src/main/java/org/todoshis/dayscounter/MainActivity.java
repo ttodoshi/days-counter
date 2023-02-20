@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
+    CounterController counterController;
     private TextView days, daysPhrase;
     private ImageView round, rectangle;
 
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        counterController = CounterController.getInstance(getApplicationContext());
         setContentView(R.layout.activity_main);
 
         days = findViewById(R.id.days);
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         RelativeLayout mainActivity = findViewById(R.id.backgroundCounter);
 
-        //
+        // gestures
         mainActivity.setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
             @Override
             public void onSwipeLeft() {
@@ -48,14 +50,14 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSwipeUp() {
-                if (CounterController.haveCounters()) {
+                if (counterController.haveCounters()) {
                     goToNextCounter();
                 }
             }
 
             @Override
             public void onSwipeDown() {
-                if (CounterController.haveCounters()) {
+                if (counterController.haveCounters()) {
                     goToPreviousCounter();
                 }
             }
@@ -65,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (CounterController.haveCounters()) {
-            uploadMainScreen(getDaysFromMillis(getDifference(CounterController.getDate())), CounterController.getPhrase());
+        if (counterController.haveCounters()) {
+            uploadMainScreen(getDaysFromMillis(getDifference(counterController.getDate())), counterController.getPhrase());
         }
     }
 
@@ -89,8 +91,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void changeDaysShowMode() {
-        if (CounterController.haveCounters()) {
-            CounterController.setDaysShowMode();
+        if (counterController.haveCounters()) {
+            counterController.setDaysShowMode();
             Intent intent = new Intent(MainActivity.this, MainActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
@@ -111,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String phraseShow(int days, String phrase) {
         StringBuilder text = new StringBuilder("");
-        if (CounterController.getDaysShowMode() == 1) {
+        if (counterController.getDaysShowMode() == 1) {
             text.append(checkEnding(Math.abs(days), getString(R.string.day), getString(R.string.day_different_ending), getString(R.string.days)));
             text.append(" ");
         }
@@ -139,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
     private String daysShowMode(int daysCount) {
         String daysString;
         ;
-        if (CounterController.getDaysShowMode() == 1) {
+        if (counterController.getDaysShowMode() == 1) {
             daysString = String.valueOf(daysCount);
         } else {
             int years = daysCount / 365;
@@ -158,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void picsShowMode() {
-        if (CounterController.getDaysShowMode() == 1) {
+        if (counterController.getDaysShowMode() == 1) {
             rectangle.setVisibility(INVISIBLE);
             round.setVisibility(VISIBLE);
         } else {
@@ -168,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goToPreviousCounter() {
-        boolean res = CounterController.previous();
+        boolean res = counterController.previous();
         if (res) {
             Intent intent = new Intent(MainActivity.this, MainActivity.class);
             startActivity(intent);
@@ -179,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goToNextCounter() {
-        boolean res = CounterController.next();
+        boolean res = counterController.next();
         if (res) {
             Intent intent = new Intent(MainActivity.this, MainActivity.class);
             startActivity(intent);

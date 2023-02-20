@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import java.util.Date;
 
 public class CounterDatabaseHelper extends SQLiteOpenHelper {
 
@@ -19,7 +18,6 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
     private final Context context;
     private static final String DATABASE_NAME = "Counters.db";
     private static final int DATABASE_VERSION = 1;
-
     private static final String TABLE_NAME = "counters";
     private static final String COLUMN_ID = "_id";
     private static final String COLUMN_CURRENT = "current";
@@ -38,6 +36,22 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
     private CounterDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
+    }
+
+    public Counter returnCurrentCounter() {
+        Cursor cursor = counterDatabaseHelper.readAllData();
+
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            do {
+                if (cursor.getInt(1) == 1) {
+                    break;
+                }
+            } while (cursor.moveToNext());
+            return new Counter(cursor.getString(2), cursor.getInt(3), cursor.getString(4));
+        }
+        cursor.close();
+        return null;
     }
 
     @Override
@@ -74,7 +88,7 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
     // position = -1 or 1
     public boolean changeCurrent(int position) {
         SQLiteDatabase writeableDB = counterDatabaseHelper.getWritableDatabase();
-        Cursor cursor = this.readAllData();
+        Cursor cursor = counterDatabaseHelper.readAllData();
         int nextId, currentId, firstOrLastId;
         if (position == -1) {
             cursor.moveToFirst();
@@ -106,16 +120,13 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
         String setNextAsCurrent = "UPDATE " + TABLE_NAME + " SET " + COLUMN_CURRENT + " = '" + 1 + "' WHERE " + COLUMN_ID + " = " + nextId + ";";
         writeableDB.execSQL(setCurrentTo0);
         writeableDB.execSQL(setNextAsCurrent);
-        cursor.close();
-        writeableDB.close();
         return true;
     }
 
     public boolean addCounter(String startDate, Integer daysShowMode, String phrase) {
         SQLiteDatabase writeableDB = counterDatabaseHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        Cursor cursor = readAllData();
-        cv.put(COLUMN_CURRENT, cursor.getCount() == 0 ? 1 : 0);
+        cv.put(COLUMN_CURRENT, counterDatabaseHelper.isEmpty() ? 1 : 0);
         cv.put(COLUMN_START, startDate);
         cv.put(COLUMN_SHOW_MODE, daysShowMode);
         cv.put(COLUMN_PHRASE, phrase);
@@ -123,14 +134,13 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
         if (res == -1) {
             return false;
         }
-        cursor.close();
         writeableDB.close();
         return true;
     }
 
     public int deleteLastCounter() {
         SQLiteDatabase writeableDB = counterDatabaseHelper.getWritableDatabase();
-        Cursor cursor = this.readAllData();
+        Cursor cursor = counterDatabaseHelper.readAllData();
         // 0 - zero counters, 1 - only one counter, -1 - last counter was deleted
         int status;
         if (cursor.getCount() == 0) {
@@ -151,7 +161,7 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public boolean isEmpty() {
-        Cursor cursor = this.readAllData();
+        Cursor cursor = counterDatabaseHelper.readAllData();
         boolean res = cursor.getCount() == 0;
         cursor.close();
         return res;
@@ -164,7 +174,6 @@ public class CounterDatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = null;
         if (readableDB != null) {
             cursor = readableDB.rawQuery(query, null);
-            readableDB.close();
         }
         return cursor;
     }
