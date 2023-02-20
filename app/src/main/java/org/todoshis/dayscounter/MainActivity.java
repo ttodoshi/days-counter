@@ -76,19 +76,30 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    protected long getDifference(Date selectedDate) {
-        return new Date().getTime() - selectedDate.getTime();
-    }
-
-    private int getDaysFromMillis(long millis) {
-        return (int) (millis / (24 * 60 * 60 * 1000));
-    }
-
-
     @Override
     protected void onRestart() {
         super.onRestart();
         recreate();
+    }
+
+    private void goToPreviousCounter() {
+        if (counterController.previous()) {
+            reloadMainPage();
+            overridePendingTransition(R.anim.out_to_bottom, R.anim.in_from_top);
+        }
+    }
+
+    private void goToNextCounter() {
+        if (counterController.next()) {
+            reloadMainPage();
+            overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
+        }
+    }
+
+    private void reloadMainPage() {
+        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     // go to settings activity
@@ -102,43 +113,23 @@ public class MainActivity extends AppCompatActivity {
     private void changeDaysShowMode() {
         if (counterController.haveCounters()) {
             counterController.setDaysShowMode();
-            Intent intent = new Intent(MainActivity.this, MainActivity.class);
-            startActivity(intent);
+            reloadMainPage();
             overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
-            finish();
         }
     }
 
-    private String phraseShow(int days, String phrase) {
-        StringBuilder text = new StringBuilder("");
+    private void picsShowMode() {
         if (counterController.getDaysShowMode() == 1) {
-            text.append(checkEnding(Math.abs(days), getString(R.string.day), getString(R.string.day_different_ending), getString(R.string.days)));
-            text.append(" ");
-        }
-        text.append(phrase);
-        if (days < 0) {
-            if (!phrase.isEmpty()) {
-                text.append(" ");
-            }
-            text.append(getString(R.string.days_left));
-        }
-        return text.toString();
-    }
-
-    private String checkEnding(int value, String firstWord, String secondWord, String thirdWord) {
-        boolean exceptions = !(value % 100 == 11 || value % 100 == 12 || value % 100 == 13 || value % 100 == 14);
-        if (value % 10 == 1 && exceptions) {
-            return firstWord;
-        } else if ((value % 10 == 2 || value % 10 == 3 || value % 10 == 4) && exceptions) {
-            return secondWord;
+            rectangle.setVisibility(INVISIBLE);
+            round.setVisibility(VISIBLE);
         } else {
-            return thirdWord;
+            rectangle.setVisibility(VISIBLE);
+            round.setVisibility(INVISIBLE);
         }
     }
 
     private String daysShowMode(int daysCount) {
         String daysString;
-        ;
         if (counterController.getDaysShowMode() == 1) {
             daysString = String.valueOf(daysCount);
         } else {
@@ -157,33 +148,38 @@ public class MainActivity extends AppCompatActivity {
         return daysString;
     }
 
-    private void picsShowMode() {
+    private String phraseShow(int days, String phrase) {
+        StringBuilder text = new StringBuilder();
         if (counterController.getDaysShowMode() == 1) {
-            rectangle.setVisibility(INVISIBLE);
-            round.setVisibility(VISIBLE);
+            text.append(checkEnding(Math.abs(days), getString(R.string.day), getString(R.string.day_different_ending), getString(R.string.days)));
+            text.append(" ");
+        }
+        text.append(phrase);
+        if (days < 0) {
+            if (!phrase.isEmpty()) {
+                text.append(" ");
+            }
+            text.append(getString(R.string.days_left));
+        }
+        return text.toString();
+    }
+
+    protected long getDifference(Date selectedDate) {
+        return new Date().getTime() - selectedDate.getTime();
+    }
+
+    private int getDaysFromMillis(long millis) {
+        return (int) (millis / (24 * 60 * 60 * 1000));
+    }
+
+    private String checkEnding(int value, String firstWord, String secondWord, String thirdWord) {
+        boolean exceptions = !(value % 100 == 11 || value % 100 == 12 || value % 100 == 13 || value % 100 == 14);
+        if (value % 10 == 1 && exceptions) {
+            return firstWord;
+        } else if ((value % 10 == 2 || value % 10 == 3 || value % 10 == 4) && exceptions) {
+            return secondWord;
         } else {
-            rectangle.setVisibility(VISIBLE);
-            round.setVisibility(INVISIBLE);
+            return thirdWord;
         }
     }
-
-    private void goToPreviousCounter() {
-        if (counterController.previous()) {
-            goToCounter();
-            overridePendingTransition(R.anim.out_to_bottom, R.anim.in_from_top);
-        }
-    }
-
-    private void goToNextCounter() {
-        if (counterController.next()) {
-            goToCounter();
-            overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
-        }
-    }
-    private void goToCounter() {
-        Intent intent = new Intent(MainActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
 }
