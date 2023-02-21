@@ -131,15 +131,12 @@ public class MainActivity extends AppCompatActivity {
 
     private String phraseShow(long days, String phrase) {
         StringBuilder text = new StringBuilder();
-        if (counterController.getDaysShowMode() == 1) {
-            text.append(SpellChecker.checkEndingDependingOnQuantity(Math.abs(days), getString(R.string.day), getString(R.string.day_different_ending), getString(R.string.days)));
-            text.append(" ");
-        }
+        if (counterController.getDaysShowMode() == 1)
+            text.append(SpellChecker.checkEndingDependingOnQuantity(Math.abs(days), getString(R.string.day), getString(R.string.day_different_ending), getString(R.string.days))).append(" ");
         text.append(phrase);
         if (days < 0) {
-            if (!phrase.isEmpty()) {
+            if (!phrase.isEmpty())
                 text.append(" ");
-            }
             text.append(getString(R.string.days_left));
         }
         return text.toString();
