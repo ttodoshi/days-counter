@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +20,6 @@ import org.todoshis.dayscounter.activities.gestures.OnSwipeTouchListener;
 import org.todoshis.dayscounter.R;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Settings extends AppCompatActivity {
     CounterController counterController;
@@ -40,9 +38,9 @@ public class Settings extends AppCompatActivity {
         Button changePhraseButton = findViewById(R.id.changePhrase);
         Button dateButton = findViewById(R.id.changeStartDate);
         Button addCounter = findViewById(R.id.addCounter);
-        Button delLastCounter = findViewById(R.id.delLastCounter);
+        Button deleteLastCounter = findViewById(R.id.deleteLastCounter);
 
-        // dialog for phrase change
+        // dialog for phrase change button
         changePhraseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,7 +48,7 @@ public class Settings extends AppCompatActivity {
             }
         });
 
-        // show calendar
+        // calendar for date change button
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,17 +60,19 @@ public class Settings extends AppCompatActivity {
             }
         });
 
+        // add counter button
         addCounter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addCounter();
+                counterController.addCounter();
             }
         });
 
-        delLastCounter.setOnClickListener(new View.OnClickListener() {
+        // delete last counter button
+        deleteLastCounter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteLastCounter();
+                counterController.deleteLastCounter();
             }
         });
 
@@ -97,14 +97,6 @@ public class Settings extends AppCompatActivity {
         startActivity(intent);
         overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
         finish();
-    }
-
-    private void addCounter() {
-        counterController.addCounter();
-    }
-
-    private void deleteLastCounter() {
-        counterController.deleteLastCounter();
     }
 
     private void showCalendarAlert() {
@@ -134,7 +126,7 @@ public class Settings extends AppCompatActivity {
                 submitDate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        counterController.setDate(LocalDate.of(year, month+1, dayOfMonth));
+                        counterController.setDate(LocalDate.of(year, month + 1, dayOfMonth));
                         alert.cancel();
                     }
                 });
