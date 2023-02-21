@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,7 @@ import org.todoshis.dayscounter.controllers.CounterController;
 import org.todoshis.dayscounter.activities.gestures.OnSwipeTouchListener;
 import org.todoshis.dayscounter.R;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Settings extends AppCompatActivity {
@@ -132,8 +134,7 @@ public class Settings extends AppCompatActivity {
                 submitDate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        // TODO use Calendar
-                        counterController.setDate(new Date(year - 1900, month, dayOfMonth));
+                        counterController.setDate(LocalDate.of(year, month+1, dayOfMonth));
                         alert.cancel();
                     }
                 });

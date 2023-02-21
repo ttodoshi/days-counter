@@ -8,9 +8,10 @@ import org.todoshis.dayscounter.models.Counter;
 import org.todoshis.dayscounter.models.CounterDatabaseHelper;
 import org.todoshis.dayscounter.R;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 
 public class CounterController {
     @SuppressLint("StaticFieldLeak")
@@ -18,8 +19,8 @@ public class CounterController {
     private final CounterDatabaseHelper db;
     private final Context context;
     private Counter currentCounter;
-    @SuppressLint("SimpleDateFormat")
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+    private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
     private CounterController(Context context) {
         this.context = context;
         db = CounterDatabaseHelper.getInstance(context);
@@ -31,6 +32,7 @@ public class CounterController {
             counterController = new CounterController(context);
         return counterController;
     }
+
     public void updateCurrentCounter() {
         currentCounter = db.returnCurrentCounter();
     }
@@ -41,7 +43,7 @@ public class CounterController {
 
     public void addCounter() {
         boolean isFirstCounterCreated = db.isEmpty();
-        if (db.addCounter(sdf.format(new Date()), 1, "")) {
+        if (db.addCounter(dtf.format(LocalDate.now()), 1, "")) {
             if (isFirstCounterCreated) {
                 updateCurrentCounter();
             }
@@ -79,21 +81,20 @@ public class CounterController {
         return res;
     }
 
-    public Date getDate() {
-        try {
-            return sdf.parse(currentCounter.getDate());
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+    public TemporalAccessor getDate() {
+        return dtf.parse(currentCounter.getDate());
     }
 
     public void setDate(String date) {
-        currentCounter.setDate(date);
-        db.editCounter(date, currentCounter.getDaysShowMode(), currentCounter.getPhrase());
+        try {
+            setDate(dtf.parse(date));
+        } catch (DateTimeException e) {
+            Toast.makeText(context, context.getString(R.string.invalid_date), Toast.LENGTH_SHORT).show();
+        }
     }
 
-    public void setDate(Date date) {
-        String dateToString = sdf.format(date);
+    public void setDate(TemporalAccessor date) {
+        String dateToString = dtf.format(date);
         currentCounter.setDate(dateToString);
         db.editCounter(dateToString, currentCounter.getDaysShowMode(), currentCounter.getPhrase());
     }
