@@ -1,6 +1,7 @@
 package org.todoshis.dayscounter.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -39,44 +40,8 @@ public class MainActivity extends AppCompatActivity {
         RelativeLayout mainActivity = findViewById(R.id.backgroundCounter);
 
         // gestures
-        mainActivity.setOnTouchListener(new OnSwipeTouchListener(MainActivity.this) {
-            @Override
-            public void onSwipeLeft() {
-                // go to settings
-                Intent intent = new Intent(MainActivity.this, Settings.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-                finish();
-            }
-
-            @Override
-            public void onSwipeRight() {
-                // change days show mode
-                if (counterController.haveCounters()) {
-                    counterController.setDaysShowMode();
-                    reloadMainPage();
-                    overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
-                }
-            }
-
-            @Override
-            public void onSwipeUp() {
-                // go to next counter
-                if (counterController.next() && counterController.haveCounters()) {
-                    reloadMainPage();
-                    overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
-                }
-            }
-
-            @Override
-            public void onSwipeDown() {
-                // go to previous counter
-                if (counterController.previous() && counterController.haveCounters()) {
-                    reloadMainPage();
-                    overridePendingTransition(R.anim.out_to_bottom, R.anim.in_from_top);
-                }
-            }
-        });
+        OnSwipeTouchListener swipeListener = new SwipeListener(this);
+        mainActivity.setOnTouchListener(swipeListener);
     }
 
     @Override
@@ -101,6 +66,40 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
         recreate();
+    }
+    class SwipeListener extends OnSwipeTouchListener {
+        public SwipeListener(Context context) {
+            super(context);
+        }
+        public void onSwipeLeft() {
+            // go to settings
+            Intent intent = new Intent(MainActivity.this, Settings.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+            finish();
+        }
+        public void onSwipeRight() {
+            // change days show mode
+            if (counterController.haveCounters()) {
+                counterController.setDaysShowMode();
+                reloadMainPage();
+                overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+            }
+        }
+        public void onSwipeUp() {
+            // go to next counter
+            if (counterController.next() && counterController.haveCounters()) {
+                reloadMainPage();
+                overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
+            }
+        }
+        public void onSwipeDown() {
+            // go to previous counter
+            if (counterController.previous() && counterController.haveCounters()) {
+                reloadMainPage();
+                overridePendingTransition(R.anim.out_to_bottom, R.anim.in_from_top);
+            }
+        }
     }
 
     private void reloadMainPage() {
