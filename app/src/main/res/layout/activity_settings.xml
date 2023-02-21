@@ -28,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="35sp"
                 android:background="@drawable/button_layout"
+                android:onClick="addCounter"
                 android:text="@string/create_counter"
                 android:textColor="@color/white" />
 
@@ -38,6 +39,7 @@
                 android:layout_marginTop="35sp"
                 android:layout_marginBottom="35sp"
                 android:background="@drawable/button_layout"
+                android:onClick="showCalendarAlert"
                 android:text="@string/change_date"
                 android:textColor="@color/white" />
 
@@ -48,6 +50,7 @@
                 android:layout_marginTop="35sp"
                 android:layout_marginBottom="35sp"
                 android:background="@drawable/button_layout"
+                android:onClick="showPhraseAlert"
                 android:text="@string/change_phrase"
                 android:textColor="@color/white" />
 
@@ -57,6 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35sp"
                 android:background="@drawable/button_layout"
+                android:onClick="deleteLastCounter"
                 android:text="@string/del_last_counter"
                 android:textColor="@color/white" />
 

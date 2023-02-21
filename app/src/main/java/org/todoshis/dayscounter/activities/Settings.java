@@ -35,46 +35,6 @@ public class Settings extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         RelativeLayout settings = findViewById(R.id.settings);
-        Button changePhraseButton = findViewById(R.id.changePhrase);
-        Button dateButton = findViewById(R.id.changeStartDate);
-        Button addCounter = findViewById(R.id.addCounter);
-        Button deleteLastCounter = findViewById(R.id.deleteLastCounter);
-
-        // dialog for phrase change button
-        changePhraseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPhraseAlert();
-            }
-        });
-
-        // calendar for date change button
-        dateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (counterController.haveCounters()) {
-                    showCalendarAlert();
-                } else {
-                    Toast.makeText(Settings.this, getString(R.string.no_counters), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        // add counter button
-        addCounter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                counterController.addCounter();
-            }
-        });
-
-        // delete last counter button
-        deleteLastCounter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                counterController.deleteLastCounter();
-            }
-        });
 
         // right swipe
         settings.setOnTouchListener(new OnSwipeTouchListener(Settings.this) {
@@ -92,65 +52,59 @@ public class Settings extends AppCompatActivity {
         });
     }
 
-    private void goBackToMainScreen() {
-        Intent intent = new Intent(Settings.this, MainActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
-        finish();
+    public void addCounter(View view) {
+        counterController.addCounter();
     }
 
-    private void showCalendarAlert() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(Settings.this);
-        View view = getLayoutInflater().inflate(R.layout.calendar_layour, null);
-        CalendarView calendar = view.findViewById(R.id.calendar);
-        Button dateFromText = view.findViewById(R.id.dateFromText);
-        Button closeCalendar = view.findViewById(R.id.close);
-        Button submitDate = view.findViewById(R.id.submit);
-
-        closeCalendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alert.cancel();
-            }
-        });
-        dateFromText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alert.cancel();
-                showDateAlert();
-            }
-        });
-        calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                submitDate.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        counterController.setDate(LocalDate.of(year, month + 1, dayOfMonth));
-                        alert.cancel();
-                    }
-                });
-            }
-        });
-
-        builder.setView(view)
-                .setCancelable(false);
-
-        alert = builder.create();
-        alert.show();
+    public void deleteLastCounter(View view) {
+        counterController.deleteLastCounter();
     }
 
-    // AlertDialog with text input
-    private AlertDialog.Builder createAlertDialogWithEditText(String title, View customLayout) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(Settings.this);
-        builder.setView(customLayout)
-                .setTitle(title)
-                .setCancelable(true);
-        return builder;
+    public void showCalendarAlert(View view) {
+        if (counterController.haveCounters()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(Settings.this);
+            View calendarView = getLayoutInflater().inflate(R.layout.calendar_layour, null);
+            CalendarView calendar = calendarView.findViewById(R.id.calendar);
+            Button dateFromText = calendarView.findViewById(R.id.dateFromText);
+            Button closeCalendar = calendarView.findViewById(R.id.close);
+            Button submitDate = calendarView.findViewById(R.id.submit);
+
+            closeCalendar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    alert.cancel();
+                }
+            });
+            dateFromText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    alert.cancel();
+                    showDateAlert();
+                }
+            });
+            calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                @Override
+                public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                    submitDate.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            counterController.setDate(LocalDate.of(year, month + 1, dayOfMonth));
+                            alert.cancel();
+                        }
+                    });
+                }
+            });
+
+            builder.setView(calendarView).setCancelable(false);
+
+            alert = builder.create();
+            alert.show();
+        } else {
+            Toast.makeText(Settings.this, getString(R.string.no_counters), Toast.LENGTH_SHORT).show();
+        }
     }
 
-    // creation of dialog for phrase change
-    private void showPhraseAlert() {
+    public void showPhraseAlert(View view) {
         if (counterController.haveCounters()) {
             final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
             AlertDialog.Builder builder = createAlertDialogWithEditText(getString(R.string.new_phrase), customLayout);
@@ -168,6 +122,23 @@ public class Settings extends AppCompatActivity {
         } else {
             Toast.makeText(Settings.this, getString(R.string.no_counters), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    // AlertDialog with text input
+    private AlertDialog.Builder createAlertDialogWithEditText(String title, View customLayout) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Settings.this);
+        builder.setView(customLayout)
+                .setTitle(title)
+                .setCancelable(true);
+        return builder;
+    }
+
+
+    private void goBackToMainScreen() {
+        Intent intent = new Intent(Settings.this, MainActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+        finish();
     }
 
     // alert for change date
