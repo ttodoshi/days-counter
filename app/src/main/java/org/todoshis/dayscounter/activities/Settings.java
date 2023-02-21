@@ -6,13 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,7 +33,7 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         counterController = CounterController.getInstance(this);
         setContentView(R.layout.activity_settings);
-        RelativeLayout settings = findViewById(R.id.settings);
+        ScrollView settings = findViewById(R.id.settings);
 
         // // gestures
         OnSwipeTouchListener swipeListener = new SwipeListener(this);
