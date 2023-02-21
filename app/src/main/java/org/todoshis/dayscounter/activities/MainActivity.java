@@ -2,6 +2,7 @@ package org.todoshis.dayscounter.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -10,12 +11,17 @@ import android.widget.TextView;
 import static android.view.View.VISIBLE;
 import static android.view.View.INVISIBLE;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.todoshis.dayscounter.controllers.CounterController;
 import org.todoshis.dayscounter.activities.gestures.OnSwipeTouchListener;
 import org.todoshis.dayscounter.R;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
@@ -70,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         if (counterController.haveCounters()) {
             // show elements on main screen
             picsShowMode();
-            int pastDays = getDaysFromMillis(getDifference(counterController.getDate()));
+            long pastDays = ChronoUnit.DAYS.between(LocalDate.from(counterController.getDate()), LocalDate.now());
             days.setText(daysShowMode(Math.abs(pastDays)));
             daysPhrase.setText(phraseShow(pastDays, counterController.getPhrase()));
         }
@@ -128,14 +134,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private String daysShowMode(int daysCount) {
+    private String daysShowMode(long daysCount) {
         String daysString;
         if (counterController.getDaysShowMode() == 1) {
             daysString = String.valueOf(daysCount);
         } else {
-            int years = daysCount / 365;
-            int weeks = (daysCount % 365) / 7;
-            int remainingDays = (daysCount % 365) % 7;
+            long years = daysCount / 365;
+            long weeks = (daysCount % 365) / 7;
+            long remainingDays = (daysCount % 365) % 7;
 
             daysString = years + " " + checkEnding(years, getString(R.string.year),
                     getString(R.string.year_different_ending), getString(R.string.years)) + " " +
@@ -148,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
         return daysString;
     }
 
-    private String phraseShow(int days, String phrase) {
+    private String phraseShow(long days, String phrase) {
         StringBuilder text = new StringBuilder();
         if (counterController.getDaysShowMode() == 1) {
             text.append(checkEnding(Math.abs(days), getString(R.string.day), getString(R.string.day_different_ending), getString(R.string.days)));
@@ -164,15 +170,8 @@ public class MainActivity extends AppCompatActivity {
         return text.toString();
     }
 
-    protected long getDifference(Date selectedDate) {
-        return new Date().getTime() - selectedDate.getTime();
-    }
-
-    private int getDaysFromMillis(long millis) {
-        return (int) (millis / (24 * 60 * 60 * 1000));
-    }
-
-    private String checkEnding(int value, String firstWord, String secondWord, String thirdWord) {
+    // TODO remove from this class
+    private String checkEnding(long value, String firstWord, String secondWord, String thirdWord) {
         boolean exceptions = !(value % 100 == 11 || value % 100 == 12 || value % 100 == 13 || value % 100 == 14);
         if (value % 10 == 1 && exceptions) {
             return firstWord;
