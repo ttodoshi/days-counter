@@ -36,8 +36,6 @@ public class MainActivity extends AppCompatActivity {
         daysPhrase = findViewById(R.id.phrase);
         round = findViewById(R.id.roundOnBackground);
         rectangle = findViewById(R.id.rectangleOnBackground);
-        round.setVisibility(INVISIBLE);
-        rectangle.setVisibility(INVISIBLE);
         RelativeLayout mainActivity = findViewById(R.id.backgroundCounter);
 
         // gestures
