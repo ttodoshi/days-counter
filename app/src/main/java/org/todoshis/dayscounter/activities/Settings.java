@@ -2,9 +2,11 @@ package org.todoshis.dayscounter.activities;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -31,25 +33,23 @@ public class Settings extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         counterController = CounterController.getInstance(this);
-
         setContentView(R.layout.activity_settings);
-
         RelativeLayout settings = findViewById(R.id.settings);
 
-        // right swipe
-        settings.setOnTouchListener(new OnSwipeTouchListener(Settings.this) {
-            @Override
-            public void onSwipeRight() {
-                goBackToMainScreen();
-            }
-        });
+        // // gestures
+        OnSwipeTouchListener swipeListener = new SwipeListener(this);
+        settings.setOnTouchListener(swipeListener);
         LinearLayout voidBetweenButtons = findViewById(R.id.linearLayoutForButtons);
-        voidBetweenButtons.setOnTouchListener(new OnSwipeTouchListener(Settings.this) {
-            @Override
-            public void onSwipeRight() {
-                goBackToMainScreen();
-            }
-        });
+        voidBetweenButtons.setOnTouchListener(swipeListener);
+    }
+
+    class SwipeListener extends OnSwipeTouchListener {
+        public SwipeListener(Context context) {
+            super(context);
+        }
+        public void onSwipeRight() {
+            goToMainScreen();
+        }
     }
 
     public void addCounter(View view) {
@@ -134,7 +134,7 @@ public class Settings extends AppCompatActivity {
     }
 
 
-    private void goBackToMainScreen() {
+    private void goToMainScreen() {
         Intent intent = new Intent(Settings.this, MainActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
