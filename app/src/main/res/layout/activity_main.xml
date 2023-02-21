@@ -13,14 +13,16 @@
         android:layout_width="400sp"
         android:layout_height="400sp"
         android:layout_centerInParent="true"
-        app:srcCompat="?android:attr/listChoiceIndicatorSingle" />
+        app:srcCompat="?android:attr/listChoiceIndicatorSingle"
+        android:visibility="invisible"/>
 
     <ImageView
         android:id="@+id/rectangleOnBackground"
         android:layout_width="400sp"
         android:layout_height="400sp"
         android:layout_centerInParent="true"
-        app:srcCompat="?android:attr/listChoiceIndicatorMultiple" />
+        app:srcCompat="?android:attr/listChoiceIndicatorMultiple"
+        android:visibility="invisible"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
