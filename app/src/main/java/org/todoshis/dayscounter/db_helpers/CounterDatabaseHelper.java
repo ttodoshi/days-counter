@@ -1,4 +1,4 @@
-package org.todoshis.dayscounter.models;
+package org.todoshis.dayscounter.db_helpers;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -6,6 +6,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import org.todoshis.dayscounter.models.Counter;
 
 
 public class CounterDatabaseHelper extends SQLiteOpenHelper {

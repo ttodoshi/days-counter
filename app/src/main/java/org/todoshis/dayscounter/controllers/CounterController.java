@@ -5,7 +5,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import org.todoshis.dayscounter.models.Counter;
-import org.todoshis.dayscounter.models.CounterDatabaseHelper;
+import org.todoshis.dayscounter.db_helpers.CounterDatabaseHelper;
 import org.todoshis.dayscounter.R;
 
 import java.time.DateTimeException;
