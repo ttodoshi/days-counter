@@ -1,19 +1,7 @@
 <resources>
     <string name="app_name">Days Counter</string>
     <!--  system text  -->
-    <string name="day">день</string>
-    <string name="day_different_ending">дня</string>
-    <string name="days">дней</string>
-
-    <string name="year">год</string>
-    <string name="year_different_ending">года</string>
-    <string name="years">лет</string>
-
-    <string name="week">неделя</string>
-    <string name="week_different_ending">недели</string>
-    <string name="weeks">недель</string>
-
-    <string name="days_left">осталось</string>
+    <string name="days_left">left</string>
     <string name="close">Закрыть</string>
     <string name="save">Сохранить</string>
     <string name="reminder">Напоминание</string>
