@@ -46,9 +46,17 @@ public class Settings extends AppCompatActivity {
         public SwipeListener(Context context) {
             super(context);
         }
+
         public void onSwipeRight() {
             goToMainScreen();
         }
+    }
+
+    private void goToMainScreen() {
+        Intent intent = new Intent(Settings.this, MainActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+        finish();
     }
 
     public void addCounter(View view) {
@@ -78,7 +86,7 @@ public class Settings extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     alert.cancel();
-                    showDateAlert();
+                    showDateFromTextAlert();
                 }
             });
             calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -132,16 +140,8 @@ public class Settings extends AppCompatActivity {
         return builder;
     }
 
-
-    private void goToMainScreen() {
-        Intent intent = new Intent(Settings.this, MainActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
-        finish();
-    }
-
     // alert for change date
-    private void showDateAlert() {
+    private void showDateFromTextAlert() {
         final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
         AlertDialog.Builder builder = createAlertDialogWithEditText(getString(R.string.new_date_text), customLayout);
         builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() {
