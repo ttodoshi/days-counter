@@ -4,14 +4,10 @@
 
 preview:
 
-main screen
-![image1](https://user-images.githubusercontent.com/98121690/220862088-70ca7781-4bdc-403e-9472-1851f2fc4717.jpg)
-
-settings screen
-![image2](https://user-images.githubusercontent.com/98121690/220862145-68d5c76d-6044-41af-9b52-aecb54776818.jpg)
+![preview](https://user-images.githubusercontent.com/98121690/220864135-7f9bab65-2b58-4489-b7af-ce40eaed2539.jpg)
 
 navigation:
-- swipe left - go to settings menu
+- swipe left on main screen - go to settings screen
 - swipe right on settings screen - go back to main screen
-- swipe up/down - switch between counters
-- swipe right on counter screen - change view mode
+- swipe up/down on main screen - switch between counters
+- swipe right on main screen - change view mode
