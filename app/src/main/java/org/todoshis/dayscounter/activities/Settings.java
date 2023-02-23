@@ -3,7 +3,6 @@ package org.todoshis.dayscounter.activities;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -76,31 +75,15 @@ public class Settings extends AppCompatActivity {
             Button closeCalendar = calendarView.findViewById(R.id.close);
             Button submitDate = calendarView.findViewById(R.id.submit);
 
-            closeCalendar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    alert.cancel();
-                }
+            closeCalendar.setOnClickListener(view1 -> alert.cancel());
+            dateFromText.setOnClickListener(view1 -> {
+                alert.cancel();
+                showDateFromTextAlert();
             });
-            dateFromText.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    alert.cancel();
-                    showDateFromTextAlert();
-                }
-            });
-            calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-                @Override
-                public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                    submitDate.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            counterController.setDate(LocalDate.of(year, month + 1, dayOfMonth));
-                            alert.cancel();
-                        }
-                    });
-                }
-            });
+            calendar.setOnDateChangeListener((view1, year, month, dayOfMonth) -> submitDate.setOnClickListener(view2 -> {
+                counterController.setDate(LocalDate.of(year, month + 1, dayOfMonth));
+                alert.cancel();
+            }));
 
             builder.setView(calendarView).setCancelable(false);
 
@@ -113,16 +96,13 @@ public class Settings extends AppCompatActivity {
 
     public void showPhraseAlert(View view) {
         if (counterController.haveCounters()) {
-            final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
+            @SuppressLint("InflateParams") final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
             AlertDialog.Builder builder = createAlertDialogWithEditText(getString(R.string.new_phrase), customLayout);
-            builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    EditText editText = customLayout.findViewById(R.id.editText);
-                    String newPhrase = editText.getText().toString();
-                    counterController.setPhrase(newPhrase);
-                    dialogInterface.cancel();
-                }
+            builder.setPositiveButton(getString(R.string.save), (dialogInterface, i) -> {
+                EditText editText = customLayout.findViewById(R.id.editText);
+                String newPhrase = editText.getText().toString();
+                counterController.setPhrase(newPhrase);
+                dialogInterface.cancel();
             });
             alert = builder.create();
             alert.show();
@@ -142,16 +122,13 @@ public class Settings extends AppCompatActivity {
 
     // alert for change date
     private void showDateFromTextAlert() {
-        final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
+        @SuppressLint("InflateParams") final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
         AlertDialog.Builder builder = createAlertDialogWithEditText(getString(R.string.new_date_text), customLayout);
-        builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                EditText editText = customLayout.findViewById(R.id.editText);
-                String startDate = editText.getText().toString();
-                counterController.setDate(startDate);
-                dialogInterface.cancel();
-            }
+        builder.setPositiveButton(getString(R.string.save), (dialogInterface, i) -> {
+            EditText editText = customLayout.findViewById(R.id.editText);
+            String startDate = editText.getText().toString();
+            counterController.setDate(startDate);
+            dialogInterface.cancel();
         });
         alert = builder.create();
         alert.show();
