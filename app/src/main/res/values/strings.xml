@@ -2,31 +2,26 @@
     <string name="app_name">Days Counter</string>
     <!--  system text  -->
     <string name="days_left">left</string>
-    <string name="close">Закрыть</string>
-    <string name="save">Сохранить</string>
-    <string name="reminder">Напоминание</string>
-    <string name="note">Примечание: уведомления могут не работать если приложение находится в режиме энергосбережения</string>
-    <string name="change_date">Изменить дату начала</string>
-    <string name="new_date">Ввести дату</string>
-    <string name="new_date_text">Введите дату в формате дд.мм.гггг</string>
-    <string name="new_phrase">Введите новую надпись</string>
-    <string name="change_phrase">Изменить надпись</string>
-    <string name="create_counter">Создать новый счётчик</string>
-    <string name="del_last_counter">Удалить последний счётчик</string>
+    <string name="close">close</string>
+    <string name="save">save</string>
+    <string name="change_date">change start date</string>
+    <string name="new_date">enter the date</string>
+    <string name="new_date_text">enter the date in the format dd.mm.yyyy</string>
+    <string name="new_phrase">enter a new phrase</string>
+    <string name="change_phrase">change the phrase</string>
+    <string name="create_counter">create a new counter</string>
+    <string name="del_last_counter">delete the last counter</string>
 
-    <string name="was_deleted">Счётчик был удалён</string>
-    <string name="notification_tomorrow">Завтра наступит дата одного из ваших счётчиков</string>
-    <string name="notification_today">Наступила дата одного из ваших счётчиков</string>
-    <string name="new_counter">Создан новый счетчик</string>
-    <string name="last_counter_was_deleted">Последний счетчик был удалён</string>
+    <string name="new_counter">a new counter has been created</string>
+    <string name="last_counter_was_deleted">the last counter was deleted</string>
     <!--  system text  -->
 
     <!--  errors  -->
-    <string name="invalid_date">Неверно указана дата</string>
-    <string name="invalid_phrase">Неподходящий формат фразы</string>
-    <string name="no_counters">У вас нет счетчиков</string>
-    <string name="last_counter_message">У вас остался последний счетчик</string>
-    <string name="counter_didnt_add">Счетчик не был добавлен</string>
-    <string name="couldnt_change_counter">Не удалось изменить счетчик</string>
+    <string name="invalid_date">the date is incorrect</string>
+    <string name="invalid_phrase">unsuitable phrase format</string>
+    <string name="no_counters">you don\'t have counters</string>
+    <string name="last_counter_message">you have the last counter left</string>
+    <string name="counter_didnt_add">the counter was not added</string>
+    <string name="couldnt_change_counter">failed to change the counter</string>
     <!--  errors  -->
 </resources>
