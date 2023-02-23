@@ -6,7 +6,6 @@ public class Counter {
     private String phrase;
 
     public Counter(String startDate, int daysShowMode, String phrase) {
-
         this.startDate = startDate;
         this.daysShowMode = daysShowMode;
         this.phrase = phrase;
