@@ -23,7 +23,6 @@ import java.time.LocalDate;
 
 public class Settings extends AppCompatActivity {
     CounterController counterController;
-
     AlertDialog alert;
 
     @SuppressLint("ClickableViewAccessibility")
