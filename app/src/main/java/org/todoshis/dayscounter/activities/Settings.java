@@ -2,6 +2,8 @@ package org.todoshis.dayscounter.activities;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,17 +15,20 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import org.todoshis.dayscounter.controllers.CounterController;
 import org.todoshis.dayscounter.activities.gestures.OnSwipeTouchListener;
 import org.todoshis.dayscounter.R;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 public class Settings extends AppCompatActivity {
     CounterController counterController;
-    AlertDialog alert;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -67,8 +72,11 @@ public class Settings extends AppCompatActivity {
 
     public void showCalendarAlert(View view) {
         if (counterController.haveCounters()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(Settings.this);
             View calendarView = getLayoutInflater().inflate(R.layout.calendar_layour, null);
+            AlertDialog alert = new AlertDialog.Builder(Settings.this)
+                    .setView(calendarView)
+                    .setCancelable(false)
+                    .create();
             CalendarView calendar = calendarView.findViewById(R.id.calendar);
             Button dateFromText = calendarView.findViewById(R.id.dateFromText);
             Button closeCalendar = calendarView.findViewById(R.id.close);
@@ -83,53 +91,42 @@ public class Settings extends AppCompatActivity {
                 counterController.setDate(LocalDate.of(year, month + 1, dayOfMonth));
                 alert.cancel();
             }));
-
-            builder.setView(calendarView).setCancelable(false);
-
-            alert = builder.create();
             alert.show();
-        } else {
+        } else
             Toast.makeText(Settings.this, getString(R.string.no_counters), Toast.LENGTH_SHORT).show();
-        }
     }
 
+    // alert for change phrase
     public void showPhraseAlert(View view) {
         if (counterController.haveCounters()) {
-            @SuppressLint("InflateParams") final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
-            AlertDialog.Builder builder = createAlertDialogWithEditText(getString(R.string.new_phrase), customLayout);
-            builder.setPositiveButton(getString(R.string.save), (dialogInterface, i) -> {
-                EditText editText = customLayout.findViewById(R.id.editText);
-                String newPhrase = editText.getText().toString();
-                counterController.setPhrase(newPhrase);
-                dialogInterface.cancel();
-            });
-            alert = builder.create();
-            alert.show();
-        } else {
+            createAlertDialogWithEditText(getString(R.string.new_phrase), (text) -> {counterController.setPhrase(text);}).show();
+        } else
             Toast.makeText(Settings.this, getString(R.string.no_counters), Toast.LENGTH_SHORT).show();
-        }
+    }
+
+    // alert for change date from text input
+    private void showDateFromTextAlert() {
+        createAlertDialogWithEditText(getString(R.string.new_date_text), (text) -> {counterController.setDate(text);}).show();
+    }
+
+    private interface CounterChanger {
+        void execute(String text);
     }
 
     // AlertDialog with text input
-    private AlertDialog.Builder createAlertDialogWithEditText(String title, View customLayout) {
+    @SuppressLint("InflateParams")
+    private AlertDialog createAlertDialogWithEditText(String title, CounterChanger counterChanger) {
         AlertDialog.Builder builder = new AlertDialog.Builder(Settings.this);
-        builder.setView(customLayout)
+        View view = getLayoutInflater().inflate(R.layout.alert_layout, null);
+        builder.setView(view)
                 .setTitle(title)
-                .setCancelable(true);
-        return builder;
-    }
-
-    // alert for change date
-    private void showDateFromTextAlert() {
-        @SuppressLint("InflateParams") final View customLayout = getLayoutInflater().inflate(R.layout.alert_layout, null);
-        AlertDialog.Builder builder = createAlertDialogWithEditText(getString(R.string.new_date_text), customLayout);
-        builder.setPositiveButton(getString(R.string.save), (dialogInterface, i) -> {
-            EditText editText = customLayout.findViewById(R.id.editText);
-            String startDate = editText.getText().toString();
-            counterController.setDate(startDate);
-            dialogInterface.cancel();
-        });
-        alert = builder.create();
-        alert.show();
+                .setCancelable(true)
+                .setPositiveButton(getString(R.string.save), (dialogInterface, i) -> {
+                    EditText editText = view.findViewById(R.id.editText);
+                    String text = editText.getText().toString();
+                    counterChanger.execute(text);
+                    dialogInterface.cancel();
+                });
+        return builder.create();
     }
 }

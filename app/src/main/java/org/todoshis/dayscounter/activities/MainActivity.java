@@ -99,11 +99,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showElements() {
-        if (counterController.getDaysShowMode() == 1) {
+        if (counterController.getDaysShowMode() == 1)
             showMode = new ShowModeOnlyDays(counterController.getPhrase());
-        } else {
+        else
             showMode = new ShowModeWithYearsAndMonths(counterController.getPhrase());
-        }
     }
 
     private void reloadMainPage() {
@@ -132,18 +131,12 @@ public class MainActivity extends AppCompatActivity {
         protected void showPhrase(String phrase) {
             if (pastDays < 0)
                 showFutureDatePhraseView(phrase);
-            else
-                showRegularPhraseView(phrase);
-        }
-
-        private void showRegularPhraseView(String phrase) {
             daysPhrase.append(phrase);
         }
 
         private void showFutureDatePhraseView(String phrase) {
             daysPhrase.append(getString(R.string.days_left));
             if (!phrase.isEmpty()) daysPhrase.append(" ");
-            daysPhrase.append(phrase);
         }
     }
 
