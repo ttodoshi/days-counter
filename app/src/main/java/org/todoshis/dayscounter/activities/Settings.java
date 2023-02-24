@@ -2,8 +2,6 @@ package org.todoshis.dayscounter.activities;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,16 +13,12 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 
 import org.todoshis.dayscounter.controllers.CounterController;
 import org.todoshis.dayscounter.activities.gestures.OnSwipeTouchListener;
 import org.todoshis.dayscounter.R;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 
 public class Settings extends AppCompatActivity {
@@ -99,14 +93,16 @@ public class Settings extends AppCompatActivity {
     // alert for change phrase
     public void showPhraseAlert(View view) {
         if (counterController.haveCounters()) {
-            createAlertDialogWithEditText(getString(R.string.new_phrase), (text) -> {counterController.setPhrase(text);}).show();
+            createAlertDialogWithEditText(getString(R.string.new_phrase),
+                    (text) -> counterController.setPhrase(text)).show();
         } else
             Toast.makeText(Settings.this, getString(R.string.no_counters), Toast.LENGTH_SHORT).show();
     }
 
     // alert for change date from text input
     private void showDateFromTextAlert() {
-        createAlertDialogWithEditText(getString(R.string.new_date_text), (text) -> {counterController.setDate(text);}).show();
+        createAlertDialogWithEditText(getString(R.string.new_date_text),
+                (text) -> counterController.setDate(text)).show();
     }
 
     private interface CounterChanger {
