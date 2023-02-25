@@ -70,13 +70,13 @@ public class CounterController {
     }
 
     public boolean next() {
-        boolean res = db.changeCurrent(1);
+        boolean res = db.moveCurrent(1);
         updateCurrentCounter();
         return res;
     }
 
     public boolean previous() {
-        boolean res = db.changeCurrent(-1);
+        boolean res = db.moveCurrent(-1);
         updateCurrentCounter();
         return res;
     }
