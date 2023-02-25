@@ -100,9 +100,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void showElements() {
         if (counterController.getDaysShowMode() == 1)
-            showMode = new ShowModeOnlyDays(counterController.getPhrase());
+            showMode = new ShowModeOnlyDays();
         else
-            showMode = new ShowModeWithYearsAndMonths(counterController.getPhrase());
+            showMode = new ShowModeWithYearsAndMonths();
     }
 
     private void reloadMainPage() {
@@ -114,21 +114,22 @@ public class MainActivity extends AppCompatActivity {
     abstract class ShowMode {
         protected long pastDays = ChronoUnit.DAYS.between(LocalDate.from(counterController.getDate()), LocalDate.now());
 
-        public ShowMode(String phrase) {
-            this.show(phrase);
+        public ShowMode() {
+            show();
         }
 
-        protected void show(String phrase) {
+        protected void show() {
             showDays();
             showPicture();
-            showPhrase(phrase);
+            showPhrase();
         }
 
         abstract void showDays();
 
         abstract void showPicture();
 
-        protected void showPhrase(String phrase) {
+        protected void showPhrase() {
+            String phrase = counterController.getPhrase();
             if (pastDays < 0)
                 showFutureDatePhraseView(phrase);
             daysPhrase.append(phrase);
@@ -141,11 +142,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     class ShowModeOnlyDays extends ShowMode {
-
-        public ShowModeOnlyDays(String phrase) {
-            super(phrase);
-        }
-
         @Override
         public void showDays() {
             days.setText(String.valueOf(Math.abs(pastDays)));
@@ -157,18 +153,14 @@ public class MainActivity extends AppCompatActivity {
             round.setVisibility(VISIBLE);
         }
 
-        protected void showPhrase(String phrase) {
+        protected void showPhrase() {
             if (counterController.getDaysShowMode() == 1)
                 daysPhrase.append("days ");
-            super.showPhrase(phrase);
+            super.showPhrase();
         }
     }
 
     class ShowModeWithYearsAndMonths extends ShowMode {
-        public ShowModeWithYearsAndMonths(String phrase) {
-            super(phrase);
-        }
-
         @SuppressLint("DefaultLocale")
         @Override
         public void showDays() {
