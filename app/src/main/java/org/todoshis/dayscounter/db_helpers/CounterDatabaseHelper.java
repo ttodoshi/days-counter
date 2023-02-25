@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import org.todoshis.dayscounter.models.Counter;
 
-
 public class CounterDatabaseHelper extends SQLiteOpenHelper {
 
     @SuppressLint("StaticFieldLeak")
