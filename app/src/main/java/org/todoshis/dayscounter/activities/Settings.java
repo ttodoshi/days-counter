@@ -28,7 +28,7 @@ public class Settings extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        counterController = CounterController.getInstance(this);
+        counterController = CounterController.getInstance(getApplicationContext());
         setContentView(R.layout.activity_settings);
         ScrollView settings = findViewById(R.id.settings);
 
